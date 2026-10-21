@@ -2903,35 +2903,33 @@
       switchAdminTab('audits');
     }
 
-    function getStudentLogsByMatric(matric) {
-      if (typeof window.getStudentLogsByMatric === 'function') {
-        return window.getStudentLogsByMatric(matric);
-      }
-      const cleanMatric = (matric || '').trim().toUpperCase();
-      const key1 = `student_logs_${cleanMatric}`;
-      const key2 = `sdi_student_logbook_${cleanMatric}`;
-      try {
-        const raw1 = localStorage.getItem(key1);
-        if (raw1) return JSON.parse(raw1);
-        const raw2 = localStorage.getItem(key2);
-        if (raw2) return JSON.parse(raw2);
-      } catch (e) {}
-
-      if (typeof window.opeyemiReal24WeeksLogs !== 'undefined' && (cleanMatric === '230591215' || cleanMatric === '230591***' || cleanMatric === '230591001' || cleanMatric.includes('230591'))) {
-        return JSON.parse(JSON.stringify(window.opeyemiReal24WeeksLogs));
-      }
-      return {};
+    // Unified getStudentLogsByMatric and saveStudentLogsByMatric are imported from js/app.js
+    // Fallback handlers if loaded independently
+    if (typeof window.getStudentLogsByMatric !== 'function') {
+      window.getStudentLogsByMatric = function(matric) {
+        const cleanMatric = (matric || '').trim().toUpperCase();
+        const key1 = 'student_logs_' + cleanMatric;
+        const key2 = 'sdi_student_logbook_' + cleanMatric;
+        try {
+          const raw1 = localStorage.getItem(key1);
+          if (raw1) return JSON.parse(raw1);
+          const raw2 = localStorage.getItem(key2);
+          if (raw2) return JSON.parse(raw2);
+        } catch (e) {}
+        if (typeof window.opeyemiReal24WeeksLogs !== 'undefined') {
+          return JSON.parse(JSON.stringify(window.opeyemiReal24WeeksLogs));
+        }
+        return {};
+      };
     }
 
-    function saveStudentLogsByMatric(matric, logs) {
-      if (typeof window.saveStudentLogsByMatric === 'function') {
-        return window.saveStudentLogsByMatric(matric, logs);
-      }
-      const cleanMatric = (matric || '').trim().toUpperCase();
-      localStorage.setItem(`student_logs_${cleanMatric}`, JSON.stringify(logs));
-      localStorage.setItem(`sdi_student_logbook_${cleanMatric}`, JSON.stringify(logs));
+    if (typeof window.saveStudentLogsByMatric !== 'function') {
+      window.saveStudentLogsByMatric = function(matric, logs) {
+        const cleanMatric = (matric || '').trim().toUpperCase();
+        localStorage.setItem('student_logs_' + cleanMatric, JSON.stringify(logs));
+        localStorage.setItem('sdi_student_logbook_' + cleanMatric, JSON.stringify(logs));
+      };
     }
-
     function getAuditWeekDates(weekNum) {
       const anchor = new Date('2026-03-02T00:00:00');
       const offsetDays = (weekNum - 1) * 7;
