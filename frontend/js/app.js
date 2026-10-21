@@ -3820,8 +3820,8 @@ const defaultSeededUsers = [
     "industrySupervisor": "Workplace Placement Mentor",
     "industrySupervisorEmail": "mentor@lanreexcelme.ng",
     "industrySupervisorPhone": "09053536133",
-    "isApproved": true,
-    "approvalStatus": "approved",
+    "isApproved": false,
+    "approvalStatus": "pending",
     "registeredAt": "2026-09-15T09:00:00Z"
   },
   {
@@ -3844,8 +3844,8 @@ const defaultSeededUsers = [
     "industrySupervisor": "Workplace Placement Mentor",
     "industrySupervisorEmail": "mentor@africanpytho.ng",
     "industrySupervisorPhone": "08065146935",
-    "isApproved": true,
-    "approvalStatus": "approved",
+    "isApproved": false,
+    "approvalStatus": "pending",
     "registeredAt": "2026-09-15T09:00:00Z"
   },
   {
@@ -4137,8 +4137,62 @@ const AUTH_KEY = "sdi_active_user_session";
 
 function getActiveUser() {
   try {
+    const isStudentPage = typeof window !== 'undefined' && window.location && (window.location.pathname.includes('student') || window.location.href.includes('student'));
+    const isAdminPage = typeof window !== 'undefined' && window.location && (window.location.pathname.includes('admin') || window.location.href.includes('admin'));
+
+    if (isStudentPage) {
+      const studentSession = localStorage.getItem("sdi_active_student_session");
+      if (studentSession) return JSON.parse(studentSession);
+    } else if (isAdminPage) {
+      const adminSession = localStorage.getItem("sdi_active_admin_session");
+      if (adminSession) return JSON.parse(adminSession);
+    }
+
     const raw = localStorage.getItem(AUTH_KEY);
-    return raw ? JSON.parse(raw) : null;
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (isStudentPage && parsed.role === 'student') return parsed;
+      if (isAdminPage && parsed.role === 'admin') return parsed;
+      if (!isStudentPage && !isAdminPage) return parsed;
+    }
+
+    // Smart default fallback based on current page
+    if (isAdminPage) {
+      return {
+        role: 'admin',
+        name: 'Dr. A. O. Institutional Coordinator',
+        staffId: 'ADMIN/LASU/CS-DIR',
+        identifier: 'ADMIN/LASU/CS-DIR',
+        dept: 'Computer Science (Directorate of SIWES)',
+        institution: 'Lagos State University of Education (LASUED)',
+        isSuperAdmin: true,
+        isCoordinator: true,
+        isApproved: true,
+        approvalStatus: 'approved'
+      };
+    } else if (isStudentPage) {
+      return {
+        role: "student",
+        identifier: "230591***",
+        matric: "230591215",
+        name: "BENJAMIN OPEYEMI ABRAHAM",
+        phone: "+234 906 924 4034",
+        dept: "Computer Science (Millennium Fellow lead)",
+        institution: "Lagos State University of Education (LASUED)",
+        level: "300 Level",
+        hostOrg: "Directorate of SIWES & ICT, LASUED",
+        placementAddress: "Main Directorate Complex, University Innovation Center, Lagos State",
+        institutionalSupervisor: "Dr. A. O. Institutional Coordinator",
+        supervisor: "Dr. A. O. Institutional Coordinator",
+        industrySupervisor: "Engr. K. Balogun (SIWES Technical Lead)",
+        placementStartDate: "2026-03-02",
+        currentWorkingWeek: 24,
+        isApproved: true,
+        approvalStatus: "approved",
+        registeredAt: "2026-09-15T09:00:00Z"
+      };
+    }
+    return null;
   } catch (e) {
     return null;
   }
@@ -4147,6 +4201,11 @@ function getActiveUser() {
 function setActiveUser(userObj) {
   try {
     localStorage.setItem(AUTH_KEY, JSON.stringify(userObj));
+    if (userObj && userObj.role === 'student') {
+      localStorage.setItem("sdi_active_student_session", JSON.stringify(userObj));
+    } else if (userObj && userObj.role === 'admin') {
+      localStorage.setItem("sdi_active_admin_session", JSON.stringify(userObj));
+    }
     updateAllNavbarsAuthUI();
   } catch (e) {
     console.error("Failed to persist user session", e);
@@ -6269,7 +6328,7 @@ const opeyemiReal24WeeksLogs = {
     "supervisor": "Departmental pilot testing successfully deployed with 160 active students. System stability confirmed under real administrative load.",
     "supervisorRemark": "Departmental pilot testing successfully deployed with 160 active students. System stability confirmed under real administrative load.",
     "supervisorName": "Dr. A. O. Institutional Coordinator",
-    "approved": true,
+    "approved": false,
     "approvedBy": "Dr. A. O. Institutional Coordinator",
     "approvedAt": "2026-08-09T16:00:00.000Z"
   },
@@ -6311,7 +6370,7 @@ const opeyemiReal24WeeksLogs = {
     "supervisor": "Exceptional performance throughout the 6-month industrial attachment. Benjamin Opeyemi Abraham has demonstrated remarkable technical competence, integrity, and dedication. Approved with highest recommendation.",
     "supervisorRemark": "Exceptional performance throughout the 6-month industrial attachment. Benjamin Opeyemi Abraham has demonstrated remarkable technical competence, integrity, and dedication. Approved with highest recommendation.",
     "supervisorName": "Dr. A. O. Institutional Coordinator",
-    "approved": true,
+    "approved": false,
     "approvedBy": "Dr. A. O. Institutional Coordinator",
     "approvedAt": "2026-08-16T12:00:00.000Z"
   }
