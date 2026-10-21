@@ -1,0 +1,3748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Institutional Admin Console &bull; Secure Digitalize Initiative</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    /* Full Page Fixed Viewport Structure */
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #F8FAFC;
+    }
+
+    /* Fixed Clean Header */
+    .portal-fixed-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      height: 70px;
+      background: #FFFFFF;
+      border-bottom: 1px solid #E2E8F0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+      z-index: 1000;
+      box-sizing: border-box;
+      gap: 1rem;
+    }
+    .btn-header-signout {
+      background: #FEF2F2 !important;
+      color: #DC2626 !important;
+      border: 1px solid #FECACA !important;
+      font-weight: 700 !important;
+      font-size: 0.84rem !important;
+      padding: 0.45rem 0.95rem !important;
+      border-radius: 10px !important;
+      white-space: nowrap !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 0.4rem !important;
+      cursor: pointer !important;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      flex-shrink: 0 !important;
+    }
+    .btn-header-signout:hover {
+      background: #DC2626 !important;
+      color: #FFFFFF !important;
+      border-color: #DC2626 !important;
+      box-shadow: 0 4px 14px rgba(220, 38, 38, 0.25) !important;
+      transform: translateY(-2px) !important;
+    }
+
+    /* Fixed Left Sidebar */
+    .portal-fixed-sidebar {
+      position: fixed;
+      top: 70px;
+      bottom: 0;
+      left: 0;
+      width: 270px;
+      background-color: #0F172A;
+      color: #94A3B8;
+      padding: 1.5rem 1.15rem 1.25rem 1.15rem;
+      border-right: 1px solid #1E293B;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      z-index: 900;
+      box-sizing: border-box;
+      overflow-y: auto;
+    }
+
+    .sidebar-menu-list {
+      list-style: none;
+      margin: 0.75rem 0 0 0;
+      padding: 0;
+    }
+
+    .sidebar-menu-item {
+      margin-bottom: 0.4rem;
+    }
+
+    .sidebar-menu-link {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      color: #94A3B8;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.88rem;
+      text-decoration: none;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+    }
+
+    .sidebar-menu-link:hover {
+      background-color: rgba(255, 255, 255, 0.06);
+      color: #F8FAFC;
+    }
+
+    .sidebar-menu-link.active {
+      background: linear-gradient(135deg, #059669, #10B981);
+      color: #FFFFFF;
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+    }
+
+    /* Institution Box Fixed at Bottom of Sidebar */
+    .sidebar-institution-box {
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+    }
+
+    /* Scrollable Workspace Container */
+    .portal-main-content {
+      margin-left: 270px;
+      margin-top: 70px;
+      height: calc(100vh - 70px);
+      overflow-y: auto;
+      padding: 2.25rem 2.75rem 4rem 2.75rem;
+      box-sizing: border-box;
+    }
+
+    @media (max-width: 960px) {
+      .portal-fixed-sidebar {
+        display: none;
+      }
+      .portal-main-content {
+        margin-left: 0;
+        padding: 1.5rem 1.25rem;
+      }
+    }
+
+    /* Tab Views */
+    .tab-panel-view {
+      display: none;
+      animation: fadeInView 0.22s ease-in-out;
+    }
+
+    .tab-panel-view.active-panel {
+      display: block;
+    }
+
+    @keyframes fadeInView {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Card Panels */
+    .admin-card-box {
+      background: #FFFFFF;
+      border-radius: 16px;
+      border: 1px solid var(--border-color);
+      padding: 1.75rem 2rem;
+      margin-bottom: 1.75rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Modern Clean Tables with Complete Visibility */
+    .admin-table-container {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 14px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      box-shadow: var(--shadow-sm);
+      width: 100%;
+      margin-bottom: 1.5rem;
+    }
+
+    .admin-table {
+      width: 100%;
+      min-width: 820px;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+    }
+
+    .admin-table th {
+      background: #F8FAFC;
+      padding: 1rem 1.25rem;
+      font-weight: 700;
+      color: #475569;
+      border-bottom: 1px solid #E2E8F0;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+    }
+
+    .admin-table td {
+      padding: 1.1rem 1.25rem;
+      border-top: 1px solid #F1F5F9;
+      color: #334155;
+      vertical-align: middle;
+      white-space: normal;
+      word-break: normal;
+      overflow-wrap: break-word;
+    }
+
+    .admin-table tr:hover td {
+      background-color: #F8FAFC;
+    }
+
+    /* Filter Pills */
+    .filter-pill-btn {
+      padding: 0.45rem 0.95rem;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      border: 1px solid #E2E8F0;
+      background: #FFFFFF;
+      color: #475569;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .filter-pill-btn:hover {
+      background: #F1F5F9;
+      color: #0F172A;
+    }
+
+    .filter-pill-btn.active {
+      background: #0F172A;
+      color: #FFFFFF;
+      border-color: #0F172A;
+    }
+
+    /* Staff Distribution Cards */
+    .staff-card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .staff-faculty-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 1.35rem;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .staff-faculty-card:hover {
+      border-color: #CBD5E1;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.06);
+    }
+
+    .title-pill {
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .title-prof { background: #FEF3C7; color: #B45309; }
+    .title-dr { background: #E0E7FF; color: #4338CA; }
+    .title-engr { background: #CFFAFE; color: #0E7490; }
+    .title-other { background: #F1F5F9; color: #475569; }
+
+    /* Modal Overlay for Physical Walk-In Intake */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      padding: 1.5rem;
+    }
+
+    .modal-overlay.active, .modal-overlay.show-modal {
+      display: flex;
+    }
+
+    .modal-container-card {
+      background: #FFFFFF;
+      border-radius: 20px;
+      max-width: 680px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 2.25rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      position: relative;
+      animation: modalPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes modalPop {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Digital Logbook Ledger Replica for Admin Audit */
+    .audit-ledger-card {
+      background: #FFFFFF;
+      border-radius: 16px;
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+
+    .audit-ledger-header {
+      background: #0F172A;
+      color: #FFFFFF;
+      padding: 1.25rem 1.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .audit-day-box {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 10px;
+      padding: 1.15rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .audit-day-box:hover {
+      border-color: #CBD5E1;
+    }
+
+    /* Student Picker Horizontal Cards */
+    .student-picker-container {
+      display: flex;
+      gap: 0.85rem;
+      overflow-x: auto;
+      padding-bottom: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .student-picker-card {
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 0.85rem 1.15rem;
+      min-width: 220px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .student-picker-card:hover {
+      border-color: #94A3B8;
+      transform: translateY(-2px);
+    }
+
+    .student-picker-card.active-student {
+      border-color: #059669;
+      background: #F0FDF4;
+      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.15);
+    }
+
+    /* Interactive Week Chips Navigator */
+    .week-chips-container {
+      display: flex;
+      gap: 0.45rem;
+      overflow-x: auto;
+      padding: 0.4rem 0.2rem 0.75rem 0.2rem;
+      margin-bottom: 1rem;
+    }
+
+    .week-chip-btn {
+      padding: 0.45rem 0.85rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      border: 1px solid #E2E8F0;
+      background: #FFFFFF;
+      color: #475569;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      flex-shrink: 0;
+    }
+
+    .week-chip-btn:hover {
+      background: #F1F5F9;
+      color: #0F172A;
+      border-color: #CBD5E1;
+    }
+
+    .week-chip-btn.active-week {
+      background: #059669;
+      color: #FFFFFF;
+      border-color: #059669;
+      box-shadow: 0 2px 8px rgba(5, 150, 105, 0.25);
+    }
+
+    .week-chip-btn.filled-approved {
+      border-color: #A7F3D0;
+      color: #065F46;
+      background: #ECFDF5;
+    }
+
+    .week-chip-btn.filled-pending {
+      border-color: #FDE68A;
+      color: #92400E;
+      background: #FEF3C7;
+    }
+
+    .week-chip-btn.active-week.filled-approved,
+    .week-chip-btn.active-week.filled-pending {
+      background: #059669;
+      color: #FFFFFF;
+      border-color: #059669;
+    }
+
+    /* Clickable Week Tag Pills in Tables */
+    .table-week-badge {
+      font-size: 0.74rem;
+      font-weight: 700;
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      text-decoration: none;
+    }
+
+    .table-week-badge:hover {
+      transform: scale(1.05);
+    }
+
+    .table-week-approved {
+      background: #ECFDF5;
+      color: #059669;
+      border: 1px solid #A7F3D0;
+    }
+
+    .table-week-pending {
+      background: #FEF3C7;
+      color: #B45309;
+      border: 1px solid #FDE68A;
+    }
+  
+    /* ============================================================
+       COMPREHENSIVE HOVER & MICRO-INTERACTION STYLING
+       ============================================================ */
+    .sidebar-menu-link {
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    .sidebar-menu-link:hover {
+      background-color: rgba(255, 255, 255, 0.09) !important;
+      color: #FFFFFF !important;
+      transform: translateX(5px) !important;
+    }
+    .sidebar-menu-link.active {
+      background: linear-gradient(135deg, #059669, #10B981) !important;
+      color: #FFFFFF !important;
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35) !important;
+      transform: translateX(5px) !important;
+      font-weight: 700 !important;
+    }
+    .sidebar-menu-link:not(.active):hover {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Buttons Hover */
+    .btn {
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      cursor: pointer;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(5, 150, 105, 0.25);
+      filter: brightness(1.05);
+    }
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+      border-color: #94A3B8 !important;
+      background: #F8FAFC !important;
+    }
+    .btn:active {
+      transform: translateY(0) !important;
+    }
+
+    /* Filter Pills Hover */
+    .filter-pill-btn {
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      cursor: pointer;
+    }
+    .filter-pill-btn:hover {
+      background: #F1F5F9;
+      color: #0F172A;
+      border-color: #94A3B8;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    }
+    .filter-pill-btn.active {
+      transform: translateY(0);
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+    }
+
+    /* Stat Cards Hover */
+    .stat-quick-box {
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      cursor: default;
+    }
+    .stat-quick-box:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+      border-color: #CBD5E1 !important;
+    }
+
+    /* Partner Square Cards Hover */
+    .partner-square-card {
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      cursor: pointer;
+    }
+    .partner-square-card:hover {
+      transform: translateY(-6px) !important;
+      box-shadow: 0 14px 28px rgba(15, 23, 42, 0.09) !important;
+      border-color: #3B82F6 !important;
+    }
+
+    /* Student Picker Cards Hover */
+    .student-picker-card {
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      cursor: pointer;
+    }
+    .student-picker-card:hover {
+      transform: translateY(-3px) !important;
+      border-color: #059669 !important;
+      box-shadow: 0 6px 16px rgba(5, 150, 105, 0.12) !important;
+    }
+
+    /* Supervisor Workload Cards Hover */
+    .staff-faculty-card {
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    .staff-faculty-card:hover {
+      transform: translateY(-3px) !important;
+      border-color: #3B82F6 !important;
+      box-shadow: 0 10px 22px rgba(37, 99, 235, 0.08) !important;
+    }
+
+    /* Week Chips Hover */
+    .week-chip-btn {
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      cursor: pointer;
+    }
+    .week-chip-btn:hover {
+      background: #F1F5F9;
+      color: #0F172A;
+      border-color: #94A3B8;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Table Rows & Badges Hover */
+    .admin-table tbody tr {
+      transition: background-color 0.15s ease !important;
+    }
+    .admin-table tbody tr:hover td {
+      background-color: #F8FAFC !important;
+    }
+    .table-week-badge {
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      cursor: pointer;
+    }
+    .table-week-badge:hover {
+      transform: scale(1.1) !important;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12) !important;
+    }
+
+  
+    /* ============================================================
+       INDUSTRY PARTNER 1:1 SQUARE BOX CARDS
+       ============================================================ */
+    .partner-square-card {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 20px;
+      padding: 1.6rem;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      aspect-ratio: 1 / 1 !important;
+      min-height: 290px !important;
+      min-width: 0;
+      position: relative;
+      cursor: pointer;
+      box-sizing: border-box;
+      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    .partner-square-card:hover {
+      transform: translateY(-6px) !important;
+      box-shadow: 0 18px 36px rgba(15, 23, 42, 0.1) !important;
+      border-color: #3B82F6 !important;
+    }
+    .partner-accredited-tag {
+      background: #ECFDF5;
+      color: #059669;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 0.22rem 0.65rem;
+      border-radius: 9999px;
+      border: 1px solid #A7F3D0;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      white-space: nowrap;
+    }
+    .partner-card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 1rem;
+      border-top: 1px solid #F1F5F9;
+      margin-top: auto;
+    }
+    .partner-intern-counter-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #1E293B;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      padding: 0.35rem 0.75rem;
+      border-radius: 10px;
+      white-space: nowrap;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       TOP FIXED HEADER
+       ============================================================ -->
+    <header class="portal-fixed-header">
+    <div style="display: flex; align-items: center; gap: 0.85rem; min-width: 0; flex-shrink: 1;">
+      <a href="index.html" style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none; min-width: 0;">
+        <div style="width: 40px; height: 40px; border-radius: 11px; background: linear-gradient(135deg, #059669, #10B981); display: flex; align-items: center; justify-content: center; color: white; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.25); flex-shrink: 0;">
+          <i data-lucide="shield-check" style="width: 22px; height: 22px;"></i>
+        </div>
+        <div style="min-width: 0;">
+          <div style="font-family: var(--font-heading); font-weight: 800; font-size: 1.15rem; color: #0F172A; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+            Secure Digitalize Initiative
+          </div>
+          <div style="font-size: 0.75rem; color: #64748B; font-weight: 700; letter-spacing: 0.02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+            Millennium Fellowship Class of 2026 &bull; Institutional Admin Clearance
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0; margin-left: auto;">
+      <!-- Active Authenticated Staff Profile Badge -->
+      <div style="display: flex; align-items: center; gap: 0.55rem; background: #F8FAFC; border: 1px solid #CBD5E1; padding: 0.35rem 0.75rem; border-radius: 9999px;">
+        <div id="adminHeaderAvatar" style="width: 26px; height: 26px; border-radius: 50%; background: #059669; color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.78rem; flex-shrink: 0;">
+          A
+        </div>
+        <div style="display: flex; flex-direction: column;">
+          <span id="adminHeaderName" style="font-weight: 800; font-size: 0.84rem; color: #0F172A; white-space: nowrap; max-width: 200px; overflow: hidden; text-overflow: ellipsis;">
+            Dr. A. O. Institutional Coordinator
+          </span>
+        </div>
+        <span id="adminHeaderClearanceDot" style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #10B981; flex-shrink: 0; margin-left: 0.15rem;"></span>
+      </div>
+
+      <!-- Clearance Role Status Badge -->
+      <span id="adminClearanceBadge" style="background: #ECFDF5; color: #059669; font-size: 0.74rem; font-weight: 800; padding: 0.3rem 0.75rem; border-radius: 9999px; border: 1px solid #A7F3D0; white-space: nowrap; display: inline-flex; align-items: center; gap: 0.35rem;">
+        Super Admin
+      </span>
+
+      <!-- Visible High-Contrast Sign Out Button -->
+      <button class="btn btn-header-signout" onclick="logoutUser(true)" title="Sign out of administrative session">
+        <i data-lucide="log-out" style="width: 15px; height: 15px;"></i>
+        <span>Sign Out</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       FIXED LEFT NAVIGATION SIDEBAR
+       ============================================================ -->
+  <aside class="portal-fixed-sidebar">
+    <div>
+      <div style="font-size: 0.72rem; font-weight: 800; color: #64748B; text-transform: uppercase; letter-spacing: 0.08em; padding: 0 0.5rem; margin-bottom: 0.5rem;">
+        Clearance Operations
+      </div>
+
+      <ul class="sidebar-menu-list">
+        <!-- TAB 1: Institutional Analytics & Oversight (DEFAULT ACTIVE) -->
+        <li class="sidebar-menu-item">
+          <a class="sidebar-menu-link active" id="adminNavAnalytics" onclick="switchAdminTab('analytics')">
+            <i data-lucide="bar-chart-3" style="width: 18px;"></i>
+            <span>Analytics &amp; Oversight</span>
+          </a>
+        </li>
+
+        <!-- TAB 2: Student Roster & Intake -->
+        <li class="sidebar-menu-item">
+          <a class="sidebar-menu-link" id="adminNavStudents" onclick="switchAdminTab('students')">
+            <i data-lucide="users" style="width: 18px;"></i>
+            <span>Student Roster &amp; Intake</span>
+          </a>
+        </li>
+
+        <!-- TAB 3: Staff-to-Student Matching Matrix -->
+        <li class="sidebar-menu-item">
+          <a class="sidebar-menu-link" id="adminNavMatching" onclick="switchAdminTab('matching')">
+            <i data-lucide="git-merge" style="width: 18px;"></i>
+            <span>Staff Matching Matrix</span>
+          </a>
+        </li>
+
+        <!-- TAB 4: Logbook Audits -->
+        <li class="sidebar-menu-item">
+          <a class="sidebar-menu-link" id="adminNavAudits" onclick="switchAdminTab('audits')">
+            <i data-lucide="shield-check" style="width: 18px;"></i>
+            <span>Logbook Audits &amp; Remarks</span>
+          </a>
+        </li>
+
+        <!-- TAB 5: Industry Partners -->
+        <li class="sidebar-menu-item">
+          <a class="sidebar-menu-link" id="adminNavPartners" onclick="switchAdminTab('partners')">
+            <i data-lucide="building-2" style="width: 18px;"></i>
+            <span>Industry Partners</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Bottom Institutional Accreditation Card -->
+    <div class="sidebar-institution-box">
+      <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem;">
+        <i data-lucide="award" style="width: 16px; color: #10B981;"></i>
+        <div style="font-size: 0.8rem; font-weight: 800; color: #FFFFFF;">UNAOC &amp; MCN Accredited</div>
+      </div>
+      <p style="font-size: 0.74rem; color: #94A3B8; margin: 0; line-height: 1.4;">
+        Directorate of SIWES &bull; Millennium Fellowship Social Impact Project led by Benjamin Opeyemi Abraham.
+      </p>
+    </div>
+  </aside>
+
+  <!-- ============================================================
+       MAIN SCROLLABLE CONTENT VIEWPORT
+       ============================================================ -->
+  <main class="portal-main-content">
+
+    <!-- ============================================================
+         TAB 1 (PRIMARY DEFAULT): INSTITUTIONAL ANALYTICS & OVERSIGHT
+         ============================================================ -->
+        <section id="viewAnalytics" class="tab-panel-view active-panel">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h2 style="font-size: 1.85rem; font-family: var(--font-heading); font-weight: 800; color: var(--text-dark); margin: 0;">
+            Institutional Analytics &amp; Oversight
+          </h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 0.25rem;">
+            Real-time university placement metrics, verification volume, and compliance tracking.
+          </p>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem;">
+          <button class="btn btn-primary" onclick="openWalkInModal()" style="background: #059669; border-color: #059669; font-weight: 700;">
+            <i data-lucide="user-plus" style="width: 16px;"></i> + Register Walk-In Student
+          </button>
+          <button class="btn btn-secondary" onclick="switchAdminTab('students')" style="font-weight: 700;">
+            <i data-lucide="users" style="width: 16px;"></i> View Full Roster
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Metrics Grid -->
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; margin-bottom: 2.25rem;">
+        <div class="stat-quick-box" style="background: white; border: 1px solid var(--border-color); border-radius: 14px; padding: 1.4rem; box-shadow: var(--shadow-sm);">
+          <div style="font-size: 0.78rem; font-weight: 700; color: #64748B; text-transform: uppercase;" id="statAnalyticsCard1Title">Total Candidates</div>
+          <div style="font-size: 2rem; font-weight: 800; color: #0F172A; font-family: var(--font-heading); margin-top: 0.35rem;" id="statAnalyticsTotalStudents">0</div>
+          <div style="font-size: 0.82rem; color: #059669; font-weight: 700; margin-top: 0.25rem;" id="statAnalyticsMatchedRatio">0 Matched</div>
+        </div>
+
+        <div class="stat-quick-box" style="background: white; border: 1px solid var(--border-color); border-radius: 14px; padding: 1.4rem; box-shadow: var(--shadow-sm);">
+          <div style="font-size: 0.78rem; font-weight: 700; color: #64748B; text-transform: uppercase;" id="statAnalyticsCard2Title">Logbook Compliance</div>
+          <div style="font-size: 2rem; font-weight: 800; color: #059669; font-family: var(--font-heading); margin-top: 0.35rem;" id="statAnalyticsComplianceRate">100%</div>
+          <div style="font-size: 0.82rem; color: #64748B; font-weight: 600; margin-top: 0.25rem;">Active weekly audits</div>
+        </div>
+
+        <div class="stat-quick-box" style="background: white; border: 1px solid var(--border-color); border-radius: 14px; padding: 1.4rem; box-shadow: var(--shadow-sm);">
+          <div style="font-size: 0.78rem; font-weight: 700; color: #64748B; text-transform: uppercase;">Partner Companies</div>
+          <div style="font-size: 2rem; font-weight: 800; color: #2563EB; font-family: var(--font-heading); margin-top: 0.35rem;" id="statAnalyticsTotalPartners">0</div>
+          <div style="font-size: 0.82rem; color: #64748B; font-weight: 600; margin-top: 0.25rem;">Technology &amp; Industrial</div>
+        </div>
+
+        <div class="stat-quick-box" style="background: white; border: 1px solid var(--border-color); border-radius: 14px; padding: 1.4rem; box-shadow: var(--shadow-sm);">
+          <div style="font-size: 0.78rem; font-weight: 700; color: #64748B; text-transform: uppercase;" id="statAnalyticsCard4Title">Verified Weekly Logs</div>
+          <div style="font-size: 2rem; font-weight: 800; color: #D97706; font-family: var(--font-heading); margin-top: 0.35rem;" id="statAnalyticsTotalVerifiedLogs">0</div>
+          <div style="font-size: 0.82rem; color: #64748B; font-weight: 600; margin-top: 0.25rem;">Tamper-proof signed</div>
+        </div>
+      </div>
+
+      <!-- ============================================================
+           INSTITUTIONAL SECURITY CLEARANCE & AUTHORIZATION QUEUE
+           ============================================================ -->
+      <div id="superAdminClearanceHub" class="admin-card-box" style="margin-bottom: 2.25rem; border-left: 4px solid #059669; padding: 1.6rem; background: #FFFFFF; border-radius: 18px; border: 1px solid #E2E8F0; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.35rem; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.3rem;">
+              <div style="width: 32px; height: 32px; border-radius: 8px; background: #ECFDF5; color: #059669; display: flex; align-items: center; justify-content: center;">
+                <i data-lucide="shield-alert" style="width: 18px;"></i>
+              </div>
+              <h3 style="font-family: var(--font-heading); font-size: 1.22rem; font-weight: 800; color: #0F172A; margin: 0;">
+                Institutional Security Clearance &amp; Account Authorization Queue
+              </h3>
+              <span style="background: #FEF3C7; border: 1px solid #F59E0B; color: #B45309; font-size: 0.74rem; font-weight: 800; padding: 0.18rem 0.6rem; border-radius: 9999px;" id="totalPendingClearanceBadge">
+                0 Pending Clearances
+              </span>
+            </div>
+            <p style="color: #64748B; font-size: 0.88rem; margin: 0; max-width: 850px;">
+              Institutional gatekeeper: Review newly self-registered students and faculty staff to grant authenticated operational clearance.
+            </p>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 0.4rem; background: #F1F5F9; padding: 0.3rem; border-radius: 10px;">
+            <button type="button" class="filter-pill-btn active" id="btnFilterPendingAll" onclick="setClearanceQueueFilter('ALL')" style="font-size: 0.78rem; padding: 0.35rem 0.85rem; border-radius: 8px; font-weight: 700;">All Pending</button>
+            <button type="button" class="filter-pill-btn" id="btnFilterPendingStudents" onclick="setClearanceQueueFilter('STUDENTS')" style="font-size: 0.78rem; padding: 0.35rem 0.85rem; border-radius: 8px; font-weight: 700;">Students</button>
+            <button type="button" class="filter-pill-btn" id="btnFilterPendingStaff" onclick="setClearanceQueueFilter('STAFF')" style="font-size: 0.78rem; padding: 0.35rem 0.85rem; border-radius: 8px; font-weight: 700;">Staff</button>
+          </div>
+        </div>
+
+        <div class="admin-table-container" style="border-radius: 12px; margin-bottom: 0; box-shadow: none; border: 1px solid #E2E8F0; overflow-x: auto;">
+          <table class="admin-table" style="min-width: 860px; margin: 0;">
+            <thead>
+              <tr>
+                <th style="width: 24%;">Candidate Legal Name</th>
+                <th style="width: 15%;">Account Type</th>
+                <th style="width: 14%;">Matric / Staff Code</th>
+                <th style="width: 18%;">Department &amp; Institution</th>
+                <th style="width: 12%;">Registered Date</th>
+                <th style="width: 8%;">Status</th>
+                <th style="width: 9%; text-align: right;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="clearanceQueueTableBody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Recent SIWES Candidate Placements & Verified Records -->
+      <div class="admin-table-container" style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 20px; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03); overflow: hidden;">
+        <div style="padding: 1.5rem 1.75rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E2E8F0; background: #FCFDFE; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+              <h3 style="font-size: 1.25rem; font-family: var(--font-heading); font-weight: 800; color: #0F172A; margin: 0;">
+                Recent SIWES Candidate Placements &amp; Verified Records
+              </h3>
+              <span style="background: #ECFDF5; color: #059669; font-size: 0.74rem; font-weight: 800; padding: 0.15rem 0.55rem; border-radius: 9999px; border: 1px solid #A7F3D0;">
+                Live University Feed
+              </span>
+            </div>
+            <p style="color: #64748B; font-size: 0.88rem; margin: 0;">
+              High-priority roster overview showing student placements and real-time supervisor attachments.
+            </p>
+          </div>
+
+          <button class="btn btn-secondary" onclick="switchAdminTab('students')" style="font-size: 0.84rem; font-weight: 700; padding: 0.45rem 0.95rem;">
+            Explore Full Roster &rarr;
+          </button>
+        </div>
+
+        <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+          <table class="admin-table" style="min-width: 860px; margin: 0;">
+            <thead>
+              <tr>
+                <th style="width: 25%;">Student Candidate</th>
+                <th style="width: 15%;">Matriculation No.</th>
+                <th style="width: 22%;">Host Organization</th>
+                <th style="width: 22%;">Assigned Supervisor</th>
+                <th style="width: 16%; text-align: right;">Logbook Status</th>
+              </tr>
+            </thead>
+            <tbody id="adminRecentStudentsTable">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+<section id="viewStudents" class="tab-panel-view">
+      <!-- Header -->
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem; flex-wrap: wrap; gap: 1.25rem;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.35rem;">
+            <h2 style="font-size: 1.85rem; font-family: var(--font-heading); font-weight: 800; color: var(--text-dark); margin: 0;">
+              Enrolled Student Placement Roster
+            </h2>
+            <span style="background: #ECFDF5; color: #059669; font-size: 0.76rem; font-weight: 800; padding: 0.2rem 0.65rem; border-radius: 9999px; border: 1px solid #A7F3D0; display: inline-flex; align-items: center; gap: 0.3rem;">
+              <span style="width: 6px; height: 6px; border-radius: 50%; background: #10B981;"></span> Institutional Database
+            </span>
+          </div>
+          <p style="color: var(--text-muted); font-size: 0.95rem; margin: 0; max-width: 820px;">
+            Comprehensive repository of undergraduate candidates undergoing accredited industrial training attachments and practical SIWES internships.
+          </p>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+          <button id="btnAutoDistributeRosterAction" class="btn btn-primary" onclick="executeAutoDistributeStudents()" style="background: linear-gradient(135deg, #2563EB, #1D4ED8); border-color: #1D4ED8; padding: 0.6rem 1.25rem; font-size: 0.9rem; font-weight: 800; display: inline-flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);">
+            <i data-lucide="sparkles" style="width: 17px;"></i> Auto-Share &amp; Distribute Students
+          </button>
+          <button class="btn btn-primary" onclick="openWalkInModal()" style="background: #059669; border-color: #059669; padding: 0.6rem 1.25rem; font-size: 0.9rem; font-weight: 800; display: inline-flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2);">
+            <i data-lucide="user-plus" style="width: 17px;"></i> + Register Walk-In Student
+          </button>
+        </div>
+      </div>
+
+      <!-- Overview Stats Strip -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; margin-bottom: 2rem;">
+        <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 16px; padding: 1.25rem 1.5rem; box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);">
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <div style="width: 42px; height: 42px; border-radius: 12px; background: #ECFDF5; color: #059669; display: flex; align-items: center; justify-content: center;">
+              <i data-lucide="graduation-cap" style="width: 22px;"></i>
+            </div>
+            <div>
+              <div style="font-size: 0.75rem; font-weight: 700; color: #64748B; text-transform: uppercase;">Total Candidates</div>
+              <div style="font-size: 1.5rem; font-weight: 800; color: #0F172A;" id="statRosterTotalStudents">0</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 16px; padding: 1.25rem 1.5rem; box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);">
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <div style="width: 42px; height: 42px; border-radius: 12px; background: #EFF6FF; color: #2563EB; display: flex; align-items: center; justify-content: center;">
+              <i data-lucide="user-check" style="width: 22px;"></i>
+            </div>
+            <div>
+              <div style="font-size: 0.75rem; font-weight: 700; color: #64748B; text-transform: uppercase;" id="statRosterCard2Title">Assigned to Supervisor</div>
+              <div style="font-size: 1.5rem; font-weight: 800; color: #2563EB;" id="statRosterAssignedStudents">0</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 16px; padding: 1.25rem 1.5rem; box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);">
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <div style="width: 42px; height: 42px; border-radius: 12px; background: #EEF2FF; color: #4F46E5; display: flex; align-items: center; justify-content: center;">
+              <i data-lucide="users" style="width: 22px;"></i>
+            </div>
+            <div>
+              <div style="font-size: 0.75rem; font-weight: 700; color: #64748B; text-transform: uppercase;">Faculty Staff Pool</div>
+              <div style="font-size: 1.5rem; font-weight: 800; color: #4F46E5;" id="statRosterTotalStaff">0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Search & Scope Filter Bar -->
+      <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 16px; padding: 1.25rem 1.5rem; margin-bottom: 1.75rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);">
+        <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+          <button type="button" class="filter-pill-btn active" id="pillFilterAll" onclick="setStudentRosterFilter('ALL')">
+            All Students (<span id="countPillAll">0</span>)
+          </button>
+          <button type="button" class="filter-pill-btn" id="pillFilterMine" onclick="setStudentRosterFilter('MINE')">
+            My Assigned Students (<span id="countPillMine">0</span>)
+          </button>
+          <button type="button" class="filter-pill-btn" id="pillFilterPending" onclick="setStudentRosterFilter('PENDING')">
+            ⏳ Pending Weekly Audits (<span id="countPillPending">0</span>)
+          </button>
+        </div>
+
+        <div style="flex: 1; max-width: 380px; min-width: 260px; position: relative;">
+          <i data-lucide="search" style="position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); width: 16px; color: #94A3B8;"></i>
+          <input type="text" id="adminStudentSearchInput" class="table-search-input" placeholder="Search by student name, matric, or host company..." style="width: 100%; padding-left: 2.35rem; margin: 0; box-sizing: border-box;" oninput="filterAdminStudentRoster()">
+        </div>
+      </div>
+
+      <!-- Main Student Roster Table -->
+      <div class="admin-table-container" style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 20px; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03); overflow: hidden;">
+        <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+          <table class="admin-table" style="min-width: 900px; margin: 0;">
+            <thead>
+              <tr>
+                <th style="width: 25%;">Student Candidate</th>
+                <th style="width: 14%;">Matriculation Number</th>
+                <th style="width: 22%;">Host Organization &amp; Dept</th>
+                <th style="width: 18%;">Faculty Supervisor</th>
+                <th style="width: 12%;">Logbook Progress</th>
+                <th style="width: 9%; text-align: right;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="adminFullStudentTable">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         TAB 3: STAFF SUPERVISOR & STUDENT MATCHING MATRIX
+         ============================================================ -->
+    <section id="viewMatching" class="tab-panel-view">
+      <!-- Header -->
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem; flex-wrap: wrap; gap: 1.25rem;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.35rem;">
+            <h2 style="font-size: 1.85rem; font-family: var(--font-heading); font-weight: 800; color: var(--text-dark); margin: 0;">
+              Staff Supervisor &amp; Student Matching Matrix
+            </h2>
+            <span style="background: #EFF6FF; color: #1D4ED8; font-size: 0.76rem; font-weight: 800; padding: 0.2rem 0.65rem; border-radius: 9999px; border: 1px solid #BFDBFE; display: inline-flex; align-items: center; gap: 0.3rem;">
+              <i data-lucide="shuffle" style="width: 13px;"></i> Balanced Matching Engine
+            </span>
+          </div>
+          <p style="color: var(--text-muted); font-size: 0.95rem; margin: 0; max-width: 820px;">
+            Intelligently allocate, balance, and manage academic faculty supervisors (Professors, Doctors, Engineers) across all enrolled SIWES student placements.
+          </p>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+          <button id="btnAutoDistributeAction" class="btn btn-primary" onclick="executeAutoDistributeStudents()" style="background: linear-gradient(135deg, #2563EB, #1D4ED8); border-color: #1D4ED8; padding: 0.6rem 1.25rem; font-size: 0.9rem; font-weight: 800; display: inline-flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);">
+            <i data-lucide="sparkles" style="width: 17px;"></i> Auto-Distribute &amp; Match Evenly
+          </button>
+        </div>
+      </div>
+
+      <!-- Overview Stats Strip -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; margin-bottom: 2rem;">
+        <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 16px; padding: 1.25rem 1.5rem; box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);">
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <div style="width: 42px; height: 42px; border-radius: 12px; background: #EEF2FF; color: #4F46E5; display: flex; align-items: center; justify-content: center;">
+              <i data-lucide="users-2" style="width: 22px;"></i>
+            </div>
+            <div>
+              <div style="font-size: 0.75rem; font-weight: 700; color: #64748B; text-transform: uppercase;">Faculty Supervisors</div>
+              <div style="font-size: 1.5rem; font-weight: 800; color: #0F172A;" id="matchingStatStaffCount">0</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 16px; padding: 1.25rem 1.5rem; box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);">
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <div style="width: 42px; height: 42px; border-radius: 12px; background: #ECFDF5; color: #059669; display: flex; align-items: center; justify-content: center;">
+              <i data-lucide="graduation-cap" style="width: 22px;"></i>
+            </div>
+            <div>
+              <div style="font-size: 0.75rem; font-weight: 700; color: #64748B; text-transform: uppercase;">Total Matched Students</div>
+              <div style="font-size: 1.5rem; font-weight: 800; color: #059669;" id="matchingStatMatchedStudents">0</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 16px; padding: 1.25rem 1.5rem; box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);">
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <div style="width: 42px; height: 42px; border-radius: 12px; background: #FFFBEB; color: #D97706; display: flex; align-items: center; justify-content: center;">
+              <i data-lucide="scale" style="width: 22px;"></i>
+            </div>
+            <div>
+              <div style="font-size: 0.75rem; font-weight: 700; color: #64748B; text-transform: uppercase;">Average Student Load</div>
+              <div style="font-size: 1.5rem; font-weight: 800; color: #D97706;" id="matchingStatAvgLoad">1.0 / Sup</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 16px; padding: 1.25rem 1.5rem; box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);">
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <div style="width: 42px; height: 42px; border-radius: 12px; background: #F0FDF4; color: #16A34A; display: flex; align-items: center; justify-content: center;">
+              <i data-lucide="check-check" style="width: 22px;"></i>
+            </div>
+            <div>
+              <div style="font-size: 0.75rem; font-weight: 700; color: #64748B; text-transform: uppercase;">Allocation Health</div>
+              <div style="font-size: 1.15rem; font-weight: 800; color: #16A34A; margin-top: 0.25rem;" id="matchingStatAllocationHealth">100% Balanced</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Supervisor Capacity & Workload Cards -->
+      <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 20px; padding: 1.75rem; margin-bottom: 2rem; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <h3 style="font-family: var(--font-heading); font-size: 1.25rem; font-weight: 800; color: #0F172A; margin: 0 0 0.25rem 0;">
+              Faculty Supervisor Capacity &amp; Supervision Workload
+            </h3>
+            <p style="color: #64748B; font-size: 0.88rem; margin: 0;">
+              Live monitoring of student load distribution per academic supervisor.
+            </p>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 0.6rem;">
+            <label style="font-size: 0.82rem; font-weight: 700; color: #64748B;">Filter Title:</label>
+            <select id="staffTitleFilter" onchange="filterStaffCards()" class="form-straight-input" style="height: 38px; width: 160px; background: white; margin: 0; font-size: 0.84rem; font-weight: 600;">
+              <option value="ALL">All Academic Titles</option>
+              <option value="Prof.">Professors (Prof.)</option>
+              <option value="Dr.">Doctors (Dr.)</option>
+              <option value="Engr.">Engineers (Engr.)</option>
+              <option value="Mrs./Mr.">Other Staff</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 1.25rem;" id="staffSupervisorCardsContainer">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+
+      <!-- Individual Student Supervisor Allocation Table -->
+      <div class="admin-table-container" style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 20px; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03); overflow: hidden;">
+        <div style="padding: 1.5rem 1.75rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E2E8F0; background: #FCFDFE; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+              <h3 style="font-size: 1.25rem; font-family: var(--font-heading); font-weight: 800; color: #0F172A; margin: 0;">
+                Student Allocation &amp; Supervisor Assignment Table
+              </h3>
+              <span style="background: #ECFDF5; color: #059669; font-size: 0.74rem; font-weight: 800; padding: 0.15rem 0.55rem; border-radius: 9999px; border: 1px solid #A7F3D0;">
+                ✓ Live Synchronized
+              </span>
+            </div>
+            <p style="font-size: 0.86rem; color: var(--text-muted); margin: 0;">
+              Assign or modify the academic faculty supervisor for each enrolled candidate in real-time.
+            </p>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+            <div style="position: relative; min-width: 260px;">
+              <i data-lucide="search" style="position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); width: 15px; color: #94A3B8;"></i>
+              <input type="text" id="matrixStudentSearchInput" class="table-search-input" placeholder="Search student name or matric..." style="margin: 0; padding-left: 2.3rem; font-size: 0.85rem; height: 38px; width: 100%; box-sizing: border-box;" oninput="filterStaffCards()">
+            </div>
+          </div>
+        </div>
+
+        <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+          <table class="admin-table" style="min-width: 860px; margin: 0;">
+            <thead>
+              <tr>
+                <th style="width: 24%;">Student Legal Name</th>
+                <th style="width: 14%;">Matric Number</th>
+                <th style="width: 22%;">Host Organization</th>
+                <th style="width: 14%;">Department</th>
+                <th style="width: 26%;">Assigned Faculty Supervisor</th>
+              </tr>
+            </thead>
+            <tbody id="adminMatchingMatrixTable">
+              <!-- Populated dynamically with interactive supervisor dropdowns -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         TAB 4: LOGBOOK AUDITS & SUPERVISOR REMARKS (FULL DIGITAL LOGBOOK LEDGER)
+         ============================================================ -->
+    <section id="viewAudits" class="tab-panel-view">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h2 style="font-size: 1.85rem; font-family: var(--font-heading); font-weight: 800; color: var(--text-dark); margin: 0;">
+            Logbook Audits &amp; Supervisor Endorsements
+          </h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 0.25rem;">
+            Click on any week chip below to inspect daily Monday &ndash; Saturday work entries and record feedback.
+          </p>
+        </div>
+
+        <!-- Week Selector & Stepper Controls -->
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          <button type="button" class="btn btn-secondary" onclick="stepAdminAuditWeek(-1)" style="height: 42px; padding: 0 0.75rem; font-weight: 700;">
+            <i data-lucide="chevron-left" style="width: 16px;"></i> Prev Week
+          </button>
+          <select id="auditWeekSelect" onchange="onAdminAuditSelectionChanged()" class="form-straight-input" style="height: 42px; width: 180px; background: white; font-weight: 700;">
+            <!-- Populated dynamically Week 1 to 24 -->
+          </select>
+          <button type="button" class="btn btn-secondary" onclick="stepAdminAuditWeek(1)" style="height: 42px; padding: 0 0.75rem; font-weight: 700;">
+            Next Week <i data-lucide="chevron-right" style="width: 16px;"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Horizontal Student Picker Carousel -->
+      <div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <label style="font-size: 0.8rem; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.03em;">
+            1. Select Student to Audit:
+          </label>
+          <span style="font-size: 0.78rem; color: #64748B;">
+            Click on any student card to switch logbook view immediately
+          </span>
+        </div>
+        <div class="student-picker-container" id="adminStudentPickerCarousel">
+          <!-- Populated dynamically with student cards -->
+        </div>
+      </div>
+
+      <!-- Interactive Week Navigator Bar -->
+      <div style="margin-bottom: 1.25rem;">
+        <label style="font-size: 0.8rem; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.03em; display: block; margin-bottom: 0.4rem;">
+          2. Select Week to Inspect Daily Tasks (Weeks 1 &ndash; 24):
+        </label>
+        <div class="week-chips-container" id="adminAuditWeekChipsContainer">
+          <!-- Populated dynamically with interactive Week 1-24 chips -->
+        </div>
+      </div>
+
+      <!-- Authentic SIWES Digital Logbook View for Selected Student & Week -->
+      <div class="audit-ledger-card">
+        
+        <!-- Dark Navy Header Banner -->
+        <div class="audit-ledger-header">
+          <div style="display: flex; align-items: center; gap: 0.85rem;">
+            <div style="width: 42px; height: 42px; border-radius: 10px; background: rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: center;">
+              <i data-lucide="book-marked" style="width: 22px; color: #38BDF8;"></i>
+            </div>
+            <div>
+              <div style="font-weight: 800; font-size: 1.15rem; letter-spacing: 0.02em;">OFFICIAL SIWES DIGITAL LOGBOOK LEDGER</div>
+              <div style="font-size: 0.82rem; color: #CBD5E1; margin-top: 0.15rem;" id="auditHeaderMeta">
+                Student: BENJAMIN OPEYEMI ABRAHAM &bull; Matric: 230591*** &bull; LASU Computer Science
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <div style="background: rgba(255,255,255,0.08); padding: 0.4rem 0.85rem; border-radius: 8px; font-size: 0.84rem; color: #CBD5E1;">
+              <span id="auditDateRangeText">Mar 02, 2026 &ndash; Mar 07, 2026</span>
+            </div>
+            <div id="auditStatusPillContainer">
+              <!-- Dynamically populated status pill -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Inner Content: Daily Ledger Grid (Mon - Sat) -->
+        <div style="padding: 1.75rem 2rem;">
+          
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+            <h4 style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: #0F172A; margin: 0;">
+              Daily Industrial Training Work Record
+            </h4>
+            <span style="font-size: 0.8rem; color: #64748B; font-weight: 600;" id="auditLedgerActiveWeekLabel">
+              Viewing Week 1 Mon &ndash; Sat Daily Ledger
+            </span>
+          </div>
+
+          <!-- 6 Days Grid -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.75rem;">
+            <!-- Monday -->
+            <div class="audit-day-box">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-weight: 800; font-size: 0.88rem; color: #0F172A;">Monday</span>
+                <span id="auditDateMon" style="font-size: 0.78rem; font-weight: 700; color: #059669; background: #ECFDF5; padding: 0.2rem 0.55rem; border-radius: 6px;">Mar 02</span>
+              </div>
+              <div id="auditTaskMon" style="font-size: 0.88rem; color: #334155; line-height: 1.5; min-height: 52px; background: #F8FAFC; border: 1px solid #F1F5F9; padding: 0.85rem; border-radius: 8px;">
+                <!-- Mon Task -->
+              </div>
+            </div>
+
+            <!-- Tuesday -->
+            <div class="audit-day-box">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-weight: 800; font-size: 0.88rem; color: #0F172A;">Tuesday</span>
+                <span id="auditDateTue" style="font-size: 0.78rem; font-weight: 700; color: #059669; background: #ECFDF5; padding: 0.2rem 0.55rem; border-radius: 6px;">Mar 03</span>
+              </div>
+              <div id="auditTaskTue" style="font-size: 0.88rem; color: #334155; line-height: 1.5; min-height: 52px; background: #F8FAFC; border: 1px solid #F1F5F9; padding: 0.85rem; border-radius: 8px;">
+                <!-- Tue Task -->
+              </div>
+            </div>
+
+            <!-- Wednesday -->
+            <div class="audit-day-box">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-weight: 800; font-size: 0.88rem; color: #0F172A;">Wednesday</span>
+                <span id="auditDateWed" style="font-size: 0.78rem; font-weight: 700; color: #059669; background: #ECFDF5; padding: 0.2rem 0.55rem; border-radius: 6px;">Mar 04</span>
+              </div>
+              <div id="auditTaskWed" style="font-size: 0.88rem; color: #334155; line-height: 1.5; min-height: 52px; background: #F8FAFC; border: 1px solid #F1F5F9; padding: 0.85rem; border-radius: 8px;">
+                <!-- Wed Task -->
+              </div>
+            </div>
+
+            <!-- Thursday -->
+            <div class="audit-day-box">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-weight: 800; font-size: 0.88rem; color: #0F172A;">Thursday</span>
+                <span id="auditDateThu" style="font-size: 0.78rem; font-weight: 700; color: #059669; background: #ECFDF5; padding: 0.2rem 0.55rem; border-radius: 6px;">Mar 05</span>
+              </div>
+              <div id="auditTaskThu" style="font-size: 0.88rem; color: #334155; line-height: 1.5; min-height: 52px; background: #F8FAFC; border: 1px solid #F1F5F9; padding: 0.85rem; border-radius: 8px;">
+                <!-- Thu Task -->
+              </div>
+            </div>
+
+            <!-- Friday -->
+            <div class="audit-day-box">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-weight: 800; font-size: 0.88rem; color: #0F172A;">Friday</span>
+                <span id="auditDateFri" style="font-size: 0.78rem; font-weight: 700; color: #059669; background: #ECFDF5; padding: 0.2rem 0.55rem; border-radius: 6px;">Mar 06</span>
+              </div>
+              <div id="auditTaskFri" style="font-size: 0.88rem; color: #334155; line-height: 1.5; min-height: 52px; background: #F8FAFC; border: 1px solid #F1F5F9; padding: 0.85rem; border-radius: 8px;">
+                <!-- Fri Task -->
+              </div>
+            </div>
+
+            <!-- Saturday -->
+            <div class="audit-day-box">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-weight: 800; font-size: 0.88rem; color: #0F172A;">Saturday</span>
+                <span id="auditDateSat" style="font-size: 0.78rem; font-weight: 700; color: #059669; background: #ECFDF5; padding: 0.2rem 0.55rem; border-radius: 6px;">Mar 07</span>
+              </div>
+              <div id="auditTaskSat" style="font-size: 0.88rem; color: #334155; line-height: 1.5; min-height: 52px; background: #F8FAFC; border: 1px solid #F1F5F9; padding: 0.85rem; border-radius: 8px;">
+                <!-- Sat Task -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Weekly Deliverables Summary -->
+          <div style="margin-bottom: 1.75rem;">
+            <label style="font-weight: 800; font-size: 0.88rem; color: #0F172A; display: block; margin-bottom: 0.4rem;">
+              Weekly Summary &amp; Core Technical Deliverables:
+            </label>
+            <div id="auditWeeklySummary" style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 1rem 1.25rem; border-radius: 10px; font-size: 0.9rem; color: #1E293B; line-height: 1.5;">
+              <!-- Summary -->
+            </div>
+          </div>
+
+          <!-- Supervisor Remarks & Institutional Endorsement Card -->
+          <div style="background: #F8FAFC; border: 1px solid #CBD5E1; border-radius: 14px; padding: 1.5rem; margin-top: 1.5rem;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <div style="width: 32px; height: 32px; border-radius: 8px; background: #E0E7FF; color: #4338CA; display: flex; align-items: center; justify-content: center;">
+                  <i data-lucide="message-square" style="width: 16px;"></i>
+                </div>
+                <div>
+                  <h4 style="font-family: var(--font-heading); font-size: 1rem; font-weight: 800; color: #0F172A; margin: 0;">
+                    Official Supervisor Feedback &amp; Institutional Remarks
+                  </h4>
+                  <div style="font-size: 0.78rem; color: #64748B;">
+                    Your comments will immediately reflect in the student's digital logbook workspace.
+                  </div>
+                </div>
+              </div>
+              <span id="auditSigneeTag" style="font-size: 0.78rem; font-weight: 700; color: #059669; background: #ECFDF5; padding: 0.25rem 0.65rem; border-radius: 6px;">
+                Active Reviewer: Dr. A. O. Institutional Coordinator
+              </span>
+            </div>
+
+            <!-- Comment Input Textarea -->
+            <textarea id="adminAuditSupervisorRemark" class="form-straight-input" rows="3" placeholder="Enter official supervisor evaluation comments, feedback, or revision directives for the student..." style="width: 100%; box-sizing: border-box; font-family: inherit; font-size: 0.88rem; line-height: 1.5; background: white; margin-bottom: 1rem;"></textarea>
+
+            <!-- Action Buttons -->
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+              <div id="auditReopenBtnContainer">
+                <!-- If approved, show Reopen for Revision button -->
+              </div>
+
+              <div style="display: flex; gap: 0.75rem; margin-left: auto;">
+                <button type="button" class="btn btn-secondary" onclick="saveSupervisorRemarkOnly()" style="font-size: 0.85rem; padding: 0.6rem 1.25rem; font-weight: 700;">
+                  <i data-lucide="message-circle" style="width: 15px;"></i> Save Feedback (Keep Pending)
+                </button>
+                <button type="button" class="btn btn-primary" onclick="approveAndEndorseAuditWeek()" style="background: #059669; border-color: #059669; font-size: 0.85rem; padding: 0.6rem 1.5rem; font-weight: 700;">
+                  <i data-lucide="check-circle" style="width: 16px;"></i> Approve &amp; Endorse Logbook
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Student Completed Weeks Overview Table -->
+      <div class="admin-table-container">
+        <div style="padding: 1.25rem 1.5rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E2E8F0; background: #FCFDFE;">
+          <div>
+            <h3 style="font-size: 1.15rem; font-family: var(--font-heading); font-weight: 800; color: var(--text-dark); margin: 0;">
+              Student Submissions Summary &amp; Logged Weeks
+            </h3>
+            <p style="font-size: 0.84rem; color: var(--text-muted); margin: 0.2rem 0 0 0;">
+              Click on any week badge to jump directly into reviewing that student's daily tasks.
+            </p>
+          </div>
+        </div>
+
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th style="width: 22%;">Student Name</th>
+              <th style="width: 14%;">Matric Number</th>
+              <th style="width: 14%;">Total Weeks Logged</th>
+              <th style="width: 26%;">Submitted Weeks List</th>
+              <th style="width: 14%;">Latest Approval Status</th>
+              <th style="width: 10%; text-align: right;">Action</th>
+            </tr>
+          </thead>
+          <tbody id="adminAllSubmissionsTable">
+            <!-- Populated dynamically -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         TAB 5: INDUSTRY PARTNERS
+         ============================================================ -->
+    <section id="viewPartners" class="tab-panel-view">
+      <!-- Section Header -->
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.75rem; flex-wrap: wrap; gap: 1.25rem;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.35rem;">
+            <h2 style="font-size: 1.85rem; font-family: var(--font-heading); font-weight: 800; color: var(--text-dark); margin: 0;">
+              Accredited Industry Partners
+            </h2>
+            <span style="background: #ECFDF5; color: #059669; font-size: 0.76rem; font-weight: 800; padding: 0.2rem 0.65rem; border-radius: 9999px; border: 1px solid #A7F3D0; display: inline-flex; align-items: center; gap: 0.3rem;">
+              <span style="width: 6px; height: 6px; border-radius: 50%; background: #10B981;"></span> Live Auto-Aggregated
+            </span>
+          </div>
+          <p style="color: var(--text-muted); font-size: 0.95rem; margin: 0; max-width: 800px;">
+            Accredited placement organizations and host enterprises automatically detected and synchronized from student intake registrations.
+          </p>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+          <button class="btn btn-secondary" onclick="openManualPartnerModal()" style="font-size: 0.85rem; padding: 0.55rem 1rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.4rem;">
+            <i data-lucide="plus-circle" style="width: 16px;"></i>
+            <span>Add Host Partner</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Partner Stats & Live Search Bar -->
+      <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 16px; padding: 1.25rem 1.5rem; margin-bottom: 1.75rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);">
+        <div style="display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 0.6rem;">
+            <div style="width: 38px; height: 38px; border-radius: 10px; background: #EEF2FF; color: #4F46E5; display: flex; align-items: center; justify-content: center;">
+              <i data-lucide="building-2" style="width: 20px;"></i>
+            </div>
+            <div>
+              <div style="font-size: 0.75rem; color: #64748B; font-weight: 700; text-transform: uppercase;">Total Organizations</div>
+              <div style="font-size: 1.25rem; font-weight: 800; color: #0F172A;" id="partnerStatsOrgCount">0</div>
+            </div>
+          </div>
+
+          <div style="width: 1px; height: 30px; background: #E2E8F0;" class="stats-divider"></div>
+
+          <div style="display: flex; align-items: center; gap: 0.6rem;">
+            <div style="width: 38px; height: 38px; border-radius: 10px; background: #ECFDF5; color: #059669; display: flex; align-items: center; justify-content: center;">
+              <i data-lucide="users" style="width: 20px;"></i>
+            </div>
+            <div>
+              <div style="font-size: 0.75rem; color: #64748B; font-weight: 700; text-transform: uppercase;">Total Placed Interns</div>
+              <div style="font-size: 1.25rem; font-weight: 800; color: #059669;" id="partnerStatsStudentCount">0</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="flex: 1; max-width: 360px; min-width: 240px; position: relative;">
+          <i data-lucide="search" style="position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); width: 16px; color: #94A3B8;"></i>
+          <input type="text" id="adminPartnerSearchInput" class="table-search-input" placeholder="Search partner name or sector..." style="width: 100%; padding-left: 2.35rem; margin: 0;" oninput="filterAdminPartners()">
+        </div>
+      </div>
+
+      <!-- Square Box Grid -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem;" id="adminPartnersGrid">
+        <!-- Square box cards populated dynamically -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       MODAL: PHYSICAL WALK-IN STUDENT INTAKE REGISTRATION
+       ============================================================ -->
+  <div class="modal-overlay" id="walkInModalOverlay">
+    <div class="modal-container-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid #E2E8F0; padding-bottom: 1rem;">
+        <div>
+          <h3 style="font-family: var(--font-heading); font-size: 1.35rem; font-weight: 800; color: #0F172A; margin: 0;">
+            Manual Walk-In Student Registration
+          </h3>
+          <p style="color: #64748B; font-size: 0.86rem; margin: 0.25rem 0 0 0;">
+            Immediate intake registration for students visiting the campus SIWES Directorate in person.
+          </p>
+        </div>
+        <button type="button" onclick="closeWalkInModal()" style="background: none; border: none; font-size: 1.5rem; color: #64748B; cursor: pointer; padding: 0.25rem;">
+          &times;
+        </button>
+      </div>
+
+      <form id="adminWalkInRegisterForm" onsubmit="handleAdminWalkInRegister(event)">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-stacked-group">
+            <label class="form-question-label">Student Full Legal Name</label>
+            <input type="text" id="walkInStudName" class="form-straight-input" placeholder="e.g. Oladimeji Samuel Adeleke" required>
+          </div>
+          <div class="form-stacked-group">
+            <label class="form-question-label">Matriculation Number</label>
+            <input type="text" id="walkInStudMatric" class="form-straight-input" placeholder="e.g. 230591205" required>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-stacked-group">
+            <label class="form-question-label">Mobile Phone Number</label>
+            <input type="tel" id="walkInStudPhone" class="form-straight-input" placeholder="e.g. +234 812 345 6789" required>
+          </div>
+          <div class="form-stacked-group">
+            <label class="form-question-label">Institution</label>
+            <select id="walkInStudInst" class="form-straight-input" style="background: white;">
+              <option value="Lagos State University (LASU)">Lagos State University (LASU)</option>
+              <option value="Lagos State University of Education (LASUED)">Lagos State University of Education (LASUED)</option>
+              <option value="Partner Campus">Partner Campus</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-stacked-group">
+            <label class="form-question-label">Academic Department</label>
+            <input type="text" id="walkInStudDept" class="form-straight-input" placeholder="e.g. Computer Science" value="Computer Science" required>
+          </div>
+          <div class="form-stacked-group">
+            <label class="form-question-label">Host Organization / Company</label>
+            <input type="text" id="walkInStudHostOrg" class="form-straight-input" placeholder="e.g. Directorate of SIWES, LASUED" required>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 1rem;">
+          <div class="form-stacked-group">
+            <label class="form-question-label">Assign Faculty Supervisor</label>
+            <select id="walkInStudSupervisorSelect" class="form-straight-input" style="background: white;" required>
+              <!-- Dynamically populated from registered staff list -->
+            </select>
+          </div>
+          <div class="form-stacked-group">
+            <label class="form-question-label">Supervisor Official Email</label>
+            <input type="email" id="walkInStudSupervisorEmail" class="form-straight-input" placeholder="e.g. coordinator@institution.edu.ng" value="coordinator@institution.edu.ng" required>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.75rem; border-top: 1px solid #E2E8F0; padding-top: 1.25rem;">
+          <button type="button" class="btn btn-secondary" onclick="closeWalkInModal()">
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-primary" style="background: #059669; border-color: #059669; padding: 0.65rem 1.75rem; font-weight: 700;">
+            <i data-lucide="user-check" style="width: 16px;"></i> Complete Intake &amp; Accredit
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       MODAL: PARTNER ATTACHED STUDENTS OVERVIEW
+       ============================================================ -->
+  <div class="modal-overlay" id="partnerStudentsModalOverlay">
+    <div class="modal-container-card" style="max-width: 780px;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem; border-bottom: 1px solid #E2E8F0; padding-bottom: 1rem;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+            <span style="background: #ECFDF5; color: #059669; font-size: 0.72rem; font-weight: 800; padding: 0.15rem 0.55rem; border-radius: 9999px;">Accredited Host</span>
+            <h3 style="font-family: var(--font-heading); font-size: 1.35rem; font-weight: 800; color: #0F172A; margin: 0;" id="modalPartnerName">
+              Partner Name
+            </h3>
+          </div>
+          <p style="color: #64748B; font-size: 0.86rem; margin: 0;" id="modalPartnerSector">
+            Industry Sector &amp; Address
+          </p>
+        </div>
+        <button type="button" onclick="closePartnerStudentsModal()" style="background: none; border: none; font-size: 1.5rem; color: #64748B; cursor: pointer; padding: 0.25rem;">
+          &times;
+        </button>
+      </div>
+
+      <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 0.85rem 1.15rem; margin-bottom: 1.25rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; font-size: 0.84rem;">
+        <div>
+          <strong style="color: #0F172A;">Workplace Address:</strong>
+          <span style="color: #475569;" id="modalPartnerAddress">-</span>
+        </div>
+        <div style="background: #EFF6FF; color: #1D4ED8; font-weight: 800; padding: 0.25rem 0.75rem; border-radius: 8px;" id="modalPartnerCountBadge">
+          0 Students Placed
+        </div>
+      </div>
+
+      <div class="admin-table-container" style="max-height: 380px; overflow-y: auto;">
+        <table class="admin-clean-table" style="min-width: 600px;">
+          <thead>
+            <tr>
+              <th>Student Name</th>
+              <th>Matric No</th>
+              <th>Department</th>
+              <th>Faculty Supervisor</th>
+              <th style="text-align: right;">Action</th>
+            </tr>
+          </thead>
+          <tbody id="modalPartnerStudentsTableBody">
+            <!-- Populated dynamically -->
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top: 1.25rem; display: flex; justify-content: flex-end;">
+        <button type="button" class="btn btn-secondary" onclick="closePartnerStudentsModal()" style="font-weight: 700; font-size: 0.86rem;">
+          Close Overview
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       MODAL: MANUAL ADD ACCREDITED PARTNER
+       ============================================================ -->
+  <div class="modal-overlay" id="manualPartnerModalOverlay">
+    <div class="modal-container-card" style="max-width: 540px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 1px solid #E2E8F0; padding-bottom: 1rem;">
+        <div>
+          <h3 style="font-family: var(--font-heading); font-size: 1.35rem; font-weight: 800; color: #0F172A; margin: 0;">
+            Add Accredited Industry Partner
+          </h3>
+          <p style="color: #64748B; font-size: 0.86rem; margin: 0.25rem 0 0 0;">
+            Register a verified organization to host SIWES student attachments.
+          </p>
+        </div>
+        <button type="button" onclick="closeManualPartnerModal()" style="background: none; border: none; font-size: 1.5rem; color: #64748B; cursor: pointer; padding: 0.25rem;">
+          &times;
+        </button>
+      </div>
+
+      <form id="adminAddPartnerForm" onsubmit="handleAdminAddManualPartner(event)">
+        <div class="form-stacked-group">
+          <label class="form-question-label">Organization Legal Name</label>
+          <input type="text" id="manualPartnerName" class="form-straight-input" placeholder="e.g. LASU, Flutterwave, Chevron, etc." required>
+        </div>
+
+        <div class="form-stacked-group">
+          <label class="form-question-label">Industry Track / Sector</label>
+          <input type="text" id="manualPartnerSector" class="form-straight-input" placeholder="e.g. Software &amp; Cloud Systems" required>
+        </div>
+
+        <div class="form-stacked-group">
+          <label class="form-question-label">Workplace Physical Address</label>
+          <input type="text" id="manualPartnerAddress" class="form-straight-input" placeholder="e.g. Victoria Island, Lagos State" required>
+        </div>
+
+        <div class="form-stacked-group">
+          <label class="form-question-label">Official Placement Email</label>
+          <input type="email" id="manualPartnerEmail" class="form-straight-input" placeholder="e.g. siwes@partner-corp.ng">
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem;">
+          <button type="button" class="btn btn-secondary" onclick="closeManualPartnerModal()" style="font-weight: 700;">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="font-weight: 800; background: #059669; border-color: #059669;">Save Accredited Partner</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+       SCRIPTS & APPLICATION LOGIC
+       ============================================================ -->
+  <script src="js/app.js"></script>
+  <script>
+// Global Active Navigation & Filter States
+    let currentAdminTab = 'analytics';
+    let currentRosterFilter = 'ALL';
+    let currentClearanceFilter = 'ALL';
+    let currentSelectedAuditMatric = '230591001';
+    let currentSelectedAuditWeek = 1;
+
+    // Initialize on DOM Ready
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      initAdminSession();
+      populateAuditControls();
+      renderAllAdminViews();
+
+      // Keyboard navigation
+      window.addEventListener('keydown', (e) => {
+        if (currentAdminTab === 'audits') {
+          if (e.key === 'ArrowLeft' && currentSelectedAuditWeek > 1) {
+            stepAdminAuditWeek(-1);
+          } else if (e.key === 'ArrowRight' && currentSelectedAuditWeek < 24) {
+            stepAdminAuditWeek(1);
+          }
+        }
+      });
+    });
+
+    /* ============================================================
+       AUTHENTICATION & SESSION INITIALIZATION
+       ============================================================ */
+    function initAdminSession() {
+      const user = getActiveUser() || {};
+      const adminName = user.name || 'Dr. A. O. Institutional Coordinator';
+      const isSuper = typeof isUserCoordinatorOrSuperAdmin === 'function' ? isUserCoordinatorOrSuperAdmin(user) : true;
+      const isApproved = typeof isUserApproved === 'function' ? isUserApproved(user) : true;
+
+      // Set default filter for normal supervisor
+      if (!isSuper) {
+        currentRosterFilter = 'MINE';
+      }
+
+      if (document.getElementById('adminHeaderName')) {
+        document.getElementById('adminHeaderName').innerText = adminName;
+      }
+      if (document.getElementById('adminHeaderAvatar')) {
+        const cleanInitial = adminName.replace(/^(PROF\.|DR\.|ENGR\.|MR\.|MRS\.|MS\.)\s*/i, '').charAt(0) || 'A';
+        document.getElementById('adminHeaderAvatar').innerText = cleanInitial;
+      }
+      if (document.getElementById('auditSigneeTag')) {
+        document.getElementById('auditSigneeTag').innerText = `Active Reviewer: ${adminName}`;
+      }
+
+      // Update Clearance Badge and Dot
+      const badge = document.getElementById('adminClearanceBadge');
+      const dot = document.getElementById('adminHeaderClearanceDot');
+      if (badge && dot) {
+        if (isSuper) {
+          badge.style.background = '#ECFDF5';
+          badge.style.color = '#059669';
+          badge.style.borderColor = '#A7F3D0';
+          badge.innerHTML = '<i data-lucide="shield-check" style="width: 13px;"></i> Super Admin';
+          dot.style.background = '#10B981';
+        } else if (isApproved) {
+          badge.style.background = '#EFF6FF';
+          badge.style.color = '#1D4ED8';
+          badge.style.borderColor = '#BFDBFE';
+          badge.innerHTML = '<i data-lucide="user-check" style="width: 13px;"></i> Faculty Supervisor';
+          dot.style.background = '#3B82F6';
+        } else {
+          badge.style.background = '#FEF3C7';
+          badge.style.color = '#B45309';
+          badge.style.borderColor = '#FCD34D';
+          badge.innerHTML = '<i data-lucide="clock" style="width: 13px;"></i> Pending Clearance';
+          dot.style.background = '#F59E0B';
+        }
+        lucide.createIcons();
+      }
+    }
+
+    /* ============================================================
+       CENTRAL STAT SYNCHRONIZER & METRIC UPDATER
+       ============================================================ */
+    function syncAllPortalStatsAndMetrics() {
+      const allStudents = getStudentsList();
+      const staffList = getStaffList();
+      const accreditedPartners = typeof getAccreditedPartnersList === 'function' ? getAccreditedPartnersList() : [];
+      const activeUser = getActiveUser() || {};
+      const isSuper = typeof isUserCoordinatorOrSuperAdmin === 'function' ? isUserCoordinatorOrSuperAdmin(activeUser) : true;
+      const myName = (activeUser.name || '').toLowerCase().trim();
+
+      // Matched and Unassigned Students
+      const matchedStudents = allStudents.filter(s => s.supervisor && s.supervisor.trim() !== '' && s.supervisor !== 'Unassigned');
+      const unassignedCount = allStudents.length - matchedStudents.length;
+
+      // My Assigned Students
+      const myStudents = allStudents.filter(s => {
+        const sup = (s.supervisor || '').toLowerCase().trim();
+        return sup === myName || sup.includes(myName) || (myName && myName.includes(sup));
+      });
+
+      // Weekly Logs Audit Compliance
+      let totalLoggedWeeks = 0;
+      let totalApprovedWeeks = 0;
+      let pendingAuditCount = 0;
+
+      let myLoggedWeeks = 0;
+      let myApprovedWeeks = 0;
+      let myPendingAuditCount = 0;
+
+      allStudents.forEach(s => {
+        const matric = s.matric || s.identifier;
+        const logs = getStudentLogsByMatric(matric);
+        const sup = (s.supervisor || '').toLowerCase().trim();
+        const isMyStudent = (sup === myName || sup.includes(myName) || (myName && myName.includes(sup)));
+
+        let studentHasPending = false;
+        Object.values(logs).forEach(log => {
+          totalLoggedWeeks++;
+          if (log.approved === true) {
+            totalApprovedWeeks++;
+          } else if (log.approved === false) {
+            studentHasPending = true;
+          }
+
+          if (isMyStudent) {
+            myLoggedWeeks++;
+            if (log.approved === true) myApprovedWeeks++;
+          }
+        });
+
+        if (studentHasPending) {
+          pendingAuditCount++;
+          if (isMyStudent) myPendingAuditCount++;
+        }
+      });
+
+      const complianceRate = totalLoggedWeeks > 0 ? Math.round((totalApprovedWeeks / totalLoggedWeeks) * 100) : 100;
+      const myComplianceRate = myLoggedWeeks > 0 ? Math.round((myApprovedWeeks / myLoggedWeeks) * 100) : 100;
+
+      // Pending Clearances
+      const allUsers = typeof getRegisteredUsersList === 'function' ? getRegisteredUsersList() : [];
+      const pendingUsers = allUsers.filter(u => {
+        if (typeof isUserApproved === 'function') {
+          return !isUserApproved(u);
+        }
+        return u.isApproved === false || u.approvalStatus === 'pending';
+      });
+
+      // Partner Attached Students
+      const attachedStudents = allStudents.filter(s => {
+        const org = (s.hostOrg || s.company || s.organization || s.placementHost || '').trim().toLowerCase();
+        return org !== '' && !org.includes('pending') && !org.includes('unassigned');
+      });
+
+      // --- Tab 1: Executive Analytics ---
+      if (document.getElementById('statAnalyticsTotalStudents')) {
+        document.getElementById('statAnalyticsTotalStudents').innerText = isSuper ? allStudents.length : myStudents.length;
+      }
+      if (document.getElementById('statAnalyticsCard1Title')) {
+        document.getElementById('statAnalyticsCard1Title').innerText = isSuper ? 'Total Candidates' : 'My Assigned Students';
+      }
+      if (document.getElementById('statAnalyticsMatchedRatio')) {
+        document.getElementById('statAnalyticsMatchedRatio').innerText = isSuper 
+          ? `${matchedStudents.length} of ${allStudents.length} Matched`
+          : `${allStudents.length} Total Enrolled in Dept`;
+      }
+      if (document.getElementById('statAnalyticsComplianceRate')) {
+        document.getElementById('statAnalyticsComplianceRate').innerText = `${isSuper ? complianceRate : myComplianceRate}%`;
+      }
+      if (document.getElementById('statAnalyticsCard2Title')) {
+        document.getElementById('statAnalyticsCard2Title').innerText = isSuper ? 'Logbook Compliance' : 'My Students Compliance';
+      }
+      if (document.getElementById('statAnalyticsTotalPartners')) {
+        document.getElementById('statAnalyticsTotalPartners').innerText = accreditedPartners.length;
+      }
+      if (document.getElementById('statAnalyticsTotalVerifiedLogs')) {
+        document.getElementById('statAnalyticsTotalVerifiedLogs').innerText = isSuper ? totalApprovedWeeks : myApprovedWeeks;
+      }
+      if (document.getElementById('statAnalyticsCard4Title')) {
+        document.getElementById('statAnalyticsCard4Title').innerText = isSuper ? 'Verified Weekly Logs' : 'Verified by Me';
+      }
+
+      // Hide or show clearance hub for Super Admin only
+      const hub = document.getElementById('superAdminClearanceHub');
+      if (hub) {
+        hub.style.display = isSuper ? 'block' : 'none';
+      }
+
+      // --- Tab 2: Student Roster ---
+      if (document.getElementById('statRosterTotalStudents')) {
+        document.getElementById('statRosterTotalStudents').innerText = allStudents.length;
+      }
+      if (document.getElementById('statRosterAssignedStudents')) {
+        document.getElementById('statRosterAssignedStudents').innerText = isSuper ? matchedStudents.length : myStudents.length;
+      }
+      if (document.getElementById('statRosterCard2Title')) {
+        document.getElementById('statRosterCard2Title').innerText = isSuper ? 'Assigned to Supervisor' : 'Assigned to Me';
+      }
+      if (document.getElementById('statRosterTotalStaff')) {
+        document.getElementById('statRosterTotalStaff').innerText = staffList.length;
+      }
+
+      // Filter Pills in Tab 2
+      if (document.getElementById('countPillAll')) document.getElementById('countPillAll').innerText = allStudents.length;
+      if (document.getElementById('countPillMine')) document.getElementById('countPillMine').innerText = myStudents.length;
+      if (document.getElementById('countPillPending')) document.getElementById('countPillPending').innerText = isSuper ? pendingAuditCount : myPendingAuditCount;
+
+      // Update pill button active states
+      if (document.getElementById('pillFilterAll')) {
+        document.getElementById('pillFilterAll').classList.toggle('active', currentRosterFilter === 'ALL');
+      }
+      if (document.getElementById('pillFilterMine')) {
+        document.getElementById('pillFilterMine').classList.toggle('active', currentRosterFilter === 'MINE');
+      }
+      if (document.getElementById('pillFilterPending')) {
+        document.getElementById('pillFilterPending').classList.toggle('active', currentRosterFilter === 'PENDING');
+      }
+
+      // --- Tab 3: Staff Matching Matrix ---
+      if (document.getElementById('matchingStatStaffCount')) {
+        document.getElementById('matchingStatStaffCount').innerText = staffList.length;
+      }
+      if (document.getElementById('matchingStatMatchedStudents')) {
+        document.getElementById('matchingStatMatchedStudents').innerText = matchedStudents.length;
+      }
+      if (document.getElementById('matchingStatAvgLoad')) {
+        const avg = staffList.length > 0 ? (matchedStudents.length / staffList.length).toFixed(1) : '0.0';
+        document.getElementById('matchingStatAvgLoad').innerText = `${avg} / Sup`;
+      }
+      if (document.getElementById('matchingStatAllocationHealth')) {
+        document.getElementById('matchingStatAllocationHealth').innerText = unassignedCount === 0 ? '100% Balanced' : `${unassignedCount} Unassigned`;
+      }
+
+      // Auto distribute / share buttons visibility
+      document.querySelectorAll('#btnAutoDistributeAction, #btnAutoDistributeRosterAction').forEach(btn => {
+        if (btn) {
+          btn.style.display = 'inline-flex';
+        }
+      });
+
+      // --- Tab 5: Industry Partners ---
+      if (document.getElementById('partnerStatsOrgCount')) {
+        document.getElementById('partnerStatsOrgCount').innerText = accreditedPartners.length;
+      }
+      if (document.getElementById('partnerStatsStudentCount')) {
+        document.getElementById('partnerStatsStudentCount').innerText = attachedStudents.length;
+      }
+
+      // --- Header & Clearance Badges ---
+      if (document.getElementById('totalPendingClearanceBadge')) {
+        document.getElementById('totalPendingClearanceBadge').innerText = `${pendingUsers.length} Pending Clearance${pendingUsers.length === 1 ? '' : 's'}`;
+      }
+    }
+
+    /* ============================================================
+       MASTER TAB NAVIGATION & VIEW SWITCHER
+       ============================================================ */
+    function renderAllAdminViews() {
+      syncAllPortalStatsAndMetrics();
+      renderClearanceQueueTable();
+      renderAdminStudentTables();
+      renderStaffCardsAndMatrix();
+      renderStudentPickerCarousel();
+      renderAdminSelectedStudentAudit();
+      renderAllSubmissionsOverviewTable();
+      renderAdminPartners();
+      lucide.createIcons();
+    }
+
+    function switchAdminTab(tabName) {
+      currentAdminTab = tabName;
+
+      // Remove active from all sidebar menu links
+      document.querySelectorAll('.sidebar-menu-link').forEach(btn => btn.classList.remove('active'));
+
+      // Remove active from all tab panel views
+      document.querySelectorAll('.tab-panel-view').forEach(panel => panel.classList.remove('active-panel'));
+
+      // Map tab name to sidebar link element ID
+      const navIdMap = {
+        'analytics': 'adminNavAnalytics',
+        'students': 'adminNavStudents',
+        'matching': 'adminNavMatching',
+        'audits': 'adminNavAudits',
+        'partners': 'adminNavPartners'
+      };
+
+      const activeNavEl = document.getElementById(navIdMap[tabName]);
+      if (activeNavEl) {
+        activeNavEl.classList.add('active');
+      }
+
+      const viewMap = {
+        'analytics': 'viewAnalytics',
+        'students': 'viewStudents',
+        'matching': 'viewMatching',
+        'audits': 'viewAudits',
+        'partners': 'viewPartners'
+      };
+
+      const targetView = document.getElementById(viewMap[tabName]);
+      if (targetView) {
+        targetView.classList.add('active-panel');
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      renderAllAdminViews();
+    }
+
+    /* ============================================================
+       DATA HELPERS & REPOSITORY ACCESS
+       ============================================================ */
+    function getStudentsList() {
+      if (typeof getStudentUsersList === 'function') {
+        return getStudentUsersList();
+      }
+      return [];
+    }
+
+    function getStaffList() {
+      if (typeof getStaffUsersList === 'function') {
+        return getStaffUsersList();
+      }
+      return [];
+    }
+
+    /* ============================================================
+       TAB 2: STUDENT ROSTER VIEW & FILTERS
+       ============================================================ */
+    function setStudentRosterFilter(filterMode) {
+      currentRosterFilter = filterMode;
+      document.querySelectorAll('#viewStudents .filter-pill-btn').forEach(btn => btn.classList.remove('active'));
+      if (filterMode === 'ALL' && document.getElementById('pillFilterAll')) document.getElementById('pillFilterAll').classList.add('active');
+      if (filterMode === 'MINE' && document.getElementById('pillFilterMine')) document.getElementById('pillFilterMine').classList.add('active');
+      if (filterMode === 'PENDING' && document.getElementById('pillFilterPending')) document.getElementById('pillFilterPending').classList.add('active');
+      renderAdminStudentTables();
+    }
+
+    function renderAdminStudentTables() {
+      const allStudents = getStudentsList();
+      const staffList = getStaffList();
+      const fullTbody = document.getElementById('adminFullStudentTable');
+      const recentTbody = document.getElementById('adminRecentStudentsTable');
+      const activeUser = getActiveUser() || {};
+      const isSuper = typeof isUserCoordinatorOrSuperAdmin === 'function' ? isUserCoordinatorOrSuperAdmin(activeUser) : true;
+      const myName = (activeUser.name || '').toLowerCase().trim();
+
+      const myStudents = allStudents.filter(s => {
+        const sup = (s.supervisor || '').toLowerCase().trim();
+        return sup === myName || sup.includes(myName) || (myName && myName.includes(sup));
+      });
+
+      // Filter Students based on Active Filter
+      let students = allStudents;
+      if (currentRosterFilter === 'MINE') {
+        students = myStudents;
+      } else if (currentRosterFilter === 'PENDING') {
+        students = (isSuper ? allStudents : myStudents).filter(s => {
+          const logs = getStudentLogsByMatric(s.matric || s.identifier);
+          return Object.values(logs).some(l => l.approved === false);
+        });
+      }
+
+      // Render Full Roster Table
+      let fullHtml = '';
+      if (students.length === 0) {
+        fullHtml = `
+          <tr>
+            <td colspan="6" style="text-align: center; color: #64748B; padding: 2.5rem 1rem;">
+              No student records found in this view category.
+            </td>
+          </tr>
+        `;
+      } else {
+        students.forEach(s => {
+          const name = s.name || 'Student Candidate';
+          const matric = s.matric || s.identifier || '230591***';
+          const host = s.hostOrg || 'Directorate of SIWES, LASUED';
+          const dept = s.dept || 'Computer Science';
+          const instSup = s.institutionalSupervisor || s.supervisor || 'Unassigned';
+          const industrySup = s.industrySupervisor || 'Workplace Mentor unassigned';
+          const isMyAssigned = (instSup.toLowerCase().trim() === myName || instSup.toLowerCase().includes(myName));
+
+          const logs = getStudentLogsByMatric(matric);
+          const loggedWeeks = Object.keys(logs).map(Number).sort((a,b) => a - b);
+          const pendingWeeks = loggedWeeks.filter(w => logs[w].approved === false);
+          const hasPending = pendingWeeks.length > 0;
+          const progressPct = Math.round((loggedWeeks.length / 24) * 100);
+
+          fullHtml += `
+            <tr>
+              <td>
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                  <div style="width: 36px; height: 36px; border-radius: 10px; background: #ECFDF5; color: #059669; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.9rem; flex-shrink: 0;">
+                    ${name.charAt(0)}
+                  </div>
+                  <div>
+                    <strong style="color: #0F172A; font-size: 0.92rem; display: block;">${name}</strong>
+                    <span style="font-size: 0.78rem; color: #64748B;">${s.email || s.phone || 'Candidate'}</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <span style="font-family: var(--font-mono); font-weight: 700; color: #1E293B; background: #F8FAFC; border: 1px solid #E2E8F0; padding: 0.2rem 0.5rem; border-radius: 6px; font-size: 0.82rem;">
+                  ${matric}
+                </span>
+              </td>
+              <td>
+                <div style="font-weight: 700; color: #1E293B; font-size: 0.86rem; display: flex; align-items: center; gap: 0.35rem;">
+                  <i data-lucide="building-2" style="width: 14px; color: #059669;"></i>
+                  <span style="max-width: 170px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${host}">${host}</span>
+                </div>
+                <div style="font-size: 0.76rem; color: #64748B;">🏢 Mentor: ${industrySup}</div>
+              </td>
+              <td>
+                <div style="display: flex; align-items: center; gap: 0.4rem;">
+                  <select class="form-straight-input" style="height: 32px; padding: 0 0.5rem; font-size: 0.8rem; font-weight: 700; color: #1D4ED8; background: #EFF6FF; border-color: #BFDBFE; border-radius: 6px; cursor: pointer;" onchange="handleManualSupervisorChange('${matric}', this.value)" title="Reassign Institutional Supervisor">
+                    ${staffList.map(st => `<option value="${st.name}" ${instSup === st.name ? 'selected' : ''}>${st.name}</option>`).join('')}
+                  </select>
+                  ${isMyAssigned ? '<span style="background: #ECFDF5; color: #059669; font-size: 0.68rem; font-weight: 800; padding: 0.15rem 0.45rem; border-radius: 9999px; white-space: nowrap;">Mine</span>' : ''}
+                </div>
+              </td>
+              <td>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                  <div style="flex: 1; min-width: 60px; height: 6px; border-radius: 9999px; background: #F1F5F9; overflow: hidden;">
+                    <div style="width: ${progressPct}%; height: 100%; background: #059669; border-radius: 9999px;"></div>
+                  </div>
+                  <span style="font-size: 0.78rem; font-weight: 800; color: #0F172A;">${loggedWeeks.length}/24</span>
+                </div>
+                ${hasPending ? '<span style="color: #D97706; font-size: 0.72rem; font-weight: 700;">⏳ Audit Pending</span>' : '<span style="color: #059669; font-size: 0.72rem; font-weight: 700;">✓ Up to date</span>'}
+              </td>
+              <td style="text-align: right;">
+                <button class="btn btn-primary btn-sm" onclick="openStudentLogbookAudit('${matric}', ${hasPending ? pendingWeeks[0] : (loggedWeeks[0] || 1)})" style="background: #059669; border-color: #059669; font-size: 0.76rem; padding: 0.35rem 0.8rem; font-weight: 700; white-space: nowrap;">
+                  Audit Log &rarr;
+                </button>
+              </td>
+            </tr>
+          `;
+        });
+      }
+
+      if (fullTbody) fullTbody.innerHTML = fullHtml;
+
+      // Render Recent Students Feed for Tab 1
+      if (recentTbody) {
+        let recentHtml = '';
+        const recentPool = (isSuper ? allStudents : myStudents).slice(0, 5);
+        if (recentPool.length === 0) {
+          recentHtml = `
+            <tr>
+              <td colspan="5" style="text-align: center; color: #64748B; padding: 2rem 1rem;">
+                No recent student placements found.
+              </td>
+            </tr>
+          `;
+        } else {
+          recentPool.forEach(s => {
+            const name = s.name || 'Student Candidate';
+            const matric = s.matric || s.identifier || '230591***';
+            const host = s.hostOrg || 'Directorate of SIWES';
+            const sup = s.supervisor || 'Unassigned';
+            const logs = getStudentLogsByMatric(matric);
+            const loggedWeeks = Object.keys(logs).map(Number).sort((a,b) => a - b);
+            const pendingWeeks = loggedWeeks.filter(w => logs[w].approved === false);
+            const hasPending = pendingWeeks.length > 0;
+
+            recentHtml += `
+              <tr>
+                <td>
+                  <strong style="color: #0F172A; font-size: 0.9rem;">${name}</strong>
+                </td>
+                <td>
+                  <span style="font-family: var(--font-mono); font-weight: 700; color: #1E293B; background: #F8FAFC; border: 1px solid #E2E8F0; padding: 0.15rem 0.45rem; border-radius: 6px; font-size: 0.8rem;">
+                    ${matric}
+                  </span>
+                </td>
+                <td>
+                  <span style="font-weight: 700; color: #1E293B; font-size: 0.84rem;">${host}</span>
+                </td>
+                <td>
+                  <span style="font-size: 0.84rem; color: #475569; font-weight: 600;">👨‍🏫 ${sup}</span>
+                </td>
+                <td style="text-align: right;">
+                  ${hasPending ? `
+                    <button class="btn btn-primary btn-sm" onclick="openStudentLogbookAudit('${matric}', ${pendingWeeks[0]})" style="background: #D97706; border-color: #D97706; font-size: 0.74rem; padding: 0.25rem 0.65rem; font-weight: 700;">
+                      ⏳ Review Week ${pendingWeeks[0]}
+                    </button>
+                  ` : `
+                    <span style="background: #ECFDF5; color: #059669; font-size: 0.74rem; font-weight: 800; padding: 0.2rem 0.55rem; border-radius: 9999px;">
+                      ✓ ${loggedWeeks.length} Weeks Verified
+                    </span>
+                  `}
+                </td>
+              </tr>
+            `;
+          });
+        }
+        recentTbody.innerHTML = recentHtml;
+      }
+
+      lucide.createIcons();
+    }
+
+    function filterAdminStudentRoster() {
+      const q = (document.getElementById('adminStudentSearchInput').value || '').toLowerCase().trim();
+      const allStudents = getStudentsList();
+      const activeUser = getActiveUser() || {};
+      const isSuper = typeof isUserCoordinatorOrSuperAdmin === 'function' ? isUserCoordinatorOrSuperAdmin(activeUser) : true;
+      const myName = (activeUser.name || '').toLowerCase().trim();
+
+      const baseList = (currentRosterFilter === 'MINE' || !isSuper)
+        ? allStudents.filter(s => (s.supervisor || '').toLowerCase().trim() === myName || (s.supervisor || '').toLowerCase().includes(myName))
+        : allStudents;
+
+      const filtered = baseList.filter(s => 
+        (s.name || '').toLowerCase().includes(q) ||
+        (s.matric || s.identifier || '').toLowerCase().includes(q) ||
+        (s.hostOrg || '').toLowerCase().includes(q) ||
+        (s.dept || '').toLowerCase().includes(q) ||
+        (s.supervisor || '').toLowerCase().includes(q)
+      );
+
+      const fullTbody = document.getElementById('adminFullStudentTable');
+      if (!fullTbody) return;
+
+      if (filtered.length === 0) {
+        fullTbody.innerHTML = `
+          <tr>
+            <td colspan="6" style="text-align: center; color: #64748B; padding: 2.5rem 1rem;">
+              No students match the search criteria.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      let fullHtml = '';
+      filtered.forEach(s => {
+        const name = s.name || 'Student Candidate';
+        const matric = s.matric || s.identifier || '230591***';
+        const host = s.hostOrg || 'Directorate of SIWES';
+        const dept = s.dept || 'Computer Science';
+        const sup = s.supervisor || 'Unassigned';
+        const isMyAssigned = (sup.toLowerCase().trim() === myName || sup.toLowerCase().includes(myName));
+
+        const logs = getStudentLogsByMatric(matric);
+        const loggedWeeks = Object.keys(logs).map(Number).sort((a,b) => a - b);
+        const pendingWeeks = loggedWeeks.filter(w => logs[w].approved === false);
+        const hasPending = pendingWeeks.length > 0;
+        const progressPct = Math.round((loggedWeeks.length / 24) * 100);
+
+        fullHtml += `
+          <tr>
+            <td>
+              <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <div style="width: 36px; height: 36px; border-radius: 10px; background: #ECFDF5; color: #059669; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.9rem; flex-shrink: 0;">
+                  ${name.charAt(0)}
+                </div>
+                <div>
+                  <strong style="color: #0F172A; font-size: 0.92rem; display: block;">${name}</strong>
+                  <span style="font-size: 0.78rem; color: #64748B;">${s.email || s.phone || 'Candidate'}</span>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span style="font-family: var(--font-mono); font-weight: 700; color: #1E293B; background: #F8FAFC; border: 1px solid #E2E8F0; padding: 0.2rem 0.5rem; border-radius: 6px; font-size: 0.82rem;">
+                ${matric}
+              </span>
+            </td>
+            <td>
+              <div style="font-weight: 700; color: #1E293B; font-size: 0.86rem; display: flex; align-items: center; gap: 0.35rem;">
+                <i data-lucide="building-2" style="width: 14px; color: #059669;"></i>
+                <span style="max-width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${host}">${host}</span>
+              </div>
+              <div style="font-size: 0.76rem; color: #64748B;">${dept}</div>
+            </td>
+            <td>
+              <div style="display: flex; align-items: center; gap: 0.4rem;">
+                <span style="font-weight: 700; color: #0F172A; font-size: 0.86rem;">👨‍🏫 ${sup}</span>
+                ${isMyAssigned ? '<span style="background: #ECFDF5; color: #059669; font-size: 0.68rem; font-weight: 800; padding: 0.1rem 0.4rem; border-radius: 9999px;">Mine</span>' : ''}
+              </div>
+            </td>
+            <td>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <div style="flex: 1; min-width: 60px; height: 6px; border-radius: 9999px; background: #F1F5F9; overflow: hidden;">
+                  <div style="width: ${progressPct}%; height: 100%; background: #059669; border-radius: 9999px;"></div>
+                </div>
+                <span style="font-size: 0.78rem; font-weight: 800; color: #0F172A;">${loggedWeeks.length}/24</span>
+              </div>
+              ${hasPending ? '<span style="color: #D97706; font-size: 0.72rem; font-weight: 700;">⏳ Audit Pending</span>' : '<span style="color: #059669; font-size: 0.72rem; font-weight: 700;">✓ Up to date</span>'}
+            </td>
+            <td style="text-align: right;">
+              <button class="btn btn-primary btn-sm" onclick="openStudentLogbookAudit('${matric}', ${hasPending ? pendingWeeks[0] : (loggedWeeks[0] || 1)})" style="background: #059669; border-color: #059669; font-size: 0.76rem; padding: 0.35rem 0.8rem; font-weight: 700; white-space: nowrap;">
+                Audit Log &rarr;
+              </button>
+            </td>
+          </tr>
+        `;
+      });
+      fullTbody.innerHTML = fullHtml;
+      lucide.createIcons();
+    }
+
+    /* ============================================================
+       WALK-IN STUDENT REGISTRATION MODAL
+       ============================================================ */
+    function openWalkInModal() {
+      const modal = document.getElementById('walkInModalOverlay') || document.getElementById('walkInStudentModalOverlay');
+      if (modal) {
+        modal.classList.add('active');
+        modal.classList.add('show-modal');
+        modal.style.display = 'flex';
+        populateWalkInSupervisorDropdown();
+        if (window.lucide) lucide.createIcons();
+      }
+    }
+
+    function closeWalkInModal() {
+      const modal = document.getElementById('walkInModalOverlay') || document.getElementById('walkInStudentModalOverlay');
+      if (modal) {
+        modal.classList.remove('active');
+        modal.classList.remove('show-modal');
+        modal.style.display = 'none';
+        const form = document.getElementById('adminWalkInRegisterForm');
+        if (form) form.reset();
+      }
+    }
+
+    function populateWalkInSupervisorDropdown() {
+      const sel = document.getElementById('walkInStudSupervisorSelect') || document.getElementById('walkInSupervisorSelect');
+      if (!sel) return;
+      const staffList = typeof getStaffList === 'function' ? getStaffList() : [];
+      let html = '<option value="">-- Choose Academic Supervisor --</option>';
+      staffList.forEach(s => {
+        html += `<option value="${s.name}">👨‍🏫 ${s.name} (${s.dept || 'Computer Science'})</option>`;
+      });
+      sel.innerHTML = html;
+    }
+
+    function handleAdminWalkInRegister(e) {
+      if (e) e.preventDefault();
+      const nameInput = document.getElementById('walkInStudName') || document.getElementById('walkInFullName');
+      const matricInput = document.getElementById('walkInStudMatric') || document.getElementById('walkInMatric');
+      const phoneInput = document.getElementById('walkInStudPhone');
+      const instSelect = document.getElementById('walkInStudInst');
+      const deptInput = document.getElementById('walkInStudDept') || document.getElementById('walkInDept');
+      const hostOrgInput = document.getElementById('walkInStudHostOrg') || document.getElementById('walkInHostOrg');
+      const supSelect = document.getElementById('walkInStudSupervisorSelect') || document.getElementById('walkInSupervisorSelect');
+      const supEmailInput = document.getElementById('walkInStudSupervisorEmail');
+
+      const name = nameInput ? nameInput.value.trim() : '';
+      const matric = matricInput ? matricInput.value.trim().toUpperCase() : '';
+      const phone = phoneInput ? phoneInput.value.trim() : '+234 800 000 0000';
+      const institution = instSelect ? instSelect.value : 'Lagos State University of Education (LASUED)';
+      const dept = deptInput ? deptInput.value.trim() : 'Computer Science';
+      const hostOrg = hostOrgInput ? hostOrgInput.value.trim() : 'Directorate of SIWES, LASUED';
+      const supervisor = supSelect ? supSelect.value : '';
+      const supEmail = supEmailInput ? supEmailInput.value.trim() : 'coordinator@institution.edu.ng';
+
+      if (!name || !matric) {
+        showCustomToast('Please enter full student name and matriculation number', 'error');
+        return;
+      }
+
+      const allUsers = typeof getRegisteredUsersList === 'function' ? getRegisteredUsersList() : [];
+      const exists = allUsers.some(u => (u.matric || u.identifier || '').toUpperCase() === matric);
+      if (exists) {
+        showCustomToast(`Student with matric ${matric} is already registered.`, 'error');
+        return;
+      }
+
+      const newStudentUser = {
+        role: 'student',
+        name: name,
+        identifier: matric,
+        matric: matric,
+        email: `${matric.toLowerCase().replace(/[^a-z0-9]/g, '')}@lasued.edu.ng`,
+        phone: phone || '+234 800 000 0000',
+        dept: dept || 'Computer Science',
+        institution: institution,
+        hostOrg: hostOrg || 'Directorate of SIWES, LASUED',
+        company: hostOrg || 'Directorate of SIWES, LASUED',
+        supervisor: supervisor || 'Unassigned',
+        institutionalSupervisor: supervisor || 'Unassigned',
+        registeredAt: new Date().toISOString(),
+        isApproved: true,
+        approvalStatus: 'approved',
+        approvedBy: 'Dr. A. O. Institutional Coordinator'
+      };
+
+      if (typeof registerNewUserInDB === 'function') {
+        registerNewUserInDB(newStudentUser);
+      } else {
+        allUsers.push(newStudentUser);
+        localStorage.setItem(USERS_DB_KEY, JSON.stringify(allUsers));
+      }
+
+      showCustomToast(`Student ${name} registered & accredited successfully!`, 'success');
+      closeWalkInModal();
+      if (typeof renderAllAdminViews === 'function') {
+        renderAllAdminViews();
+      }
+    }
+
+    /* ============================================================
+       TAB 3: STAFF MATCHING MATRIX & SUPERVISOR BALANCING
+       ============================================================ */
+    function renderStaffCardsAndMatrix() {
+      const staffList = getStaffList();
+      const students = getStudentsList();
+      const cardsContainer = document.getElementById('staffSupervisorCardsContainer');
+      const matrixTable = document.getElementById('adminMatchingMatrixTable');
+      const activeUser = getActiveUser() || {};
+      const isSuper = typeof isUserCoordinatorOrSuperAdmin === 'function' ? isUserCoordinatorOrSuperAdmin(activeUser) : true;
+      const myName = (activeUser.name || '').toLowerCase().trim();
+
+      if (!cardsContainer || !matrixTable) return;
+
+      // Calculate supervisor loads
+      const supervisorLoads = {};
+      staffList.forEach(st => {
+        supervisorLoads[st.name] = 0;
+      });
+
+      students.forEach(s => {
+        const supName = s.supervisor;
+        if (supName && supervisorLoads.hasOwnProperty(supName)) {
+          supervisorLoads[supName]++;
+        }
+      });
+
+      // Filter title
+      const titleFilter = document.getElementById('staffTitleFilter') ? document.getElementById('staffTitleFilter').value : 'ALL';
+      const searchFilter = document.getElementById('matrixStudentSearchInput') ? document.getElementById('matrixStudentSearchInput').value.toLowerCase().trim() : '';
+
+      // Render Supervisor Cards
+      let cardsHtml = '';
+      staffList.forEach(st => {
+        const staffName = st.name || st.identifier || 'Faculty Staff';
+        const staffCode = st.staffId || st.identifier || 'FAC/LASU/00';
+        const dept = st.dept || 'Computer Science';
+        const count = supervisorLoads[staffName] || 0;
+        const isCurrentActiveStaff = (staffName.toLowerCase().trim() === myName || staffName.toLowerCase().includes(myName) || (myName && myName.includes(staffName.toLowerCase().trim())));
+
+        let titleClass = 'title-other';
+        let titleLabel = 'Staff';
+        let avatarBg = '#EEF2FF';
+        let avatarColor = '#4F46E5';
+
+        if (staffName.includes('PROF.') || (st.title && st.title === 'Prof.')) {
+          titleClass = 'title-prof';
+          titleLabel = 'Prof.';
+          avatarBg = '#EFF6FF';
+          avatarColor = '#2563EB';
+        } else if (staffName.includes('DR.') || (st.title && st.title === 'Dr.')) {
+          titleClass = 'title-dr';
+          titleLabel = 'Dr.';
+          avatarBg = '#ECFDF5';
+          avatarColor = '#059669';
+        } else if (staffName.includes('ENGR.') || (st.title && st.title === 'Engr.')) {
+          titleClass = 'title-engr';
+          titleLabel = 'Engr.';
+          avatarBg = '#FFFBEB';
+          avatarColor = '#D97706';
+        } else if (staffName.includes('MRS.') || (st.title && st.title === 'Mrs.')) {
+          titleClass = 'title-other';
+          titleLabel = 'Mrs.';
+          avatarBg = '#FDF2F8';
+          avatarColor = '#DB2777';
+        }
+
+        if (titleFilter !== 'ALL') {
+          if (titleFilter === 'Mrs./Mr.' && !(staffName.includes('MRS.') || staffName.includes('MR.'))) return;
+          if (titleFilter !== 'Mrs./Mr.' && !staffName.includes(titleFilter.toUpperCase())) return;
+        }
+
+        // Capacity Progress Percentage (nominal capacity 5 students)
+        const loadPct = count === 0 ? 0 : Math.min(100, Math.round((count / 5) * 100));
+        const loadBadge = count === 0 
+          ? `<span style="background: #F1F5F9; color: #64748B; font-weight: 700; font-size: 0.78rem; padding: 0.15rem 0.55rem; border-radius: 6px;">0 Students Assigned</span>`
+          : `<span style="background: #EFF6FF; color: #1D4ED8; font-weight: 800; font-size: 0.78rem; padding: 0.15rem 0.55rem; border-radius: 6px;">${count} Student${count === 1 ? '' : 's'} Assigned</span>`;
+
+        cardsHtml += `
+          <div class="staff-faculty-card" style="
+            background: #FFFFFF;
+            border: ${isCurrentActiveStaff ? '2px solid #059669' : '1px solid #E2E8F0'};
+            border-radius: 16px;
+            padding: 1.35rem;
+            box-shadow: ${isCurrentActiveStaff ? '0 4px 16px rgba(5, 150, 105, 0.1)' : '0 2px 8px rgba(15, 23, 42, 0.03)'};
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+          ">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
+                <div style="display: flex; align-items: center; gap: 0.4rem;">
+                  <span class="title-pill ${titleClass}" style="font-size: 0.72rem; font-weight: 800; padding: 0.2rem 0.55rem; border-radius: 9999px;">${titleLabel}</span>
+                  ${isCurrentActiveStaff ? '<span style="background: #ECFDF5; color: #059669; font-size: 0.72rem; font-weight: 800; padding: 0.18rem 0.5rem; border-radius: 9999px; border: 1px solid #A7F3D0;">⭐ Your Profile</span>' : ''}
+                </div>
+                <span style="font-family: var(--font-mono); font-size: 0.75rem; color: #64748B; font-weight: 700;">${staffCode}</span>
+              </div>
+
+              <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+                <div style="width: 44px; height: 44px; border-radius: 12px; background: ${avatarBg}; color: ${avatarColor}; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; flex-shrink: 0;">
+                  ${staffName.replace(/^(PROF\.|DR\.|ENGR\.|MR\.|MRS\.|MS\.)\s*/i, '').charAt(0)}
+                </div>
+                <div>
+                  <h4 style="font-family: var(--font-heading); font-size: 1.02rem; font-weight: 800; color: #0F172A; margin: 0 0 0.15rem 0; line-height: 1.3;">
+                    ${staffName}
+                  </h4>
+                  <div style="font-size: 0.78rem; color: #64748B;">${dept}</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Workload Progress Bar & Count -->
+            <div style="padding-top: 0.85rem; border-top: 1px solid #F1F5F9; margin-top: 0.5rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem; margin-bottom: 0.4rem;">
+                <span style="color: #64748B; font-weight: 600;">Supervision Load:</span>
+                ${loadBadge}
+              </div>
+              <div style="width: 100%; height: 6px; border-radius: 9999px; background: #F1F5F9; overflow: hidden;">
+                <div style="width: ${loadPct}%; height: 100%; background: ${count === 0 ? 'transparent' : 'linear-gradient(90deg, #3B82F6, #1D4ED8)'}; border-radius: 9999px; transition: width 0.3s ease;"></div>
+              </div>
+            </div>
+
+          </div>
+        `;
+      });
+
+      cardsContainer.innerHTML = cardsHtml;
+
+      // Filter Students for Matrix Table
+      let displayStudents = students;
+      if (searchFilter) {
+        displayStudents = displayStudents.filter(s => 
+          (s.name || '').toLowerCase().includes(searchFilter) ||
+          (s.matric || s.identifier || '').toLowerCase().includes(searchFilter) ||
+          (s.hostOrg || '').toLowerCase().includes(searchFilter) ||
+          (s.dept || '').toLowerCase().includes(searchFilter) ||
+          (s.supervisor || '').toLowerCase().includes(searchFilter)
+        );
+      }
+
+      if (displayStudents.length === 0) {
+        matrixTable.innerHTML = `
+          <tr>
+            <td colspan="5" style="text-align: center; color: #64748B; padding: 2.5rem 1rem;">
+              No students found matching your search query.
+            </td>
+          </tr>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      // Render Matrix Table Rows
+      let matrixHtml = '';
+      displayStudents.forEach(s => {
+        const name = s.name || 'Student Candidate';
+        const matric = s.matric || s.identifier || '230591***';
+        const dept = s.dept || 'Computer Science';
+        const host = s.hostOrg || 'Directorate of SIWES, LASUED';
+        const currentSup = s.supervisor || '';
+        const isAssignedToMe = (currentSup.toLowerCase().trim() === myName || currentSup.toLowerCase().includes(myName));
+
+        let supOptions = '<option value="">-- Unassigned --</option>';
+        staffList.forEach(st => {
+          const sName = st.name || st.identifier;
+          const isSelected = (sName.toLowerCase() === currentSup.toLowerCase()) ? 'selected' : '';
+          supOptions += `<option value="${sName}" ${isSelected}>👨‍🏫 ${sName}</option>`;
+        });
+
+        const selectDisabled = !isSuper;
+
+        matrixHtml += `
+          <tr>
+            <td>
+              <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <div style="width: 36px; height: 36px; border-radius: 10px; background: #F1F5F9; color: #334155; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.86rem; flex-shrink: 0;">
+                  ${name.charAt(0)}
+                </div>
+                <div>
+                  <strong style="color: #0F172A; font-size: 0.92rem; display: block;">${name}</strong>
+                  <span style="font-size: 0.78rem; color: #64748B;">${s.phone || s.email || 'Accredited Candidate'}</span>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span style="font-family: var(--font-mono); font-weight: 700; color: #1E293B; background: #F8FAFC; border: 1px solid #E2E8F0; padding: 0.2rem 0.5rem; border-radius: 6px; font-size: 0.82rem;">
+                ${matric}
+              </span>
+            </td>
+            <td>
+              <div style="font-weight: 700; color: #1E293B; font-size: 0.86rem; display: flex; align-items: center; gap: 0.35rem;">
+                <i data-lucide="building-2" style="width: 14px; color: #059669;"></i>
+                <span style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${host}">${host}</span>
+              </div>
+            </td>
+            <td>
+              <span style="font-size: 0.85rem; color: #475569; font-weight: 600;">${dept}</span>
+            </td>
+            <td>
+              <div style="position: relative;">
+                ${isSuper ? `
+                  <select class="form-straight-input" style="height: 40px; font-size: 0.84rem; font-weight: 700; background: #FFFFFF; border: 1px solid #CBD5E1; border-radius: 10px; padding: 0 0.85rem; width: 100%; box-sizing: border-box; cursor: pointer; color: #0F172A;" onchange="handleManualSupervisorChange('${matric}', this.value)" title="Change assigned supervisor">
+                    ${supOptions}
+                  </select>
+                ` : `
+                  <div style="display: flex; align-items: center; gap: 0.4rem; padding: 0.5rem 0.75rem; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px;">
+                    <span style="font-weight: 700; font-size: 0.84rem; color: #0F172A;">👨‍🏫 ${currentSup || 'Unassigned'}</span>
+                    ${isAssignedToMe ? '<span style="background: #ECFDF5; color: #059669; font-size: 0.68rem; font-weight: 800; padding: 0.1rem 0.4rem; border-radius: 9999px; margin-left: auto;">Mine</span>' : ''}
+                  </div>
+                `}
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+
+      matrixTable.innerHTML = matrixHtml;
+      lucide.createIcons();
+    }
+
+    function filterStaffCards() {
+      renderStaffCardsAndMatrix();
+    }
+
+    function handleManualSupervisorChange(matric, newSupervisor) {
+      const staffList = getStaffList();
+      const staffObj = staffList.find(st => st.name === newSupervisor) || {};
+      
+      if (typeof updateUserInDB === 'function') {
+        updateUserInDB(matric, {
+          institutionalSupervisor: newSupervisor,
+          institutionalSupervisorEmail: staffObj.email || '',
+          supervisor: newSupervisor,
+          supervisorEmail: staffObj.email || ''
+        });
+        showCustomToast(`✓ Institutional Supervisor updated for student (${matric}): ${newSupervisor}`, 'success');
+        renderAllAdminViews();
+      }
+    }
+
+    function isStudentUnassigned(s) {
+      const sup = (s.institutionalSupervisor || s.supervisor || '').trim().toLowerCase();
+      return !sup || sup.includes('unassigned') || sup.includes('pending') || sup.includes('awaiting');
+    }
+
+    function executeAutoDistributeStudents(forceRebalanceAll = false) {
+      const allUsers = getRegisteredUsersList();
+      let staffList = getStaffList().filter(s => !(typeof isUserCoordinatorOrSuperAdmin === 'function' ? isUserCoordinatorOrSuperAdmin(s) : (s.isSuperAdmin || s.isCoordinator)));
+      if (staffList.length === 0) {
+        staffList = getStaffList(); // fallback to all staff if no sub-supervisors
+      }
+      const students = allUsers.filter(u => u.role === 'student');
+
+      if (staffList.length === 0 || students.length === 0) {
+        showCustomToast('Insufficient faculty staff or students to run allocation.', 'error');
+        return;
+      }
+
+      const unassignedStudents = students.filter(isStudentUnassigned);
+      const alreadyAssignedStudents = students.filter(s => !isStudentUnassigned(s));
+
+      // Calculate current student load per staff member
+      const staffLoad = {};
+      staffList.forEach(st => staffLoad[st.name] = 0);
+      
+      if (!forceRebalanceAll) {
+        alreadyAssignedStudents.forEach(s => {
+          const sup = s.institutionalSupervisor || s.supervisor;
+          if (staffLoad[sup] !== undefined) {
+            staffLoad[sup]++;
+          }
+        });
+      }
+
+      if (!forceRebalanceAll && unassignedStudents.length === 0) {
+        openCustomModal({
+          title: 'All Students Currently Assigned',
+          badge: 'Roster Allocation Status',
+          icon: 'check-circle',
+          iconClass: 'modal-icon-emerald',
+          contentHtml: `
+            <div style="font-size: 0.95rem; color: #1E293B; line-height: 1.5;">
+              All <strong>${students.length} enrolled students</strong> already have an assigned Institutional Supervisor.
+              <div style="background: #ECFDF5; border: 1px solid #A7F3D0; padding: 0.85rem 1rem; border-radius: 10px; margin: 0.85rem 0; font-size: 0.88rem; color: #065F46;">
+                <strong>Current Allocation:</strong> 0 unassigned students.
+              </div>
+              Would you like to perform a complete rebalance across all ${staffList.length} faculty staff members?
+            </div>
+          `,
+          confirmText: 'Rebalance All Evenly',
+          confirmClass: 'btn-warning',
+          cancelText: 'Keep Current Assignments',
+          onConfirm: () => {
+            closeCustomModal();
+            executeAutoDistributeStudents(true);
+          }
+        });
+        return;
+      }
+
+      const targetPool = forceRebalanceAll ? students : unassignedStudents;
+
+      openCustomModal({
+        title: forceRebalanceAll ? 'Complete Roster Rebalance' : 'Auto-Allocate Unassigned Students',
+        badge: 'Smart Faculty Balancer',
+        icon: 'shuffle',
+        iconClass: 'modal-icon-blue',
+        contentHtml: `
+          <div style="font-size: 0.95rem; color: #1E293B; line-height: 1.5;">
+            ${forceRebalanceAll 
+              ? `You are about to evenly re-distribute all <strong>${students.length} students</strong> across <strong>${staffList.length} faculty supervisors</strong>.`
+              : `Found <strong>${unassignedStudents.length} unassigned student(s)</strong> awaiting an Institutional Supervisor. <strong>${alreadyAssignedStudents.length} already assigned students</strong> will be skipped to preserve existing supervisor relationships.`}
+            <div style="background: #EFF6FF; border: 1px solid #BFDBFE; padding: 0.85rem 1rem; border-radius: 10px; margin: 0.85rem 0; font-size: 0.88rem; color: #1E40AF;">
+              <strong>Strategy:</strong> Assign unassigned candidates to faculty supervisors with the lowest current load (~${Math.ceil(students.length / staffList.length)} students per supervisor).
+            </div>
+            Proceed with automatic allocation?
+          </div>
+        `,
+        confirmText: forceRebalanceAll ? 'Rebalance All Students' : `Allocate ${targetPool.length} Student(s)`,
+        confirmClass: 'btn-primary',
+        cancelText: 'Cancel',
+        onConfirm: () => {
+          targetPool.forEach(s => {
+            // Sort staff by lowest active load
+            staffList.sort((a, b) => (staffLoad[a.name] || 0) - (staffLoad[b.name] || 0));
+            const chosenStaff = staffList[0];
+
+            s.institutionalSupervisor = chosenStaff.name;
+            s.institutionalSupervisorEmail = chosenStaff.email || '';
+            s.supervisor = chosenStaff.name;
+            s.supervisorEmail = chosenStaff.email || '';
+            s.supervisorContact = `${chosenStaff.email || ''} | ${chosenStaff.phone || ''}`;
+
+            staffLoad[chosenStaff.name] = (staffLoad[chosenStaff.name] || 0) + 1;
+          });
+
+          localStorage.setItem('sdi_registered_users_registry', JSON.stringify(allUsers));
+
+          // Also check if current active student session was updated
+          try {
+            const activeRaw = localStorage.getItem('sdi_active_user_session');
+            if (activeRaw) {
+              const activeUser = JSON.parse(activeRaw);
+              const updatedActive = allUsers.find(u => (u.matric || u.identifier || '').toLowerCase() === (activeUser.matric || activeUser.identifier || '').toLowerCase());
+              if (updatedActive) {
+                localStorage.setItem('sdi_active_user_session', JSON.stringify({ ...activeUser, ...updatedActive }));
+              }
+            }
+          } catch (e) {}
+
+          closeCustomModal();
+          showCustomToast(`✓ Successfully allocated ${targetPool.length} student(s) across balanced faculty supervisors!`, 'success');
+          renderAllAdminViews();
+        }
+      });
+    }
+
+    /* ============================================================
+       TAB 4: WEEKLY LOG LEDGER AUDITING & SUPERVISOR REMARKS
+       ============================================================ */
+    function populateAuditControls() {
+      const weekSelect = document.getElementById('auditWeekSelect');
+      if (!weekSelect) return;
+
+      let weekOptions = '';
+      for (let w = 1; w <= 24; w++) {
+        let label = `Week ${w}`;
+        if (w === 1) label += ' (Commencement)';
+        else if (w === 24) label += ' (Final Week)';
+        weekOptions += `<option value="${w}">${label}</option>`;
+      }
+      weekSelect.innerHTML = weekOptions;
+    }
+
+    function renderStudentPickerCarousel() {
+      const carousel = document.getElementById('adminStudentPickerCarousel');
+      if (!carousel) return;
+
+      const allStudents = getStudentsList();
+      const activeUser = getActiveUser() || {};
+      const isSuper = typeof isUserCoordinatorOrSuperAdmin === 'function' ? isUserCoordinatorOrSuperAdmin(activeUser) : true;
+      const myName = (activeUser.name || '').toLowerCase().trim();
+
+      const students = isSuper 
+        ? allStudents 
+        : allStudents.filter(s => (s.supervisor || '').toLowerCase().trim() === myName || (s.supervisor || '').toLowerCase().includes(myName) || (myName && myName.includes((s.supervisor || '').toLowerCase().trim())));
+
+      if (students.length === 0) {
+        carousel.innerHTML = `
+          <div style="padding: 1.25rem; color: #64748B; font-weight: 700; font-size: 0.86rem; text-align: center; width: 100%;">
+            No student candidates are currently assigned to your supervision portfolio.
+          </div>
+        `;
+        return;
+      }
+
+      // If currentSelectedAuditMatric is not in this supervisor's students, select first student
+      const existsInList = students.some(s => (s.matric || s.identifier) === currentSelectedAuditMatric);
+      if (!existsInList) {
+        currentSelectedAuditMatric = students[0].matric || students[0].identifier;
+      }
+
+      let html = '';
+      students.forEach(s => {
+        const matric = s.matric || s.identifier;
+        const name = s.name || 'Student Candidate';
+        const isActive = (matric === currentSelectedAuditMatric);
+        const logs = getStudentLogsByMatric(matric);
+        const loggedWeeks = Object.keys(logs).map(Number).sort((a,b) => a - b);
+        const pendingWeeks = loggedWeeks.filter(w => logs[w].approved === false);
+        const hasPending = pendingWeeks.length > 0;
+
+        html += `
+          <div class="student-picker-card ${isActive ? 'active-student' : ''}" onclick="selectAuditStudentByMatric('${matric}')">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.35rem;">
+              <span style="font-family: var(--font-mono); font-size: 0.76rem; font-weight: 800; color: ${isActive ? '#059669' : '#64748B'};">${matric}</span>
+              ${hasPending ? `
+                <span style="background: #FEF3C7; color: #B45309; font-size: 0.68rem; font-weight: 800; padding: 0.15rem 0.45rem; border-radius: 9999px;">
+                  Audit Needed
+                </span>
+              ` : `
+                <span style="background: #ECFDF5; color: #059669; font-size: 0.68rem; font-weight: 800; padding: 0.15rem 0.45rem; border-radius: 9999px;">
+                  ${loggedWeeks.length} Wks Done
+                </span>
+              `}
+            </div>
+            <div style="font-weight: 800; font-size: 0.92rem; color: #0F172A; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+              ${name}
+            </div>
+            <div style="font-size: 0.76rem; color: #64748B; margin-top: 0.15rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+              ${s.hostOrg || 'Directorate of SIWES'}
+            </div>
+          </div>
+        `;
+      });
+
+      carousel.innerHTML = html;
+    }
+
+    function renderAuditWeekChips() {
+      const container = document.getElementById('adminAuditWeekChipsContainer');
+      if (!container) return;
+
+      const logs = getStudentLogsByMatric(currentSelectedAuditMatric);
+      let html = '';
+
+      for (let w = 1; w <= 24; w++) {
+        const isCurrentActive = (w === currentSelectedAuditWeek);
+        const entry = logs[w];
+        let statusClass = '';
+        let iconHtml = '';
+
+        if (entry) {
+          if (entry.approved === true) {
+            statusClass = 'filled-approved';
+            iconHtml = '<i data-lucide="check" style="width: 12px;"></i>';
+          } else {
+            statusClass = 'filled-pending';
+            iconHtml = '<i data-lucide="clock" style="width: 12px;"></i>';
+          }
+        }
+
+        const activeClass = isCurrentActive ? 'active-week' : '';
+
+        html += `
+          <button type="button" class="week-chip-btn ${statusClass} ${activeClass}" onclick="selectAuditWeek(${w})">
+            ${iconHtml} Week ${w}
+          </button>
+        `;
+      }
+
+      container.innerHTML = html;
+      lucide.createIcons();
+    }
+
+    function selectAuditWeek(weekNum) {
+      currentSelectedAuditWeek = parseInt(weekNum, 10);
+      const sel = document.getElementById('auditWeekSelect');
+      if (sel) sel.value = currentSelectedAuditWeek;
+      renderAuditWeekChips();
+      renderAdminSelectedStudentAudit();
+    }
+
+    function selectAuditStudentByMatric(matric) {
+      currentSelectedAuditMatric = matric;
+      renderStudentPickerCarousel();
+      renderAuditWeekChips();
+      renderAdminSelectedStudentAudit();
+    }
+
+    function openStudentLogbookAudit(matric, weekNum) {
+      currentSelectedAuditMatric = matric;
+      currentSelectedAuditWeek = parseInt(weekNum, 10) || 1;
+      switchAdminTab('audits');
+    }
+
+    function getStudentLogsByMatric(matric) {
+      if (typeof window.getStudentLogsByMatric === 'function') {
+        return window.getStudentLogsByMatric(matric);
+      }
+      const cleanMatric = (matric || '').trim().toUpperCase();
+      const key1 = `student_logs_${cleanMatric}`;
+      const key2 = `sdi_student_logbook_${cleanMatric}`;
+      try {
+        const raw1 = localStorage.getItem(key1);
+        if (raw1) return JSON.parse(raw1);
+        const raw2 = localStorage.getItem(key2);
+        if (raw2) return JSON.parse(raw2);
+      } catch (e) {}
+
+      if (typeof window.opeyemiReal24WeeksLogs !== 'undefined' && (cleanMatric === '230591215' || cleanMatric === '230591***' || cleanMatric === '230591001' || cleanMatric.includes('230591'))) {
+        return JSON.parse(JSON.stringify(window.opeyemiReal24WeeksLogs));
+      }
+      return {};
+    }
+
+    function saveStudentLogsByMatric(matric, logs) {
+      if (typeof window.saveStudentLogsByMatric === 'function') {
+        return window.saveStudentLogsByMatric(matric, logs);
+      }
+      const cleanMatric = (matric || '').trim().toUpperCase();
+      localStorage.setItem(`student_logs_${cleanMatric}`, JSON.stringify(logs));
+      localStorage.setItem(`sdi_student_logbook_${cleanMatric}`, JSON.stringify(logs));
+    }
+
+    function getAuditWeekDates(weekNum) {
+      const anchor = new Date('2026-03-02T00:00:00');
+      const offsetDays = (weekNum - 1) * 7;
+      const start = new Date(anchor.getTime() + offsetDays * 86400000);
+
+      const d = {};
+      const dayNames = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+      dayNames.forEach((name, idx) => {
+        const cur = new Date(start.getTime() + idx * 86400000);
+        d[name] = cur.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+      });
+      return d;
+    }
+
+    function onAdminAuditSelectionChanged() {
+      const sel = document.getElementById('auditWeekSelect');
+      if (sel) {
+        selectAuditWeek(parseInt(sel.value, 10));
+      }
+    }
+
+    function stepAdminAuditWeek(delta) {
+      let target = currentSelectedAuditWeek + delta;
+      if (target >= 1 && target <= 24) {
+        selectAuditWeek(target);
+      }
+    }
+
+    function renderAdminSelectedStudentAudit() {
+      const allStudents = getStudentsList();
+      const student = allStudents.find(s => (s.matric || s.identifier) === currentSelectedAuditMatric) || {
+        name: 'Opeyemi Abraham Benjamin',
+        matric: '230591001',
+        hostOrg: 'Directorate of SIWES, LASUED',
+        dept: 'Computer Science',
+        supervisor: 'Dr. A. O. Institutional Coordinator'
+      };
+
+      const w = currentSelectedAuditWeek;
+      const logs = getStudentLogsByMatric(currentSelectedAuditMatric);
+      const weekLog = logs[w] || {
+        days: {},
+        weeklySummary: '',
+        supervisorRemark: '',
+        approved: null
+      };
+
+      const dates = getAuditWeekDates(w);
+
+      // Header Meta
+      const metaEl = document.getElementById('auditHeaderMeta');
+      if (metaEl) {
+        metaEl.innerText = `${student.name} • Matric: ${student.matric || student.identifier} • Host: ${student.hostOrg || 'LASU'} (Mentor: ${student.industrySupervisor || 'N/A'}) • Institutional Supervisor: ${student.institutionalSupervisor || student.supervisor || 'Unassigned'}`;
+      }
+
+      const dateRangeEl = document.getElementById('auditDateRangeText');
+      if (dateRangeEl) {
+        dateRangeEl.innerText = `${dates.mon} – ${dates.sat}`;
+      }
+
+      const weekLabelEl = document.getElementById('auditLedgerActiveWeekLabel');
+      if (weekLabelEl) {
+        weekLabelEl.innerText = `WEEK ${w} VERIFICATION AUDIT`;
+      }
+
+      // Status Badge
+      const statusCont = document.getElementById('auditStatusPillContainer');
+      if (statusCont) {
+        if (weekLog.approved === true) {
+          statusCont.innerHTML = `
+            <span style="background: #ECFDF5; color: #059669; font-size: 0.78rem; font-weight: 800; padding: 0.25rem 0.75rem; border-radius: 9999px; border: 1px solid #A7F3D0; display: inline-flex; align-items: center; gap: 0.35rem;">
+              <i data-lucide="check-circle" style="width: 14px;"></i> Verified & Endorsed
+            </span>
+          `;
+        } else if (weekLog.approved === false) {
+          statusCont.innerHTML = `
+            <span style="background: #FEF3C7; color: #B45309; font-size: 0.78rem; font-weight: 800; padding: 0.25rem 0.75rem; border-radius: 9999px; border: 1px solid #FCD34D; display: inline-flex; align-items: center; gap: 0.35rem;">
+              <i data-lucide="clock" style="width: 14px;"></i> Pending Review
+            </span>
+          `;
+        } else {
+          statusCont.innerHTML = `
+            <span style="background: #F1F5F9; color: #64748B; font-size: 0.78rem; font-weight: 700; padding: 0.25rem 0.75rem; border-radius: 9999px; border: 1px solid #E2E8F0;">
+              Unlogged Week
+            </span>
+          `;
+        }
+      }
+
+      // Populate Daily Tasks
+      const dayKeys = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+      dayKeys.forEach(k => {
+        const capitalized = k.charAt(0).toUpperCase() + k.slice(1);
+        const dateEl = document.getElementById(`auditDate${capitalized}`);
+        const taskEl = document.getElementById(`auditTask${capitalized}`);
+
+        if (dateEl) dateEl.innerText = dates[k];
+        if (taskEl) {
+          const entry = (weekLog.days && weekLog.days[k]) ? (typeof weekLog.days[k] === 'object' ? (weekLog.days[k].task || '') : weekLog.days[k]) : (weekLog[k] || '');
+          taskEl.innerText = entry || '— No activity recorded for this day —';
+          taskEl.style.fontStyle = entry ? 'normal' : 'italic';
+          taskEl.style.color = entry ? '#0F172A' : '#94A3B8';
+        }
+      });
+
+      // Weekly Summary
+      const summaryEl = document.getElementById('auditWeeklySummary');
+      if (summaryEl) {
+        summaryEl.innerText = weekLog.weeklySummary || '— No weekly executive summary submitted by student —';
+        summaryEl.style.fontStyle = weekLog.weeklySummary ? 'normal' : 'italic';
+        summaryEl.style.color = weekLog.weeklySummary ? '#0F172A' : '#94A3B8';
+      }
+
+      // Supervisor Remark Input
+      const remarkInput = document.getElementById('adminAuditSupervisorRemark');
+      if (remarkInput) {
+        remarkInput.value = weekLog.supervisorRemark || '';
+      }
+
+      // Reopen Button Visibility
+      const reopenCont = document.getElementById('auditReopenBtnContainer');
+      if (reopenCont) {
+        reopenCont.style.display = (weekLog.approved === true) ? 'block' : 'none';
+      }
+
+      lucide.createIcons();
+    }
+
+    function approveAndEndorseAuditWeek() {
+      const w = currentSelectedAuditWeek;
+      const logs = getStudentLogsByMatric(currentSelectedAuditMatric);
+      const remark = document.getElementById('adminAuditSupervisorRemark').value.trim();
+      const activeUser = getActiveUser() || {};
+      const reviewer = activeUser.name || 'Dr. A. O. Institutional Coordinator';
+
+      if (!logs[w]) {
+        logs[w] = { days: {}, weeklySummary: '' };
+      }
+
+      logs[w].approved = true;
+      logs[w].supervisorRemark = remark || 'Endorsed and verified under Institutional SIWES Compliance Guidelines.';
+      logs[w].approvedBy = reviewer;
+      logs[w].approvedAt = new Date().toISOString();
+
+      saveStudentLogsByMatric(currentSelectedAuditMatric, logs);
+      showCustomToast(`✓ Week ${w} has been officially endorsed & cryptographically verified!`, 'success');
+      renderAllAdminViews();
+    }
+
+    function saveSupervisorRemarkOnly() {
+      const w = currentSelectedAuditWeek;
+      const logs = getStudentLogsByMatric(currentSelectedAuditMatric);
+      const remark = document.getElementById('adminAuditSupervisorRemark').value.trim();
+
+      if (!logs[w]) {
+        logs[w] = { days: {}, weeklySummary: '' };
+      }
+
+      logs[w].supervisorRemark = remark;
+      saveStudentLogsByMatric(currentSelectedAuditMatric, logs);
+      showCustomToast(`✓ Remark saved for Week ${w}.`, 'success');
+      renderAllAdminViews();
+    }
+
+    function reopenWeekForRevision() {
+      const w = currentSelectedAuditWeek;
+      const matric = currentSelectedAuditMatric;
+
+      openCustomModal({
+        title: 'Unlock Week for Revision',
+        badge: `Week ${w} Audit`,
+        icon: 'rotate-ccw',
+        iconClass: 'modal-icon-amber',
+        contentHtml: `
+          <div style="font-size: 0.95rem; color: #1E293B; line-height: 1.5;">
+            Are you sure you want to unlock <strong>Week ${w}</strong> and return it to student (<strong>${matric}</strong>) for revision?
+            <div style="background: #FFFBEB; border: 1px solid #FDE68A; padding: 0.85rem 1rem; border-radius: 10px; margin: 0.85rem 0; font-size: 0.88rem; color: #92400E;">
+              The student will be permitted to edit and re-submit their daily entries for Week ${w}.
+            </div>
+          </div>
+        `,
+        confirmText: 'Return for Revision',
+        confirmClass: 'btn-warning',
+        cancelText: 'Cancel',
+        onConfirm: () => {
+          const logs = getStudentLogsByMatric(matric);
+          if (logs[w]) {
+            logs[w].approved = false;
+            saveStudentLogsByMatric(matric, logs);
+            closeCustomModal();
+            showCustomToast(`Week ${w} unlocked and returned to student for revision.`, 'info');
+            renderAllAdminViews();
+          } else {
+            closeCustomModal();
+          }
+        }
+      });
+    }
+
+    function renderAllSubmissionsOverviewTable() {
+      const tbody = document.getElementById('adminAllSubmissionsTable');
+      if (!tbody) return;
+
+      const allStudents = getStudentsList();
+      const activeUser = getActiveUser() || {};
+      const isSuper = typeof isUserCoordinatorOrSuperAdmin === 'function' ? isUserCoordinatorOrSuperAdmin(activeUser) : true;
+      const myName = (activeUser.name || '').toLowerCase().trim();
+
+      const students = isSuper 
+        ? allStudents 
+        : allStudents.filter(s => (s.supervisor || '').toLowerCase().trim() === myName || (s.supervisor || '').toLowerCase().includes(myName) || (myName && myName.includes((s.supervisor || '').toLowerCase().trim())));
+
+      if (students.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" style="text-align: center; color: #64748B; padding: 2rem;">
+              No students are currently assigned to your portfolio for weekly logbook auditing.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      let html = '';
+      students.forEach(s => {
+        const matric = s.matric || s.identifier;
+        const name = s.name || matric;
+        const logs = getStudentLogsByMatric(matric);
+
+        const loggedWeeks = Object.keys(logs).map(Number).sort((a,b) => a - b);
+        const totalWeeks = loggedWeeks.length;
+        const pendingWeeks = loggedWeeks.filter(w => logs[w].approved === false);
+        const hasPending = pendingWeeks.length > 0;
+
+        let badgesHtml = '';
+        loggedWeeks.forEach(w => {
+          const isApp = logs[w].approved === true;
+          if (isApp) {
+            badgesHtml += `<span class="table-week-badge table-week-approved" onclick="openStudentLogbookAudit('${matric}', ${w})" title="Click to view Week ${w}">✓ Wk ${w}</span> `;
+          } else {
+            badgesHtml += `<span class="table-week-badge table-week-pending" onclick="openStudentLogbookAudit('${matric}', ${w})" title="Click to view Week ${w}">⏳ Wk ${w}</span> `;
+          }
+        });
+
+        html += `
+          <tr>
+            <td><strong>${name}</strong></td>
+            <td style="font-family: var(--font-mono); font-weight: 700; color: #1E293B;">${matric}</td>
+            <td><span style="font-weight: 800; color: #059669;">${totalWeeks} Weeks Done</span></td>
+            <td>
+              <div style="display: flex; flex-wrap: wrap; gap: 0.3rem;">
+                ${badgesHtml || '<span style="color: #94A3B8; font-size: 0.8rem; font-style: italic;">No weeks logged</span>'}
+              </div>
+            </td>
+            <td>
+              ${hasPending ? `
+                <span style="background: #FEF3C7; color: #B45309; font-weight: 800; font-size: 0.76rem; padding: 0.2rem 0.6rem; border-radius: 9999px; display: inline-flex; align-items: center; gap: 0.3rem;">
+                  <i data-lucide="clock" style="width: 12px;"></i> Audit Needed
+                </span>
+              ` : `
+                <span style="background: #ECFDF5; color: #059669; font-weight: 800; font-size: 0.76rem; padding: 0.2rem 0.6rem; border-radius: 9999px; display: inline-flex; align-items: center; gap: 0.3rem;">
+                  <i data-lucide="check" style="width: 12px;"></i> All Approved
+                </span>
+              `}
+            </td>
+            <td style="text-align: right;">
+              <button class="btn btn-primary btn-sm" onclick="openStudentLogbookAudit('${matric}', ${hasPending ? pendingWeeks[0] : (loggedWeeks[0] || 1)})" style="background: #059669; border-color: #059669; font-size: 0.76rem; padding: 0.35rem 0.8rem; font-weight: 700; white-space: nowrap;">
+                Inspect &rarr;
+              </button>
+            </td>
+          </tr>
+        `;
+      });
+
+      tbody.innerHTML = html;
+      lucide.createIcons();
+    }
+
+    /* ============================================================
+       TAB 5: INDUSTRY PARTNERS (SQUARE BOXES & DYNAMIC CARDS)
+       ============================================================ */
+    const PARTNER_COLOR_PALETTES = [
+      { bg: '#EFF6FF', text: '#2563EB', badge: '#DBEAFE', icon: 'building-2' },
+      { bg: '#ECFDF5', text: '#059669', badge: '#A7F3D0', icon: 'cpu' },
+      { bg: '#F5F3FF', text: '#7C3AED', badge: '#DDD6FE', icon: 'shield-check' },
+      { bg: '#FFFBEB', text: '#D97706', badge: '#FDE68A', icon: 'briefcase' },
+      { bg: '#EEF2FF', text: '#4F46E5', badge: '#C7D2FE', icon: 'layers' },
+      { bg: '#FDF2F8', text: '#DB2777', badge: '#FBCFE8', icon: 'activity' }
+    ];
+
+    function getPartnerPalette(idx) {
+      return PARTNER_COLOR_PALETTES[idx % PARTNER_COLOR_PALETTES.length];
+    }
+
+    function getCombinedPartnersList() {
+      let partners = [];
+      if (typeof getAccreditedPartnersList === 'function') {
+        partners = getAccreditedPartnersList();
+      }
+      try {
+        const stored = localStorage.getItem('sdi_manual_partners');
+        if (stored) {
+          const manualList = JSON.parse(stored);
+          manualList.forEach(mp => {
+            const mKey = (typeof normalizePartnerKey === 'function') ? normalizePartnerKey(mp.name || mp.id) : (mp.name || '').toLowerCase().trim();
+            if (!partners.some(p => ((typeof normalizePartnerKey === 'function') ? normalizePartnerKey(p.name || p.id) : (p.name || '').toLowerCase().trim()) === mKey)) {
+              partners.push({
+                id: mKey,
+                name: mp.name,
+                normalizedName: mKey,
+                sector: mp.sector || 'Industry & Technology',
+                location: mp.location || mp.address || 'Lagos, Nigeria',
+                address: mp.address || mp.location || 'Lagos, Nigeria',
+                contact: mp.contact || 'partner.desk@lasu.edu.ng',
+                isBase: true,
+                students: []
+              });
+            }
+          });
+        }
+      } catch (err) {}
+      return partners;
+    }
+
+    function renderAdminPartners() {
+      const grid = document.getElementById('adminPartnersGrid');
+      if (!grid) return;
+
+      const partners = getCombinedPartnersList();
+      const students = getStudentsList();
+
+      // Compute student counts per partner
+      const partnerStudentCounts = {};
+      const partnerStudentLists = {};
+
+      partners.forEach(p => {
+        const norm = (typeof normalizePartnerKey === 'function') 
+          ? normalizePartnerKey(p.normalizedName || p.id || p.name || '') 
+          : (p.normalizedName || p.id || p.name || '').toLowerCase().trim();
+        partnerStudentCounts[norm] = 0;
+        partnerStudentLists[norm] = [];
+      });
+
+      students.forEach(s => {
+        const companyName = s.hostOrg || s.company || s.organization || s.placementHost || '';
+        if (companyName) {
+          const normKey = (typeof normalizePartnerKey === 'function') 
+            ? normalizePartnerKey(companyName) 
+            : companyName.toLowerCase().trim();
+          
+          if (partnerStudentCounts.hasOwnProperty(normKey)) {
+            partnerStudentCounts[normKey]++;
+            partnerStudentLists[normKey].push(s);
+          }
+        }
+      });
+
+      let html = '';
+      partners.forEach((p, idx) => {
+        const palette = getPartnerPalette(idx);
+        const normKey = (typeof normalizePartnerKey === 'function')
+          ? normalizePartnerKey(p.normalizedName || p.id || p.name || '')
+          : (p.normalizedName || p.id || p.name || '').toLowerCase().trim();
+        
+        const directCount = (Array.isArray(p.students) && p.students.length > 0) ? p.students.length : (partnerStudentCounts[normKey] || 0);
+        const attachedCount = directCount;
+        const initial = (p.name || 'P').charAt(0).toUpperCase();
+
+        html += `
+          <div class="partner-square-card" onclick="openPartnerStudentsModal('${normKey}')" title="Click to view attached student interns">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
+                <div style="width: 54px; height: 54px; border-radius: 16px; background: ${palette.bg}; color: ${palette.text}; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 800; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05); flex-shrink: 0;">
+                  ${initial}
+                </div>
+                <span class="partner-accredited-tag">
+                  ✓ Accredited
+                </span>
+              </div>
+
+              <h3 style="font-family: var(--font-heading); font-size: 1.2rem; font-weight: 800; color: #0F172A; margin: 0 0 0.4rem 0; line-height: 1.3; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
+                ${p.name}
+              </h3>
+              
+              <div style="font-size: 0.82rem; font-weight: 600; color: #64748B; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.35rem;">
+                <i data-lucide="tag" style="width: 13px; color: ${palette.text};"></i>
+                <span>${p.sector || 'Industry & Technology'}</span>
+              </div>
+
+              <div style="font-size: 0.78rem; color: #94A3B8; display: flex; align-items: center; gap: 0.35rem;">
+                <i data-lucide="map-pin" style="width: 13px;"></i>
+                <span>${p.location || p.address || 'Lagos, Nigeria'}</span>
+              </div>
+            </div>
+
+            <div class="partner-card-footer">
+              <div class="partner-intern-counter-badge">
+                <i data-lucide="users" style="width: 14px; color: #2563EB;"></i>
+                <span><strong>${attachedCount}</strong> Intern${attachedCount === 1 ? '' : 's'} Assigned</span>
+              </div>
+              <span style="font-size: 0.82rem; font-weight: 800; color: #2563EB; display: inline-flex; align-items: center; gap: 0.25rem;">
+                Inspect &rarr;
+              </span>
+            </div>
+          </div>
+        `;
+      });
+
+      grid.innerHTML = html;
+      lucide.createIcons();
+    }
+
+    function filterAdminPartners() {
+      const q = (document.getElementById('adminPartnerSearchInput').value || '').toLowerCase().trim();
+      const allPartners = getCombinedPartnersList();
+      const filtered = allPartners.filter(p => 
+        (p.name || '').toLowerCase().includes(q) ||
+        (p.sector || '').toLowerCase().includes(q) ||
+        (p.location || '').toLowerCase().includes(q)
+      );
+
+      const grid = document.getElementById('adminPartnersGrid');
+      if (!grid) return;
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column: 1 / -1; padding: 3rem; text-align: center; color: #64748B; font-weight: 600;">
+            No industry partners found matching "${q}".
+          </div>
+        `;
+        return;
+      }
+
+      const students = getStudentsList();
+      const partnerStudentCounts = {};
+
+      filtered.forEach(p => {
+        const norm = (typeof normalizePartnerKey === 'function') 
+          ? normalizePartnerKey(p.normalizedName || p.id || p.name || '') 
+          : (p.normalizedName || p.id || p.name || '').toLowerCase().trim();
+        partnerStudentCounts[norm] = 0;
+      });
+
+      students.forEach(s => {
+        const companyName = s.hostOrg || s.company || s.organization || s.placementHost || '';
+        if (companyName) {
+          const normKey = (typeof normalizePartnerKey === 'function') 
+            ? normalizePartnerKey(companyName) 
+            : companyName.toLowerCase().trim();
+          if (partnerStudentCounts.hasOwnProperty(normKey)) {
+            partnerStudentCounts[normKey]++;
+          }
+        }
+      });
+
+      let html = '';
+      filtered.forEach((p, idx) => {
+        const palette = getPartnerPalette(idx);
+        const normKey = (typeof normalizePartnerKey === 'function')
+          ? normalizePartnerKey(p.normalizedName || p.id || p.name || '')
+          : (p.normalizedName || p.id || p.name || '').toLowerCase().trim();
+        const attachedCount = (Array.isArray(p.students) && p.students.length > 0) ? p.students.length : (partnerStudentCounts[normKey] || 0);
+        const initial = (p.name || 'P').charAt(0).toUpperCase();
+
+        html += `
+          <div class="partner-square-card" onclick="openPartnerStudentsModal('${normKey}')">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
+                <div style="width: 54px; height: 54px; border-radius: 16px; background: ${palette.bg}; color: ${palette.text}; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 800; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05); flex-shrink: 0;">
+                  ${initial}
+                </div>
+                <span class="partner-accredited-tag">
+                  ✓ Accredited
+                </span>
+              </div>
+
+              <h3 style="font-family: var(--font-heading); font-size: 1.2rem; font-weight: 800; color: #0F172A; margin: 0 0 0.4rem 0; line-height: 1.3;">
+                ${p.name}
+              </h3>
+              
+              <div style="font-size: 0.82rem; font-weight: 600; color: #64748B; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.35rem;">
+                <i data-lucide="tag" style="width: 13px; color: ${palette.text};"></i>
+                <span>${p.sector || 'Industry Partner'}</span>
+              </div>
+
+              <div style="font-size: 0.78rem; color: #94A3B8; display: flex; align-items: center; gap: 0.35rem;">
+                <i data-lucide="map-pin" style="width: 13px;"></i>
+                <span>${p.location || p.address || 'Lagos, Nigeria'}</span>
+              </div>
+            </div>
+
+            <div class="partner-card-footer">
+              <div class="partner-intern-counter-badge">
+                <i data-lucide="users" style="width: 14px; color: #2563EB;"></i>
+                <span><strong>${attachedCount}</strong> Intern${attachedCount === 1 ? '' : 's'} Assigned</span>
+              </div>
+              <span style="font-size: 0.82rem; font-weight: 800; color: #2563EB;">Inspect &rarr;</span>
+            </div>
+          </div>
+        `;
+      });
+
+      grid.innerHTML = html;
+      lucide.createIcons();
+    }
+
+    function openPartnerStudentsModal(partnerKey) {
+      const targetNorm = (typeof normalizePartnerKey === 'function') 
+        ? normalizePartnerKey(partnerKey) 
+        : partnerKey.toString().toLowerCase().trim();
+      
+      const partners = getCombinedPartnersList();
+      const partner = partners.find(p => {
+        const pNorm = (typeof normalizePartnerKey === 'function')
+          ? normalizePartnerKey(p.normalizedName || p.id || p.name || '')
+          : (p.normalizedName || p.id || p.name || '').toLowerCase().trim();
+        return pNorm === targetNorm;
+      }) || {
+        name: partnerKey,
+        sector: 'Accredited Host Partner',
+        location: 'Lagos, Nigeria'
+      };
+
+      const students = getStudentsList();
+      let attached = (partner && Array.isArray(partner.students) && partner.students.length > 0)
+        ? partner.students
+        : [];
+      
+      if (attached.length === 0) {
+        attached = students.filter(s => {
+          const cName = s.hostOrg || s.company || s.organization || s.placementHost || '';
+          const sKey = (typeof normalizePartnerKey === 'function') ? normalizePartnerKey(cName) : cName.toLowerCase().trim();
+          return sKey === targetNorm;
+        });
+      }
+
+      document.getElementById('modalPartnerName').innerText = partner.name;
+      document.getElementById('modalPartnerSector').innerText = partner.sector || 'Industry & Technology';
+      document.getElementById('modalPartnerAddress').innerText = partner.location || 'Accredited SIWES Partner Location';
+      document.getElementById('modalPartnerCountBadge').innerText = `${attached.length} Intern${attached.length === 1 ? '' : 's'} Placed`;
+
+      const tbody = document.getElementById('modalPartnerStudentsTableBody');
+      if (tbody) {
+        if (attached.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="4" style="text-align: center; color: #64748B; padding: 2rem;">
+                No students currently placed at this host organization.
+              </td>
+            </tr>
+          `;
+        } else {
+          let html = '';
+          attached.forEach(s => {
+            const name = s.name || 'Candidate';
+            const matric = s.matric || s.identifier || '230591***';
+            const dept = s.dept || 'Computer Science';
+            const sup = s.supervisor || 'Unassigned';
+
+            html += `
+              <tr>
+                <td><strong>${name}</strong></td>
+                <td><span style="font-family: var(--font-mono); font-weight: 700; background: #F8FAFC; padding: 0.15rem 0.45rem; border-radius: 6px; border: 1px solid #E2E8F0;">${matric}</span></td>
+                <td>${dept}</td>
+                <td>👨‍🏫 ${sup}</td>
+              </tr>
+            `;
+          });
+          tbody.innerHTML = html;
+        }
+      }
+
+      const modal = document.getElementById('partnerStudentsModalOverlay');
+      if (modal) {
+        modal.classList.add('active');
+        modal.classList.add('show-modal');
+      }
+    }
+
+    function closePartnerStudentsModal() {
+      const modal = document.getElementById('partnerStudentsModalOverlay');
+      if (modal) {
+        modal.classList.remove('active');
+        modal.classList.remove('show-modal');
+      }
+    }
+
+    function openManualPartnerModal() {
+      const modal = document.getElementById('manualAddPartnerModalOverlay');
+      if (modal) {
+        modal.classList.add('active');
+        modal.classList.add('show-modal');
+      }
+    }
+
+    function closeManualPartnerModal() {
+      const modal = document.getElementById('manualAddPartnerModalOverlay');
+      if (modal) {
+        modal.classList.remove('active');
+        modal.classList.remove('show-modal');
+      }
+    }
+
+    function handleAdminAddManualPartner(e) {
+      if (e) e.preventDefault();
+      const name = document.getElementById('newPartnerName').value.trim();
+      const sector = document.getElementById('newPartnerSector').value.trim();
+      const location = document.getElementById('newPartnerLocation').value.trim();
+
+      if (!name) {
+        showCustomToast('Please enter an organization name', 'error');
+        return;
+      }
+
+      let manualPartners = [];
+      try {
+        const stored = localStorage.getItem('sdi_manual_partners');
+        if (stored) manualPartners = JSON.parse(stored);
+      } catch (err) {}
+
+      const norm = (typeof normalizePartnerKey === 'function') ? normalizePartnerKey(name) : name.toUpperCase().trim();
+      const canonical = (typeof formatCanonicalPartnerName === 'function') ? formatCanonicalPartnerName(name) : name;
+
+      const exists = manualPartners.some(p => (p.normalizedName || p.id || '').toUpperCase() === norm);
+      if (exists) {
+        showCustomToast(`Partner "${canonical}" is already registered.`, 'error');
+        return;
+      }
+
+      manualPartners.push({
+        id: norm,
+        name: canonical,
+        normalizedName: norm,
+        sector: sector || 'Technology & Industry',
+        location: location || 'Lagos, Nigeria',
+        isBase: true
+      });
+
+      localStorage.setItem('sdi_manual_partners', JSON.stringify(manualPartners));
+      showCustomToast(`✓ Industry Partner "${canonical}" added successfully!`, 'success');
+      closeManualPartnerModal();
+      renderAllAdminViews();
+    }
+
+    /* ============================================================
+       INSTITUTIONAL SECURITY CLEARANCE & AUTHORIZATION QUEUE
+       ============================================================ */
+    function setClearanceQueueFilter(filterType) {
+      currentClearanceFilter = filterType;
+      document.querySelectorAll('#superAdminClearanceHub .filter-pill-btn').forEach(b => b.classList.remove('active'));
+      if (filterType === 'ALL' && document.getElementById('btnFilterPendingAll')) document.getElementById('btnFilterPendingAll').classList.add('active');
+      if (filterType === 'STUDENTS' && document.getElementById('btnFilterPendingStudents')) document.getElementById('btnFilterPendingStudents').classList.add('active');
+      if (filterType === 'STAFF' && document.getElementById('btnFilterPendingStaff')) document.getElementById('btnFilterPendingStaff').classList.add('active');
+      renderClearanceQueueTable();
+    }
+
+    function renderClearanceQueueTable() {
+      const tbody = document.getElementById('clearanceQueueTableBody');
+      if (!tbody) return;
+
+      const activeUser = getActiveUser() || {};
+      const isSuperAdmin = typeof isUserCoordinatorOrSuperAdmin === 'function' ? isUserCoordinatorOrSuperAdmin(activeUser) : true;
+
+      const hub = document.getElementById('superAdminClearanceHub');
+      if (hub) {
+        hub.style.display = isSuperAdmin ? 'block' : 'none';
+      }
+
+      if (!isSuperAdmin) return;
+
+      const allUsers = typeof getRegisteredUsersList === 'function' ? getRegisteredUsersList() : [];
+      let pendingUsers = allUsers.filter(u => {
+        if (typeof isUserApproved === 'function') {
+          return !isUserApproved(u);
+        }
+        return u.isApproved === false || u.approvalStatus === 'pending';
+      });
+
+      const badge = document.getElementById('totalPendingClearanceBadge');
+      if (badge) {
+        badge.innerText = `${pendingUsers.length} Pending Clearance${pendingUsers.length === 1 ? '' : 's'}`;
+      }
+
+      if (currentClearanceFilter === 'STUDENTS') {
+        pendingUsers = pendingUsers.filter(u => u.role === 'student');
+      } else if (currentClearanceFilter === 'STAFF') {
+        pendingUsers = pendingUsers.filter(u => u.role === 'admin');
+      }
+
+      if (pendingUsers.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" style="text-align: center; color: #059669; padding: 2.25rem 1rem; font-weight: 700;">
+              ✓ All self-registered student and faculty staff accounts have been reviewed and authorized!
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      let html = '';
+      pendingUsers.forEach(u => {
+        const name = u.name || 'Anonymous User';
+        const idCode = u.matric || u.staffId || u.identifier || 'N/A';
+        const roleLabel = u.role === 'admin' ? 'Faculty Staff' : 'Student Candidate';
+        const roleBadgeClass = u.role === 'admin' ? 'background: #EEF2FF; color: #4F46E5; border: 1px solid #C7D2FE;' : 'background: #ECFDF5; color: #059669; border: 1px solid #A7F3D0;';
+        const dept = u.dept || 'Computer Science';
+        const institution = u.institution || 'Lagos State University';
+        const regDate = u.registeredAt ? new Date(u.registeredAt).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) : 'Today';
+
+        html += `
+          <tr>
+            <td>
+              <strong style="color: #0F172A; font-size: 0.92rem; display: block;">${name}</strong>
+              <span style="font-size: 0.78rem; color: #64748B;">${u.email || ''}</span>
+            </td>
+            <td>
+              <span style="font-size: 0.74rem; font-weight: 800; padding: 0.2rem 0.55rem; border-radius: 9999px; ${roleBadgeClass}">
+                ${roleLabel}
+              </span>
+            </td>
+            <td>
+              <span style="font-family: var(--font-mono); font-weight: 700; color: #1E293B; background: #F8FAFC; border: 1px solid #E2E8F0; padding: 0.15rem 0.45rem; border-radius: 6px; font-size: 0.8rem;">
+                ${idCode}
+              </span>
+            </td>
+            <td>
+              <div style="font-size: 0.84rem; font-weight: 600; color: #0F172A;">${dept}</div>
+              <div style="font-size: 0.76rem; color: #64748B;">${institution}</div>
+            </td>
+            <td>
+              <span style="font-size: 0.82rem; color: #64748B; font-weight: 600;">${regDate}</span>
+            </td>
+            <td>
+              <span style="background: #FEF3C7; color: #B45309; font-size: 0.72rem; font-weight: 800; padding: 0.18rem 0.5rem; border-radius: 9999px; border: 1px solid #FCD34D;">
+                Pending
+              </span>
+            </td>
+            <td style="text-align: right; white-space: nowrap;">
+              <button type="button" class="btn btn-primary btn-sm" onclick="handleAuthorizeUser('${idCode}')" style="background: #059669; border-color: #059669; font-size: 0.76rem; padding: 0.3rem 0.65rem; font-weight: 800; margin-right: 0.35rem;" title="Authorize operational clearance">
+                ✓ Authorize
+              </button>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="handleDenyUser('${idCode}')" style="font-size: 0.76rem; padding: 0.3rem 0.6rem; color: #DC2626; border-color: #FECACA; font-weight: 800;" title="Deny account access">
+                ✕ Deny
+              </button>
+            </td>
+          </tr>
+        `;
+      });
+
+      tbody.innerHTML = html;
+      lucide.createIcons();
+    }
+
+    function handleAuthorizeUser(idCode) {
+      const user = (typeof getRegisteredUsersList === 'function' ? getRegisteredUsersList() : []).find(u => (u.identifier || u.matric || u.staffId || '').toUpperCase() === idCode.toUpperCase()) || { name: idCode, role: 'student' };
+      
+      openCustomModal({
+        title: 'Authorize Operational Clearance',
+        badge: 'Super Admin Action',
+        icon: 'shield-check',
+        iconClass: 'modal-icon-emerald',
+        contentHtml: `
+          <div style="font-size: 0.95rem; color: #1E293B; line-height: 1.5;">
+            Grant official institutional clearance and activate full workspace privileges for:
+            <div style="background: #ECFDF5; border: 1px solid #A7F3D0; padding: 0.85rem 1rem; border-radius: 10px; margin: 0.85rem 0;">
+              <div style="font-weight: 800; color: #065F46; font-size: 1.05rem;">${user.name || idCode}</div>
+              <div style="font-size: 0.84rem; color: #047857; margin-top: 0.2rem;">Matric / Staff ID: <strong>${idCode}</strong> &bull; Role: <strong>${(user.role || 'student').toUpperCase()}</strong></div>
+            </div>
+            This will immediately mark the user as <strong>Accredited &amp; Active</strong>.
+          </div>
+        `,
+        confirmText: 'Authorize Clearance',
+        confirmClass: 'btn-primary',
+        cancelText: 'Cancel',
+        onConfirm: () => {
+          if (typeof approveUserClearance === 'function') {
+            const res = approveUserClearance(idCode);
+            if (res.success) {
+              showCustomToast(`✓ Security clearance successfully authorized for ${user.name || idCode}!`, 'success');
+              renderAllAdminViews();
+            } else {
+              showCustomToast(res.message || 'Error authorizing user clearance', 'error');
+            }
+          }
+          closeCustomModal();
+        }
+      });
+    }
+
+    function handleDenyUser(idCode) {
+      const user = (typeof getRegisteredUsersList === 'function' ? getRegisteredUsersList() : []).find(u => (u.identifier || u.matric || u.staffId || '').toUpperCase() === idCode.toUpperCase()) || { name: idCode, role: 'student' };
+      
+      openCustomModal({
+        title: 'Deny & Suspend User Clearance',
+        badge: 'Access Restriction',
+        icon: 'alert-triangle',
+        iconClass: 'modal-icon-red',
+        contentHtml: `
+          <div style="font-size: 0.95rem; color: #1E293B; line-height: 1.5;">
+            Are you sure you want to <strong>deny operational clearance</strong> and suspend access for:
+            <div style="background: #FEF2F2; border: 1px solid #FECACA; padding: 0.85rem 1rem; border-radius: 10px; margin: 0.85rem 0;">
+              <div style="font-weight: 800; color: #991B1B; font-size: 1.05rem;">${user.name || idCode}</div>
+              <div style="font-size: 0.84rem; color: #B91C1C; margin-top: 0.2rem;">Matric / Staff ID: <strong>${idCode}</strong> &bull; Role: <strong>${(user.role || 'student').toUpperCase()}</strong></div>
+            </div>
+            The user will be restricted from entering or submitting records in their workspace.
+          </div>
+        `,
+        confirmText: 'Deny & Suspend Access',
+        confirmClass: 'btn-danger',
+        cancelText: 'Cancel',
+        onConfirm: () => {
+          if (typeof revokeOrSuspendUserClearance === 'function') {
+            const res = revokeOrSuspendUserClearance(idCode);
+            if (res.success) {
+              showCustomToast(`Registration & clearance for ${user.name || idCode} was denied.`, 'info');
+              renderAllAdminViews();
+            }
+          }
+          closeCustomModal();
+        }
+      });
+    }
+  </script>
+</body>
+</html>

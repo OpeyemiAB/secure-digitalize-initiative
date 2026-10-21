@@ -1,0 +1,1956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Workspace &bull; Secure Digitalize Initiative</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    /* Full Page Fixed Viewport Structure */
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #F8FAFC;
+    }
+
+    /* Fixed Clean Header */
+    .portal-fixed-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 65px;
+      background: #FFFFFF;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.75rem;
+      z-index: 1000;
+      box-sizing: border-box;
+    }
+
+    /* Fixed Left Sidebar */
+    .portal-fixed-sidebar {
+      position: fixed;
+      top: 65px;
+      bottom: 0;
+      left: 0;
+      width: 260px;
+      background-color: #0F172A;
+      color: #94A3B8;
+      padding: 1.5rem 1.15rem 1.25rem 1.15rem;
+      border-right: 1px solid #1E293B;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      z-index: 900;
+      box-sizing: border-box;
+      overflow-y: auto;
+    }
+
+    .sidebar-menu-list {
+      list-style: none;
+      margin: 1rem 0 0 0;
+      padding: 0;
+    }
+
+    .sidebar-menu-item {
+      margin-bottom: 0.35rem;
+    }
+
+    .sidebar-menu-link {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      color: #94A3B8;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.88rem;
+      text-decoration: none;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+    }
+
+    .sidebar-menu-link:hover {
+      background-color: rgba(255, 255, 255, 0.06);
+      color: #F8FAFC;
+    }
+
+    .sidebar-menu-link.active {
+      background: linear-gradient(135deg, #3B49DF, #2563EB);
+      color: #FFFFFF;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+    }
+
+    /* Institution Box Fixed at Bottom of Sidebar */
+    .sidebar-institution-box {
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+    }
+
+    /* Scrollable Workspace Container */
+    .portal-main-content {
+      margin-left: 260px;
+      margin-top: 65px;
+      height: calc(100vh - 65px);
+      overflow-y: auto;
+      padding: 2.5rem 3rem 4rem 3rem;
+      box-sizing: border-box;
+    }
+
+    @media (max-width: 960px) {
+      .portal-fixed-sidebar {
+        display: none;
+      }
+      .portal-main-content {
+        margin-left: 0;
+        padding: 2rem 1.5rem;
+      }
+    }
+
+    /* Tab Views */
+    .tab-panel-view {
+      display: none;
+      animation: fadeInView 0.25s ease;
+    }
+
+    .tab-panel-view.active-panel {
+      display: block;
+    }
+
+    @keyframes fadeInView {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Card Panels */
+    .portal-card-box {
+      background: #FFFFFF;
+      border-radius: 16px;
+      border: 1px solid var(--border-color);
+      padding: 2rem;
+      margin-bottom: 1.75rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .timeline-box {
+      background: #FFFFFF;
+      border-radius: 14px;
+      border: 1px solid var(--border-color);
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 1.25rem;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .timeline-box:hover {
+      border-color: #CBD5E1;
+      transform: translateY(-2px);
+    }
+
+    /* Onboarding Notification Banner */
+    .onboarding-prompt-banner {
+      background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%);
+      border: 1.5px solid #C7D2FE;
+      border-radius: 14px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      box-shadow: 0 4px 15px rgba(59, 73, 223, 0.08);
+      animation: fadeInView 0.3s ease;
+      position: relative;
+    }
+
+    .prompt-btn {
+      background: #3B49DF;
+      color: #FFFFFF;
+      border: none;
+      padding: 0.65rem 1.25rem;
+      border-radius: 9px;
+      font-weight: 700;
+      font-size: 0.86rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+
+    .prompt-btn:hover {
+      background: #2563EB;
+      transform: translateY(-1px);
+    }
+
+    .banner-close-btn {
+      background: transparent;
+      border: none;
+      color: #4338CA;
+      font-size: 1.25rem;
+      cursor: pointer;
+      padding: 0.25rem 0.5rem;
+      border-radius: 6px;
+      line-height: 1;
+      transition: background 0.2s ease;
+    }
+
+    .banner-close-btn:hover {
+      background: rgba(67, 56, 202, 0.1);
+    }
+
+    /* Form Layout: Question on Top, Full-Width Straight Input Underneath */
+    .form-section-heading {
+      font-family: var(--font-heading);
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #0F172A;
+      margin: 1.75rem 0 1.25rem 0;
+      padding-bottom: 0.5rem;
+      border-bottom: 1.5px solid #F1F5F9;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .form-stacked-group {
+      margin-bottom: 1.35rem;
+      width: 100%;
+    }
+
+    .form-question-label {
+      display: block;
+      font-weight: 700;
+      font-size: 0.93rem;
+      color: #1E293B;
+      margin-bottom: 0.45rem;
+      line-height: 1.4;
+    }
+
+    .form-straight-input {
+      width: 100%;
+      height: 48px;
+      padding: 0 1.1rem;
+      font-size: 0.95rem;
+      border: 1.5px solid var(--border-color);
+      border-radius: 10px;
+      background: #FFFFFF;
+      color: #0F172A;
+      font-family: var(--font-main);
+      box-sizing: border-box;
+      transition: all 0.2s ease;
+    }
+
+    .form-straight-input:focus {
+      outline: none;
+      border-color: #3B49DF;
+      box-shadow: 0 0 0 3px rgba(59, 73, 223, 0.12);
+      background: #FFFFFF;
+    }
+
+    /* Autosave Live Badge */
+    .autosave-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.84rem;
+      font-weight: 700;
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      transition: all 0.25s ease;
+    }
+
+    .autosave-badge.saved {
+      background: #ECFDF5;
+      color: #059669;
+      border: 1px solid #A7F3D0;
+    }
+
+    .autosave-badge.saving {
+      background: #EFF6FF;
+      color: #2563EB;
+      border: 1px solid #BFDBFE;
+    }
+
+    /* Authentic Real Digital Logbook Ledger Styling */
+    .logbook-ledger-card {
+      background: #FFFFFF;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+
+    .logbook-ledger-header {
+      background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+      color: #FFFFFF;
+      padding: 1.25rem 1.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .logbook-nav-toolbar {
+      background: #F8FAFC;
+      border-bottom: 1px solid #E2E8F0;
+      padding: 1rem 1.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .daily-log-row {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      border-bottom: 1px solid #F1F5F9;
+      align-items: stretch;
+      transition: background 0.2s ease;
+    }
+
+    .daily-log-row:hover {
+      background-color: #F8FAFC;
+    }
+
+    .daily-log-day-col {
+      padding: 1rem 1.25rem;
+      border-right: 1px solid #F1F5F9;
+      background: #FAFAFA;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .daily-log-input-col {
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .daily-log-input {
+      width: 100%;
+      height: 52px;
+      padding: 0 1.15rem;
+      font-size: 0.95rem;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 10px;
+      background: #FFFFFF;
+      color: #0F172A;
+      font-family: var(--font-main);
+      box-sizing: border-box;
+      transition: all 0.2s ease;
+    }
+
+    .daily-log-input:focus {
+      outline: none;
+      border-color: #3B49DF;
+      box-shadow: 0 0 0 3px rgba(59, 73, 223, 0.12);
+      background: #FFFFFF;
+    }
+
+    @media (max-width: 768px) {
+      .daily-log-row {
+        grid-template-columns: 1fr;
+      }
+      .daily-log-day-col {
+        border-right: none;
+        border-bottom: 1px solid #F1F5F9;
+        padding: 0.65rem 1.25rem;
+      }
+      .daily-log-input-col {
+        padding: 0.75rem 1.25rem 1rem 1.25rem;
+      }
+    }
+
+    /* .supervisor-review-card removed */ .supervisor-review-card-unused {
+      background: #F0FDF4;
+      border: 1.5px solid #BBF7D0;
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      margin-top: 1.5rem;
+    }
+  
+    .btn-header-signout {
+      background: #FEF2F2 !important;
+      color: #DC2626 !important;
+      border: 1px solid #FECACA !important;
+      font-weight: 700 !important;
+      font-size: 0.82rem !important;
+      padding: 0.45rem 0.95rem !important;
+      border-radius: 10px !important;
+      white-space: nowrap !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 0.4rem !important;
+      cursor: pointer !important;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      flex-shrink: 0 !important;
+    }
+    .btn-header-signout:hover {
+      background: #DC2626 !important;
+      color: #FFFFFF !important;
+      border-color: #DC2626 !important;
+      box-shadow: 0 4px 14px rgba(220, 38, 38, 0.25) !important;
+      transform: translateY(-2px) !important;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       TOP HEADER (STATIC, 65PX, ZERO JITTER)
+       ============================================================ -->
+  <header class="portal-fixed-header">
+    <div style="display: flex; align-items: center; gap: 0.85rem;">
+      <a href="index.html" style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;">
+        <div style="width: 36px; height: 36px; border-radius: 8px; background: linear-gradient(135deg, #3B49DF, #2563EB); display: flex; align-items: center; justify-content: center; color: white; box-shadow: 0 2px 8px rgba(59, 73, 223, 0.3);">
+          <i data-lucide="shield-check" style="width: 20px; height: 20px;"></i>
+        </div>
+        <div style="font-weight: 800; font-family: var(--font-heading); color: #0F172A; font-size: 1.05rem;">
+          Secure Digitalize <span style="font-size: 0.78rem; font-weight: 700; color: var(--primary); background: #EFF6FF; padding: 0.15rem 0.45rem; border-radius: 6px; margin-left: 0.25rem;">STUDENT</span>
+        </div>
+      </a>
+    </div>
+
+    <!-- Verified User Badge (Dynamic Name with Green Status Indicator) -->
+    <div style="display: flex; align-items: center; gap: 1rem;">
+      <div style="display: flex; align-items: center; gap: 0.55rem; background: #F8FAFC; border: 1px solid var(--border-color); padding: 0.45rem 1.1rem; border-radius: 9999px;">
+        <div style="width: 9px; height: 9px; border-radius: 50%; background: #10B981; box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);"></div>
+        <span style="font-size: 0.88rem; font-weight: 700; color: #1E293B;" id="headerUserGreeting">Benjamin</span>
+      </div>
+
+      <button onclick="logoutUser(true)" class="btn btn-header-signout" title="Sign out of student session">
+        <i data-lucide="log-out" style="width: 14px;"></i> Sign Out
+      </button>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       LEFT SIDEBAR (STATIC, 260PX)
+       ============================================================ -->
+  <aside class="portal-fixed-sidebar">
+    <div>
+      <div style="font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #64748B; margin-bottom: 0.5rem; padding-left: 0.5rem;">
+        STUDENT WORKSPACE
+      </div>
+
+      <ul class="sidebar-menu-list">
+        <li class="sidebar-menu-item">
+          <a class="sidebar-menu-link active" id="navItemDashboard" onclick="switchStudentTab('dashboard')">
+            <i data-lucide="layout-dashboard" style="width: 18px;"></i>
+            <span>Dashboard Overview</span>
+          </a>
+        </li>
+        <li class="sidebar-menu-item">
+          <a class="sidebar-menu-link" id="navItemLogbook" onclick="switchStudentTab('logbook')">
+            <i data-lucide="book-open" style="width: 18px;"></i>
+            <span>Digital Logbook</span>
+          </a>
+        </li>
+        <li class="sidebar-menu-item">
+          <a class="sidebar-menu-link" id="navItemPlacement" onclick="switchStudentTab('placement')">
+            <i data-lucide="building-2" style="width: 18px;"></i>
+            <span>Placement Details</span>
+          </a>
+        </li>
+        <li class="sidebar-menu-item">
+          <a class="sidebar-menu-link" id="navItemProfile" onclick="switchStudentTab('profile')">
+            <i data-lucide="user-check" style="width: 18px;"></i>
+            <span>Update Profile</span>
+          </a>
+        </li>
+        <li class="sidebar-menu-item">
+          <a class="sidebar-menu-link" id="navItemHelp" onclick="switchStudentTab('help')">
+            <i data-lucide="help-circle" style="width: 18px;"></i>
+            <span>Help &amp; Guidelines</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Pinned Institution Box -->
+    <div class="sidebar-institution-box">
+      <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem;">
+        <i data-lucide="award" style="width: 16px; color: #38BDF8;"></i>
+        <span style="font-size: 0.75rem; font-weight: 700; color: #94A3B8; text-transform: uppercase;">Accredited Campus</span>
+      </div>
+      <div style="font-weight: 700; color: #F8FAFC; font-size: 0.86rem;" id="sidebarInstitutionName">
+        Lagos State University (LASU)
+      </div>
+    </div>
+  </aside>
+
+  <!-- ============================================================
+       SCROLLABLE WORKSPACE MAIN CONTENT
+       ============================================================ -->
+  <main class="portal-main-content">
+
+    <!-- Onboarding Prompt Banner for New Students -->
+    <div class="onboarding-prompt-banner" id="onboardingPromptBanner" style="display: none;">
+      <div style="display: flex; align-items: center; gap: 0.85rem;">
+        <div style="width: 40px; height: 40px; border-radius: 10px; background: #3B49DF; color: white; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+          <i data-lucide="sparkles" style="width: 20px; height: 20px;"></i>
+        </div>
+        <div>
+          <div style="font-weight: 800; color: #1E1B4B; font-size: 0.98rem;">Action Required: Complete Your Placement Profile</div>
+          <p style="color: #4338CA; font-size: 0.86rem; margin: 0.15rem 0 0 0;">
+            Please fill in your Host Organization, Industry Supervisor, and SIWES details to unlock weekly log tracking.
+          </p>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 0.65rem;">
+        <button class="prompt-btn" onclick="switchStudentTab('profile')">
+          <span>Update Profile Now</span>
+          <i data-lucide="arrow-right" style="width: 14px;"></i>
+        </button>
+        <button class="banner-close-btn" onclick="dismissOnboardingBanner()" title="Dismiss Prompt">&times;</button>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         TAB 1: DASHBOARD OVERVIEW
+         ============================================================ -->
+    <section id="viewDashboard" class="tab-panel-view active-panel">
+      
+      <!-- Top Welcome Banner -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.75rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h2 style="font-size: 1.85rem; font-family: var(--font-heading); font-weight: 800; color: var(--text-dark); margin: 0;">
+            Student Placement &amp; Logbook Hub
+          </h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 0.25rem;" id="dashSubtitle">
+            Directorate of SIWES &bull; Millennium Fellowship Social Impact Project
+          </p>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem;">
+          <button class="btn btn-primary" onclick="switchStudentTab('logbook')">
+            <i data-lucide="book-open" style="width: 16px;"></i> Open Digital Logbook
+          </button>
+        </div>
+      </div>
+
+      <!-- Security Clearance Warning Banner (Visible if pending Super Admin approval) -->
+      <div id="pendingClearanceStudentBanner" style="display: none; background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%); border: 1px solid #FCD34D; border-radius: 16px; padding: 1.25rem 1.5rem; margin-bottom: 1.75rem; box-shadow: 0 4px 14px rgba(217, 119, 6, 0.08);">
+        <div style="display: flex; align-items: flex-start; gap: 1rem;">
+          <div style="width: 44px; height: 44px; border-radius: 12px; background: #FDE68A; color: #B45309; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i data-lucide="shield-alert" style="width: 24px; height: 24px;"></i>
+          </div>
+          <div style="flex: 1;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem; flex-wrap: wrap;">
+              <h4 style="font-family: var(--font-heading); font-size: 1.08rem; font-weight: 800; color: #92400E; margin: 0;">
+                Institutional Security Clearance Pending &bull; Awaiting Super Admin Authorization
+              </h4>
+              <span style="background: #FEF3C7; border: 1px solid #F59E0B; color: #B45309; font-size: 0.72rem; font-weight: 800; padding: 0.15rem 0.55rem; border-radius: 9999px;">
+                Queued for Verification
+              </span>
+            </div>
+            <p style="color: #78350F; font-size: 0.88rem; line-height: 1.5; margin: 0 0 0.6rem 0;">
+              Your student account has been registered with the SIWES Directorate. For security control and tamper-prevention, digital logbook publishing and cryptographic sign-offs remain locked until the <strong>Institutional Coordinator (Super Admin)</strong> grants full clearance.
+            </p>
+            <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; font-size: 0.82rem; font-weight: 700; color: #92400E;">
+              <span style="display: inline-flex; align-items: center; gap: 0.3rem;"><i data-lucide="check-circle" style="width: 14px; color: #059669;"></i> Placement Details Active</span>
+              <span>&bull;</span>
+              <span style="display: inline-flex; align-items: center; gap: 0.3rem;"><i data-lucide="lock" style="width: 14px; color: #D97706;"></i> Logbook Submission Restricted</span>
+              <span>&bull;</span>
+              <span style="display: inline-flex; align-items: center; gap: 0.3rem;"><i data-lucide="clock" style="width: 14px; color: #D97706;"></i> Review Status: In Queue</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Dynamic Metrics Grid -->
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-bottom: 1.75rem;">
+        
+        <!-- Metric 1: Logged Progress -->
+        <div style="background: white; border: 1px solid var(--border-color); border-radius: 14px; padding: 1.4rem; box-shadow: var(--shadow-sm);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+            <span style="font-size: 0.8rem; font-weight: 700; color: #64748B; text-transform: uppercase;">Logged Duration</span>
+            <i data-lucide="calendar-check" style="width: 18px; color: var(--primary);"></i>
+          </div>
+          <div style="font-size: 1.85rem; font-weight: 800; color: var(--primary); font-family: var(--font-heading);" id="dashMetricLoggedWeeks">3 / 24 Weeks</div>
+          <div style="font-size: 0.82rem; color: #64748B; font-weight: 600; margin-top: 0.25rem;" id="dashMetricProgressPct">12.5% of SIWES completed</div>
+        </div>
+
+        <!-- Metric 2: Sign-Off Rate -->
+        <div style="background: white; border: 1px solid var(--border-color); border-radius: 14px; padding: 1.4rem; box-shadow: var(--shadow-sm);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+            <span style="font-size: 0.8rem; font-weight: 700; color: #64748B; text-transform: uppercase;">Supervisor Approval</span>
+            <i data-lucide="check-circle" style="width: 18px; color: #059669;"></i>
+          </div>
+          <div style="font-size: 1.85rem; font-weight: 800; color: #059669; font-family: var(--font-heading);" id="dashMetricSignoffRate">100%</div>
+          <div style="font-size: 0.82rem; color: #059669; font-weight: 700; margin-top: 0.25rem;" id="dashMetricSignoffDetail">All submitted weeks signed</div>
+        </div>
+
+        <!-- Metric 3: Active Commencement Week -->
+        <div style="background: white; border: 1px solid var(--border-color); border-radius: 14px; padding: 1.4rem; box-shadow: var(--shadow-sm);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+            <span style="font-size: 0.8rem; font-weight: 700; color: #64748B; text-transform: uppercase;">Current Week</span>
+            <i data-lucide="clock" style="width: 18px; color: #2563EB;"></i>
+          </div>
+          <div style="font-size: 1.4rem; font-weight: 800; color: #0F172A; font-family: var(--font-heading);" id="dashMetricActiveWeek">Week 1 (Commencement)</div>
+          <div style="font-size: 0.82rem; color: #64748B; font-weight: 600; margin-top: 0.25rem;" id="dashMetricCurrentDateRange">Mar 02 &ndash; Mar 07, 2026</div>
+        </div>
+
+      </div>
+
+      <!-- Quick Placement Overview Banner -->
+      <div style="background: linear-gradient(135deg, #F8FAFC 0%, #EFF6FF 100%); border: 1.5px solid #DBEAFE; border-radius: 14px; padding: 1.25rem 1.5rem; margin-bottom: 1.75rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <div style="width: 44px; height: 44px; border-radius: 10px; background: #3B49DF; color: white; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i data-lucide="building-2" style="width: 22px;"></i>
+          </div>
+          <div>
+            <div style="font-size: 0.78rem; font-weight: 700; color: #3B49DF; text-transform: uppercase; letter-spacing: 0.04em;">Accredited Placement</div>
+            <div style="font-size: 1.1rem; font-weight: 800; color: #0F172A;" id="dashHostOrgText">Not Configured (Set in Tab 4)</div>
+            <div style="font-size: 0.84rem; color: #64748B; margin-top: 0.25rem; line-height: 1.5;">
+              <span style="display: inline-block; margin-right: 0.85rem;"><strong>🏛️ Institutional Supervisor:</strong> <span id="dashInstSupervisorText" style="color: #1D4ED8; font-weight: 700;">Pending Allocation</span></span>
+              <span style="display: inline-block; margin-right: 0.85rem;"><strong>🏢 Industry Mentor:</strong> <span id="dashIndustrySupervisorText" style="color: #0F172A; font-weight: 600;">Not Set</span></span>
+              <span style="display: inline-block;"><strong>Commencement:</strong> <span id="dashStartDateText">Not Set</span></span>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-secondary" onclick="switchStudentTab('profile')" style="font-size: 0.84rem; padding: 0.5rem 1rem;">
+          <i data-lucide="edit-3" style="width: 14px;"></i> Update Profile
+        </button>
+      </div>
+
+      <!-- Recent Logbook Records (Limited to strictly 2 weeks) -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.15rem;">
+        <h3 style="font-size: 1.25rem; font-family: var(--font-heading); font-weight: 800; color: var(--text-dark); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+          <i data-lucide="clock" style="color: var(--primary); width: 18px;"></i> Recent Logbook Records <span style="font-size: 0.8rem; font-weight: 600; color: #64748B; background: #F1F5F9; padding: 0.2rem 0.5rem; border-radius: 6px;">Latest 2 Weeks</span>
+        </h3>
+        <a href="#" onclick="switchStudentTab('logbook')" style="font-size: 0.88rem; font-weight: 700; color: var(--primary); text-decoration: none; display: inline-flex; align-items: center; gap: 0.35rem;">
+          View All Weeks in Logbook &rarr;
+        </a>
+      </div>
+
+      <div id="dashTimelineRecords">
+        <!-- Live timeline records loaded dynamically -->
+      </div>
+    </section>
+
+    <!-- ============================================================
+         TAB 2: DIGITAL LOGBOOK (AUTHENTIC MON-SAT LEDGER + DYNAMIC CALENDAR)
+         ============================================================ -->
+    <section id="viewLogbook" class="tab-panel-view">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.75rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h2 style="font-size: 1.85rem; font-family: var(--font-heading); font-weight: 800; color: var(--text-dark); margin: 0;">
+            SIWES Digital Logbook Workspace
+          </h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 0.25rem;">
+            Official industrial training daily ledger. Automatic calendar calculation from your commencement date.
+          </p>
+        </div>
+        
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <span id="autosaveStatusBadge" class="autosave-badge saved">
+            <i data-lucide="check-circle-2" style="width: 14px;"></i> All changes saved
+          </span>
+        </div>
+      </div>
+
+      <!-- Authentic Real Logbook Ledger Card -->
+      <div class="logbook-ledger-card">
+        
+        <!-- Ledger Card Header -->
+        <div class="logbook-ledger-header">
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <div style="width: 38px; height: 38px; border-radius: 8px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center;">
+              <i data-lucide="book-marked" style="width: 20px; color: #38BDF8;"></i>
+            </div>
+            <div>
+              <div style="font-weight: 800; font-size: 1.1rem; letter-spacing: 0.02em;">OFFICIAL SIWES INDUSTRIAL LOGBOOK RECORD</div>
+              <div style="font-size: 0.8rem; color: #94A3B8;" id="logbookStudentMeta">Student: &mdash; &bull; Matric: &mdash;</div>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.5rem; background: rgba(255,255,255,0.08); padding: 0.4rem 0.85rem; border-radius: 8px; font-size: 0.84rem;">
+            <i data-lucide="shield-check" style="width: 15px; color: #10B981;"></i>
+            <span>Verified Digital Ledger</span>
+          </div>
+        </div>
+
+        <!-- Lock Notice Banner (Visible when Week is Approved by Supervisor) -->
+        <div id="logLockNotice" style="display: none; align-items: center; gap: 0.5rem; background: #ECFDF5; border-bottom: 1px solid #A7F3D0; color: #065F46; padding: 0.75rem 1.75rem; font-weight: 700; font-size: 0.88rem;">
+          <i data-lucide="lock" style="width: 16px; color: #059669;"></i>
+          <span>Official Supervisor Signed Record &mdash; This week is approved and locked from further edits.</span>
+        </div>
+
+        <!-- Official Supervisor Remarks & Feedback Box -->
+        <div id="logSupervisorRemarkBox" style="display: none; margin: 1.25rem 1.75rem 0 1.75rem; background: #F8FAFC; border: 1px solid #E2E8F0; border-left: 4px solid #059669; border-radius: 12px; padding: 1.15rem 1.35rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem; flex-wrap: wrap; gap: 0.5rem;">
+            <div style="display: flex; align-items: center; gap: 0.45rem; font-weight: 800; font-size: 0.88rem; color: #0F172A;">
+              <i data-lucide="message-square" style="width: 15px; color: #059669;"></i>
+              <span>Official Supervisor Feedback &amp; Institutional Remarks</span>
+            </div>
+            <span id="logSupervisorStatusTag" style="font-size: 0.74rem; font-weight: 800; padding: 0.2rem 0.65rem; border-radius: 9999px; background: #ECFDF5; color: #059669;">
+              ✓ Approved
+            </span>
+          </div>
+          <p id="logSupervisorRemarkText" style="color: #334155; font-size: 0.88rem; line-height: 1.5; margin: 0; font-style: italic;">
+            <!-- Populated dynamically -->
+          </p>
+          <div id="logSupervisorSignee" style="margin-top: 0.4rem; font-size: 0.76rem; color: #64748B; font-weight: 700;">
+            <!-- Reviewed by Dr. A. O. Institutional Coordinator -->
+          </div>
+        </div>
+
+        <!-- Navigation Toolbar: Prev, Select Week, Next, Date Range & Jump all in ONE Straight Line -->
+        <div class="logbook-nav-toolbar" style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: nowrap; overflow-x: auto; padding: 0.85rem 1.5rem;">
+          
+          <!-- Left: Prev, Select Week, Next -->
+          <div style="display: flex; align-items: center; gap: 0.55rem; flex-shrink: 0;">
+            <button type="button" class="btn btn-secondary" onclick="stepWeek(-1)" style="padding: 0.4rem 0.75rem; font-size: 0.84rem; white-space: nowrap; height: 38px; display: inline-flex; align-items: center; gap: 0.3rem;">
+              <i data-lucide="chevron-left" style="width: 15px;"></i> Prev
+            </button>
+            
+            <div style="display: flex; align-items: center; gap: 0.45rem; white-space: nowrap;">
+              <label style="font-weight: 700; font-size: 0.88rem; color: #1E293B;">Select Week:</label>
+              <select id="logWeekSelect" class="form-straight-input" onchange="onWeekDropdownChanged()" style="width: auto; min-width: 145px; height: 38px; padding: 0 0.85rem; font-weight: 800; color: #3B49DF;">
+                <!-- Populated with 24 weeks -->
+              </select>
+            </div>
+
+            <button type="button" class="btn btn-secondary" onclick="stepWeek(1)" style="padding: 0.4rem 0.75rem; font-size: 0.84rem; white-space: nowrap; height: 38px; display: inline-flex; align-items: center; gap: 0.3rem;">
+              Next <i data-lucide="chevron-right" style="width: 15px;"></i>
+            </button>
+          </div>
+
+          <!-- Right: Date Range Banner & Date Picker -->
+          <div style="display: flex; align-items: center; gap: 0.65rem; flex-shrink: 0;">
+            <div style="background: #EFF6FF; border: 1px solid #BFDBFE; color: #1E40AF; padding: 0.45rem 0.95rem; border-radius: 8px; font-size: 0.86rem; font-weight: 700; display: flex; align-items: center; gap: 0.45rem; white-space: nowrap; height: 38px; box-sizing: border-box;" id="logWeekDateBanner">
+              <i data-lucide="calendar" style="width: 16px;"></i>
+              <span id="computedDateRangeText">Mar 02, 2026 &ndash; Mar 07, 2026</span>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 0.35rem; white-space: nowrap;">
+              <span style="font-size: 0.8rem; color: #64748B; font-weight: 600;">Jump Date:</span>
+              <input type="date" id="logDateJumpPicker" class="form-straight-input" style="width: auto; height: 38px; padding: 0 0.65rem; font-size: 0.82rem;" onchange="jumpToWeekByDate(this.value)">
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Monday to Saturday Daily Ledger Rows -->
+        <div>
+          
+          <!-- Monday -->
+          <div class="daily-log-row">
+            <div class="daily-log-day-col">
+              <div style="font-weight: 800; font-size: 1rem; color: #0F172A;">MONDAY</div>
+              <div style="font-size: 0.78rem; font-weight: 700; color: var(--primary); margin-top: 0.15rem;" id="dateTagMon">Mar 02, 2026</div>
+            </div>
+            <div class="daily-log-input-col">
+              <input type="text" id="logMon" class="daily-log-input" placeholder="Enter practical tasks, system routines, or work activities completed on Monday" oninput="triggerAutoSave()">
+            </div>
+          </div>
+
+          <!-- Tuesday -->
+          <div class="daily-log-row">
+            <div class="daily-log-day-col">
+              <div style="font-weight: 800; font-size: 1rem; color: #0F172A;">TUESDAY</div>
+              <div style="font-size: 0.78rem; font-weight: 700; color: var(--primary); margin-top: 0.15rem;" id="dateTagTue">Mar 03, 2026</div>
+            </div>
+            <div class="daily-log-input-col">
+              <input type="text" id="logTue" class="daily-log-input" placeholder="Enter practical tasks, system routines, or work activities completed on Tuesday" oninput="triggerAutoSave()">
+            </div>
+          </div>
+
+          <!-- Wednesday -->
+          <div class="daily-log-row">
+            <div class="daily-log-day-col">
+              <div style="font-weight: 800; font-size: 1rem; color: #0F172A;">WEDNESDAY</div>
+              <div style="font-size: 0.78rem; font-weight: 700; color: var(--primary); margin-top: 0.15rem;" id="dateTagWed">Mar 04, 2026</div>
+            </div>
+            <div class="daily-log-input-col">
+              <input type="text" id="logWed" class="daily-log-input" placeholder="Enter practical tasks, system routines, or work activities completed on Wednesday" oninput="triggerAutoSave()">
+            </div>
+          </div>
+
+          <!-- Thursday -->
+          <div class="daily-log-row">
+            <div class="daily-log-day-col">
+              <div style="font-weight: 800; font-size: 1rem; color: #0F172A;">THURSDAY</div>
+              <div style="font-size: 0.78rem; font-weight: 700; color: var(--primary); margin-top: 0.15rem;" id="dateTagThu">Mar 05, 2026</div>
+            </div>
+            <div class="daily-log-input-col">
+              <input type="text" id="logThu" class="daily-log-input" placeholder="Enter practical tasks, system routines, or work activities completed on Thursday" oninput="triggerAutoSave()">
+            </div>
+          </div>
+
+          <!-- Friday -->
+          <div class="daily-log-row">
+            <div class="daily-log-day-col">
+              <div style="font-weight: 800; font-size: 1rem; color: #0F172A;">FRIDAY</div>
+              <div style="font-size: 0.78rem; font-weight: 700; color: var(--primary); margin-top: 0.15rem;" id="dateTagFri">Mar 06, 2026</div>
+            </div>
+            <div class="daily-log-input-col">
+              <input type="text" id="logFri" class="daily-log-input" placeholder="Enter practical tasks, system routines, or work activities completed on Friday" oninput="triggerAutoSave()">
+            </div>
+          </div>
+
+          <!-- Saturday -->
+          <div class="daily-log-row" style="border-bottom: none;">
+            <div class="daily-log-day-col">
+              <div style="font-weight: 800; font-size: 1rem; color: #0F172A;">SATURDAY</div>
+              <div style="font-size: 0.78rem; font-weight: 700; color: #64748B; margin-top: 0.15rem;" id="dateTagSat">Mar 07, 2026</div>
+              <span style="font-size: 0.7rem; color: #94A3B8; font-weight: 600;">(Optional)</span>
+            </div>
+            <div class="daily-log-input-col">
+              <input type="text" id="logSat" class="daily-log-input" placeholder="Enter Saturday project activities or documentation review (optional)" oninput="triggerAutoSave()">
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Weekly Summary Section -->
+        <div style="padding: 1.75rem; background: #FFFFFF; border-top: 1.5px solid #E2E8F0;">
+          <div class="form-stacked-group" style="margin-bottom: 0;">
+            <label class="form-question-label" style="color: var(--primary); font-size: 0.98rem;">
+              Weekly Summary &amp; Key Accomplishments (Freeform Student Overview)
+            </label>
+            <input type="text" id="logSummary" class="daily-log-input" placeholder="Enter a comprehensive summary of accomplishments, tools learned, or progress achieved this week" oninput="triggerAutoSave()">
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 24-Week Timeline Archive List -->
+      <div style="margin-top: 2.5rem; margin-bottom: 1.25rem;">
+        <h3 style="font-size: 1.3rem; font-family: var(--font-heading); font-weight: 800; color: var(--text-dark); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+          <i data-lucide="list-ordered" style="color: var(--primary); width: 20px;"></i> 24-Week Logbook Timeline Archive
+        </h3>
+      </div>
+
+      <div id="logbookFullTimeline">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+    <!-- ============================================================
+         TAB 3: PLACEMENT DETAILS
+         ============================================================ -->
+    <section id="viewPlacement" class="tab-panel-view">
+      <div style="margin-bottom: 2rem;">
+        <h2 style="font-size: 1.85rem; font-family: var(--font-heading); font-weight: 800; color: var(--text-dark); margin: 0;">
+          Institutional Placement Profile
+        </h2>
+        <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 0.25rem;">
+          Official accreditation record registered with the Directorate of SIWES.
+        </p>
+      </div>
+
+      <div class="portal-card-box">
+        <h3 style="font-family: var(--font-heading); font-size: 1.25rem; font-weight: 800; margin-bottom: 1.5rem; color: #0F172A;">
+          Accredited Placement &amp; Dual-Supervisor Registry
+        </h3>
+        
+        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+          
+          <!-- 1. Institutional Supervisor (University Academic Staff) -->
+          <div style="background: #EFF6FF; border: 1.5px solid #BFDBFE; padding: 1.25rem; border-radius: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem; flex-wrap: wrap; gap: 0.5rem;">
+              <div style="font-size: 0.78rem; font-weight: 800; color: #1E40AF; text-transform: uppercase; display: flex; align-items: center; gap: 0.35rem;">
+                <i data-lucide="graduation-cap" style="width: 16px;"></i> Assigned Institutional Supervisor (University Staff)
+              </div>
+              <span id="displayInstSupervisorStatusBadge" style="font-size: 0.72rem; font-weight: 800; padding: 0.2rem 0.6rem; border-radius: 9999px; background: #DBEAFE; color: #1E40AF;">
+                ✓ Official University Allocation
+              </span>
+            </div>
+            <div style="font-size: 1.15rem; font-weight: 800; color: #0F172A; margin-top: 0.25rem;" id="displayInstSupervisorName">
+              Dr. A. O. Institutional Coordinator
+            </div>
+            <div style="font-size: 0.86rem; color: #475569; margin-top: 0.35rem;" id="displayInstSupervisorMeta">
+              <span id="displayInstSupervisorEmail">coordinator@institution.edu.ng</span> &bull; <span>Directorate of SIWES &amp; ICT</span>
+            </div>
+          </div>
+
+          <!-- 2. Host Organization -->
+          <div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 1.25rem; border-radius: 12px;">
+            <div style="font-size: 0.78rem; font-weight: 700; color: #64748B; text-transform: uppercase;">Host Organization / Internship Company</div>
+            <div style="font-size: 1.15rem; font-weight: 800; color: #0F172A; margin-top: 0.25rem;" id="displayHostOrg">Not Configured (Update in Profile Tab)</div>
+          </div>
+
+          <!-- 3. Placement Workplace Physical Address -->
+          <div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 1.25rem; border-radius: 12px;">
+            <div style="font-size: 0.78rem; font-weight: 700; color: #64748B; text-transform: uppercase;">Placement Workplace Physical Address</div>
+            <div style="font-size: 1.05rem; font-weight: 700; color: #0F172A; margin-top: 0.25rem;" id="displayPlacementAddress">Not Provided (Update in Profile Tab)</div>
+          </div>
+
+          <!-- 4. Industry Workplace Mentor -->
+          <div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 1.25rem; border-radius: 12px;">
+            <div style="font-size: 0.78rem; font-weight: 700; color: #64748B; text-transform: uppercase; display: flex; align-items: center; gap: 0.35rem;">
+              <i data-lucide="building" style="width: 15px;"></i> Industry Supervisor / On-Site Workplace Mentor
+            </div>
+            <div style="font-size: 1.05rem; font-weight: 700; color: #0F172A; margin-top: 0.25rem;" id="displayIndustrySupervisorName">Not Assigned Yet (Set in Tab 4)</div>
+            <div style="font-size: 0.86rem; color: #64748B; margin-top: 0.35rem;">
+              <span id="displayIndustrySupervisorEmail">Not Available</span> &bull; <span id="displayIndustrySupervisorPhone">Not Available</span>
+            </div>
+          </div>
+
+          <!-- 5. Placement Commencement Start Date -->
+          <div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 1.25rem; border-radius: 12px;">
+            <div style="font-size: 0.78rem; font-weight: 700; color: #64748B; text-transform: uppercase;">Placement Commencement Start Date</div>
+            <div style="font-size: 1.05rem; font-weight: 700; color: #0F172A; margin-top: 0.25rem;" id="displayPlacementStartDate">Not Set (Set in Tab 4)</div>
+          </div>
+
+          <!-- 6. Accreditation Status -->
+          <div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 1.25rem; border-radius: 12px;">
+            <div style="font-size: 0.78rem; font-weight: 700; color: #64748B; text-transform: uppercase;">Accreditation Status</div>
+            <div style="font-size: 1.05rem; font-weight: 800; margin-top: 0.25rem;" id="displayAccreditationStatus">
+              <span style="color: #D97706; display: flex; align-items: center; gap: 0.35rem;">
+                <i data-lucide="alert-circle" style="width: 17px;"></i> Incomplete &mdash; Pending Placement Registration
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 1.75rem; display: flex; justify-content: flex-end;">
+          <button class="btn btn-primary" onclick="switchStudentTab('profile')">
+            <i data-lucide="edit" style="width: 15px;"></i> Edit Placement Profile
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         TAB 4: COMPREHENSIVE UPDATE PROFILE FORM
+         ============================================================ -->
+    <section id="viewProfile" class="tab-panel-view">
+      <div style="margin-bottom: 2rem;">
+        <h2 style="font-size: 1.85rem; font-family: var(--font-heading); font-weight: 800; color: var(--text-dark); margin: 0;">
+          Student &amp; Industry Placement Form
+        </h2>
+        <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 0.25rem;">
+          Update your student credentials and accredited industry placement information.
+        </p>
+      </div>
+
+      <div class="portal-card-box">
+        <form id="profileUpdateForm" onsubmit="saveStudentFullProfile(event)">
+          
+          <!-- Section 1: Student Information -->
+          <div class="form-section-heading" style="margin-top: 0;">
+            <i data-lucide="user" style="width: 18px; color: var(--primary);"></i>
+            <span>1. Student Identity &amp; Contact Information</span>
+          </div>
+
+          <div class="form-stacked-group">
+            <label class="form-question-label">What is your Full Legal Name?</label>
+            <input type="text" id="profFullName" class="form-straight-input" placeholder="Enter your full legal name" required>
+          </div>
+
+          <div class="form-stacked-group">
+            <label class="form-question-label">What is your Matriculation Number?</label>
+            <input type="text" id="profMatric" class="form-straight-input" placeholder="e.g. 230591***" required>
+          </div>
+
+          <div class="form-stacked-group">
+            <label class="form-question-label">What is your Student Mobile Phone Number?</label>
+            <input type="tel" id="profPhone" class="form-straight-input" placeholder="e.g. +234 801 234 5678" required>
+          </div>
+
+          <!-- Section 2: Academic Department -->
+          <div class="form-section-heading">
+            <i data-lucide="graduation-cap" style="width: 18px; color: var(--primary);"></i>
+            <span>2. Academic Faculty &amp; Institutional University</span>
+          </div>
+
+          <div class="form-stacked-group">
+            <label class="form-question-label">Which Institutional University are you enrolled in?</label>
+            <select id="profInstitution" class="form-straight-input" style="background: white;">
+              <option value="Lagos State University (LASU)">Lagos State University (LASU)</option>
+              <option value="Lagos State University of Education (LASUED)">LASUED</option>
+              <option value="Partner Campus">Partner Campus</option>
+            </select>
+          </div>
+
+          <div class="form-stacked-group">
+            <label class="form-question-label">What is your Academic Department?</label>
+            <input type="text" id="profDept" class="form-straight-input" placeholder="e.g. Computer Science" required>
+          </div>
+
+          <!-- Section 3: Institutional Supervisor (Assigned by University) -->
+          <div class="form-section-heading">
+            <i data-lucide="graduation-cap" style="width: 18px; color: #1D4ED8;"></i>
+            <span>3. Institutional Supervisor (University Academic Staff)</span>
+          </div>
+
+          <div style="background: #EFF6FF; border: 1.5px solid #BFDBFE; padding: 1.25rem; border-radius: 12px; margin-bottom: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+              <div>
+                <div style="font-size: 0.76rem; font-weight: 800; color: #1E40AF; text-transform: uppercase;">Assigned Institutional Reviewer</div>
+                <div style="font-size: 1.15rem; font-weight: 800; color: #0F172A; margin-top: 0.2rem;" id="profInstSupervisorDisplay">
+                  Dr. A. O. Institutional Coordinator
+                </div>
+                <div style="font-size: 0.85rem; color: #475569; margin-top: 0.2rem;" id="profInstSupervisorEmailDisplay">
+                  coordinator@institution.edu.ng &bull; Directorate of SIWES
+                </div>
+              </div>
+              <span style="background: #DBEAFE; color: #1E40AF; font-size: 0.74rem; font-weight: 800; padding: 0.25rem 0.65rem; border-radius: 9999px;">
+                University Allocation
+              </span>
+            </div>
+            <p style="color: #64748B; font-size: 0.8rem; margin: 0.75rem 0 0 0; border-top: 1px dashed #BFDBFE; padding-top: 0.5rem;">
+              *Your Institutional Supervisor is assigned and updated automatically by the university coordinator in the Admin Console.*
+            </p>
+          </div>
+
+          <!-- Section 4: Industry Placement & Workplace Mentor Details -->
+          <div class="form-section-heading">
+            <i data-lucide="building-2" style="width: 18px; color: #059669;"></i>
+            <span>4. Industry Placement &amp; Workplace Mentor Details</span>
+          </div>
+
+          <div class="form-stacked-group">
+            <label class="form-question-label">What is your SIWES / Industrial Placement Commencement Start Date?</label>
+            <input type="date" id="profPlacementStartDate" class="form-straight-input" value="" onchange="onPlacementStartDateChanged()" required>
+            <span style="font-size: 0.8rem; color: #64748B; margin-top: 0.35rem; display: block;">
+              *This anchor date automatically schedules and synchronizes Week 1 through Week 24 across your digital logbook.*
+            </span>
+          </div>
+
+          <div class="form-stacked-group">
+            <label class="form-question-label">What is the Full Legal Name of your Host Organization / Placement Company?</label>
+            <input type="text" id="profHostOrg" class="form-straight-input" placeholder="e.g. Technology Hub / Engineering Firm" required>
+          </div>
+
+          <div class="form-stacked-group">
+            <label class="form-question-label">What is your Placement Workplace Physical Address &amp; State?</label>
+            <input type="text" id="profPlacementAddress" class="form-straight-input" placeholder="e.g. 12 Silicon Valley Way, Ikeja, Lagos" required>
+          </div>
+
+          <div class="form-stacked-group">
+            <label class="form-question-label">Who is your Assigned Industry Supervisor / Workplace Mentor?</label>
+            <input type="text" id="profIndustrySupervisor" class="form-straight-input" placeholder="e.g. Engr. / Dr. Assigned Workplace Mentor" required>
+          </div>
+
+          <div class="form-stacked-group">
+            <label class="form-question-label">What is your Industry Supervisor's Official Email Address?</label>
+            <input type="email" id="profIndustrySupervisorEmail" class="form-straight-input" placeholder="e.g. mentor@company.com" required>
+          </div>
+
+          <div class="form-stacked-group">
+            <label class="form-question-label">What is your Industry Supervisor's Mobile Phone Number?</label>
+            <input type="tel" id="profIndustrySupervisorPhone" class="form-straight-input" placeholder="e.g. +234 800 000 0000" required>
+          </div>
+
+          <div class="form-stacked-group">
+            <label class="form-question-label">What are your Core Technical Stacks, Tools &amp; Practical Skills for this Placement?</label>
+            <input type="text" id="profSkills" class="form-straight-input" placeholder="e.g. JavaScript, Python, Node.js, PostgreSQL, Cloud Security, Docker, Network Routing, Cryptographic Auditing">
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 2rem;">
+            <button type="submit" class="btn btn-primary" style="padding: 0.9rem 2.25rem; font-size: 0.98rem;">
+              <i data-lucide="check-circle" style="width: 17px;"></i> Save &amp; Activate Placement Profile
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         TAB 5: HELP & SETTINGS
+         ============================================================ -->
+    <section id="viewHelp" class="tab-panel-view">
+      <div style="margin-bottom: 2rem;">
+        <h2 style="font-size: 1.85rem; font-family: var(--font-heading); font-weight: 800; color: var(--text-dark); margin: 0;">
+          Help, Support &amp; Security Settings
+        </h2>
+        <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 0.25rem;">
+          Institutional coordinators directory, submission guidelines, and portal security.
+        </p>
+      </div>
+
+      <div class="portal-card-box">
+        <h3 style="font-family: var(--font-heading); font-size: 1.25rem; font-weight: 800; margin-bottom: 1rem; color: #0F172A;">
+          SIWES Coordinator Support Hotline
+        </h3>
+        <p style="color: #64748B; font-size: 0.92rem; line-height: 1.6; margin-bottom: 1.25rem;">
+          If you experience discrepancies with weekly log approvals or supervisor sign-offs, contact the institutional directorate coordinator:
+        </p>
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+          <div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 1rem 1.25rem; border-radius: 10px;">
+            <div style="font-size: 0.78rem; font-weight: 700; color: #64748B;">SUPPORT DESK</div>
+            <div style="font-weight: 700; color: #0F172A;">siwes-support@lasu.edu.ng</div>
+          </div>
+          <div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 1rem 1.25rem; border-radius: 10px;">
+            <div style="font-size: 0.78rem; font-weight: 700; color: #64748B;">CAMPUS OFFICE</div>
+            <div style="font-weight: 700; color: #0F172A;">Directorate of SIWES Building, LASU Ojo</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="portal-card-box">
+        <h3 style="font-family: var(--font-heading); font-size: 1.25rem; font-weight: 800; margin-bottom: 1rem; color: #0F172A;">
+          Logbook Submission Guidelines
+        </h3>
+        <ul style="color: #475569; font-size: 0.92rem; line-height: 1.7; padding-left: 1.25rem; margin: 0;">
+          <li>Daily Monday&ndash;Saturday activities are automatically saved in real time.</li>
+          <li>Weekly dates are automatically scheduled from your placement commencement date.</li>
+          <li>Supervisor digital approvals generate tamper-evident SHA-256 audit blocks.</li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="js/app.js"></script>
+  <script>
+    // State management for 24-week logbook
+    let autoSaveTimer = null;
+    const DEFAULT_WEEKS_COUNT = 24;
+
+        // Realistic Mon-Sat daily seed entries starting from Week 1 (Commencement)
+    const defaultSprintSeed = {
+      1: {
+        mon: "Institutional SIWES orientation and departmental workstation environment setup.",
+        tue: "Installed software dependencies, Git version control, and development toolchains.",
+        wed: "Reviewed organizational software architecture and repository guidelines.",
+        thu: "Configured local development databases and executed initial system health checks.",
+        fri: "Completed orientation documentation and submitted initial placement report.",
+        sat: "Weekly summary documentation and mentor briefing.",
+        summary: "Completed placement orientation and successfully configured engineering development workstation.",
+        supervisor: "Student successfully onboarded with all development toolchains active. Approved for Week 1.",
+        approved: true
+      },
+      2: {
+        mon: "Conducted system audit on existing student clearance workflows.",
+        tue: "Drafted data flow diagrams for secure digitalization initiative.",
+        wed: "Configured REST API authentication middleware and token handlers.",
+        thu: "Implemented database schema models for student placement tracking.",
+        fri: "Executed integration unit tests on database connection layer.",
+        sat: "Code review and sprint documentation.",
+        summary: "Designed core architecture and backend models for placement verification.",
+        supervisor: "Good initiative on architecture design and unit test coverage. Approved.",
+        approved: true
+      },
+      3: {
+        mon: "Implemented SHA-256 cryptographic hashing module for student records.",
+        tue: "Built digital signature generation routine for institutional clearances.",
+        wed: "Connected public QR verification endpoints to ledger database.",
+        thu: "Tested cryptographic tampering detection with modified hashes.",
+        fri: "Documented public verifier API endpoints and security parameters.",
+        sat: "End-to-end verification testing.",
+        summary: "Implemented tamper-evident cryptographic public verification engine.",
+        supervisor: "High security standard demonstrated. Verification engine approved.",
+        approved: true
+      }
+    };
+
+    document.addEventListener("DOMContentLoaded", () => {
+      lucide.createIcons();
+      populateProfileFromSession();
+      initLogWeekSelector();
+      loadLogForSelectedWeek();
+      renderAllTimelineViews();
+    });
+
+    function getAnchorStartDate() {
+      const user = getActiveUser() || {};
+      return user.placementStartDate || '2026-03-02';
+    }
+
+    function populateProfileFromSession() {
+      const user = getActiveUser() || {};
+      const isApproved = typeof isUserApproved === 'function' ? isUserApproved(user) : true;
+
+      // Handle Security Clearance Banner & Restriction
+      const clearanceBanner = document.getElementById('pendingClearanceStudentBanner');
+      if (clearanceBanner) {
+        clearanceBanner.style.display = isApproved ? 'none' : 'block';
+      }
+
+      // Update header status tag / subtitle
+      const subTitle = document.getElementById('dashSubtitle');
+      if (subTitle && !isApproved) {
+        subTitle.innerHTML = `<span style="background: #FEF3C7; color: #B45309; font-weight: 800; padding: 0.2rem 0.6rem; border-radius: 9999px; font-size: 0.76rem; border: 1px solid #FCD34D;">⏳ Account Pending Super Admin Clearance</span> &bull; Placement Directorate`;
+      }
+
+      // 1. Update Top Header User Greeting with the signed-in user's First Name only
+      const headerGreeting = document.getElementById('headerUserGreeting');
+      if (headerGreeting) {
+        const rawName = (user.name || 'Benjamin').trim();
+        const firstName = rawName.split(' ')[0];
+        const formattedName = firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase();
+        headerGreeting.innerText = formattedName;
+      }
+
+      // 2. Pre-fill profile form fields directly with account creation credentials
+      if (document.getElementById('profFullName')) {
+        document.getElementById('profFullName').value = user.name || '';
+      }
+      if (document.getElementById('profMatric')) {
+        document.getElementById('profMatric').value = user.matric || user.identifier || '';
+      }
+      if (document.getElementById('profPhone')) {
+        document.getElementById('profPhone').value = user.phone || '';
+      }
+      if (document.getElementById('profDept')) {
+        document.getElementById('profDept').value = user.dept || '';
+      }
+      if (document.getElementById('profInstitution')) {
+        if (user.institution) {
+          document.getElementById('profInstitution').value = user.institution;
+        }
+      }
+      if (document.getElementById('sidebarInstitutionName') && user.institution) {
+        document.getElementById('sidebarInstitutionName').innerText = user.institution;
+      }
+
+      // 3. Institutional Supervisor (University Staff - Synced from Admin registry)
+      const allUsers = typeof getRegisteredUsersList === 'function' ? getRegisteredUsersList() : [];
+      const freshUser = allUsers.find(u => (u.matric || u.identifier || '').toLowerCase() === (user.matric || user.identifier || '').toLowerCase()) || {};
+      
+      const instSupName = freshUser.institutionalSupervisor || user.institutionalSupervisor || user.supervisor || 'Dr. A. O. Institutional Coordinator';
+      const instSupEmail = freshUser.institutionalSupervisorEmail || user.institutionalSupervisorEmail || user.supervisorEmail || 'coordinator@institution.edu.ng';
+      const isInstAssigned = instSupName && !instSupName.toLowerCase().includes('unassigned') && !instSupName.toLowerCase().includes('pending');
+
+      if (document.getElementById('profInstSupervisorDisplay')) {
+        document.getElementById('profInstSupervisorDisplay').innerText = instSupName;
+      }
+      if (document.getElementById('profInstSupervisorEmailDisplay')) {
+        document.getElementById('profInstSupervisorEmailDisplay').innerText = `${instSupEmail} • Department of ${user.dept || 'Computer Science'}`;
+      }
+      if (document.getElementById('displayInstSupervisorName')) {
+        document.getElementById('displayInstSupervisorName').innerText = instSupName;
+      }
+      if (document.getElementById('displayInstSupervisorEmail')) {
+        document.getElementById('displayInstSupervisorEmail').innerText = instSupEmail;
+      }
+      if (document.getElementById('displayInstSupervisorStatusBadge')) {
+        const badge = document.getElementById('displayInstSupervisorStatusBadge');
+        if (isInstAssigned) {
+          badge.style.background = '#ECFDF5';
+          badge.style.color = '#059669';
+          badge.innerHTML = '<i data-lucide="check-circle" style="width: 12px; display: inline-block;"></i> Assigned Faculty Reviewer';
+        } else {
+          badge.style.background = '#FEF3C7';
+          badge.style.color = '#B45309';
+          badge.innerHTML = '<i data-lucide="clock" style="width: 12px; display: inline-block;"></i> Pending University Allocation';
+        }
+      }
+      if (document.getElementById('logSupervisorNameTag')) {
+        document.getElementById('logSupervisorNameTag').innerText = instSupName;
+      }
+
+      // 4. Industry Placement & Workplace Mentor Fields
+      if (document.getElementById('profPlacementStartDate')) {
+        document.getElementById('profPlacementStartDate').value = user.placementStartDate || '';
+      }
+      if (document.getElementById('displayPlacementStartDate')) {
+        document.getElementById('displayPlacementStartDate').innerText = user.placementStartDate
+          ? `${formatLongDate(user.placementStartDate)} (Week 1 Anchor)`
+          : 'Not Set (Set Commencement Date below)';
+      }
+      if (document.getElementById('profHostOrg')) {
+        document.getElementById('profHostOrg').value = user.hostOrg || '';
+      }
+      if (document.getElementById('displayHostOrg')) {
+        document.getElementById('displayHostOrg').innerText = user.hostOrg || 'Not Configured (Update in Profile Tab)';
+      }
+      if (document.getElementById('profPlacementAddress')) {
+        document.getElementById('profPlacementAddress').value = user.placementAddress || '';
+      }
+      if (document.getElementById('displayPlacementAddress')) {
+        document.getElementById('displayPlacementAddress').innerText = user.placementAddress || 'Not Provided (Update in Profile Tab)';
+      }
+      if (document.getElementById('profIndustrySupervisor')) {
+        document.getElementById('profIndustrySupervisor').value = user.industrySupervisor || '';
+      }
+      if (document.getElementById('displayIndustrySupervisorName')) {
+        document.getElementById('displayIndustrySupervisorName').innerText = user.industrySupervisor || 'Not Assigned Yet (Set in Tab 4)';
+      }
+      if (document.getElementById('profIndustrySupervisorEmail')) {
+        document.getElementById('profIndustrySupervisorEmail').value = user.industrySupervisorEmail || '';
+      }
+      if (document.getElementById('profIndustrySupervisorPhone')) {
+        document.getElementById('profIndustrySupervisorPhone').value = user.industrySupervisorPhone || '';
+      }
+      if (document.getElementById('displayIndustrySupervisorEmail')) {
+        document.getElementById('displayIndustrySupervisorEmail').innerText = user.industrySupervisorEmail || 'Not Available';
+      }
+      if (document.getElementById('displayIndustrySupervisorPhone')) {
+        document.getElementById('displayIndustrySupervisorPhone').innerText = user.industrySupervisorPhone || 'Not Available';
+      }
+      if (document.getElementById('profSkills')) {
+        document.getElementById('profSkills').value = user.skills || '';
+      }
+
+      // Update Dashboard Overview Placement banner
+      if (document.getElementById('dashHostOrgText')) {
+        document.getElementById('dashHostOrgText').innerText = user.hostOrg || 'Not Configured (Set in Tab 4)';
+      }
+      if (document.getElementById('dashInstSupervisorText')) {
+        document.getElementById('dashInstSupervisorText').innerText = instSupName;
+      }
+      if (document.getElementById('dashIndustrySupervisorText')) {
+        document.getElementById('dashIndustrySupervisorText').innerText = user.industrySupervisor || 'Not Set';
+      }
+      if (document.getElementById('dashStartDateText')) {
+        document.getElementById('dashStartDateText').innerText = user.placementStartDate ? formatLongDate(user.placementStartDate) : 'Not Set (Set in Tab 4)';
+      }
+
+      // Update Placement Tab Accreditation Status
+      const accredBadge = document.getElementById('displayAccreditationStatus');
+      if (accredBadge) {
+        if (user.placementStartDate && user.hostOrg && user.supervisor) {
+          accredBadge.innerHTML = '<span style="color: #059669; font-weight: 800; display: inline-flex; align-items: center; gap: 0.35rem;"><i data-lucide="check-circle" style="width: 17px;"></i> Officially Registered &amp; Active</span>';
+        } else {
+          accredBadge.innerHTML = '<span style="color: #D97706; font-weight: 800; display: inline-flex; align-items: center; gap: 0.35rem;"><i data-lucide="alert-circle" style="width: 17px;"></i> Incomplete &mdash; Pending Placement Registration</span>';
+        }
+      }
+
+      // Update logbook student meta strip
+      if (document.getElementById('logbookStudentMeta')) {
+        document.getElementById('logbookStudentMeta').innerText = `Student: ${user.name || 'Student'} • Matric: ${user.matric || user.identifier || 'Pending'}`;
+      }
+
+      // Check banner dismissal status
+      const isCompleted = localStorage.getItem(`sdi_profile_completed_${user.matric || user.identifier || 'default'}`);
+      const banner = document.getElementById('onboardingPromptBanner');
+      if (banner) {
+        if (!isCompleted && (user.needsProfileUpdate || !user.placementStartDate || !user.hostOrg)) {
+          banner.style.display = 'flex';
+        } else {
+          banner.style.display = 'none';
+        }
+      }
+    }
+
+    function initPortalUserSession() {
+      populateProfileFromSession();
+    }
+
+    function dismissOnboardingBanner() {
+      const banner = document.getElementById('onboardingPromptBanner');
+      if (banner) banner.style.display = 'none';
+      const user = getActiveUser() || {};
+      localStorage.setItem(`sdi_profile_completed_${user.matric || 'default'}`, 'true');
+    }
+
+        function initLogWeekSelector() {
+      const select = document.getElementById('logWeekSelect');
+      if (!select) return;
+      select.innerHTML = '';
+      for (let w = 1; w <= 24; w++) {
+        const opt = document.createElement('option');
+        opt.value = w;
+        opt.innerText = `Week ${w} ${w === 1 ? '(Commencement)' : (w === 24 ? '(Final Week)' : '')}`;
+        select.appendChild(opt);
+      }
+      select.value = 1;
+    }
+
+    function getStudentLogStoreKey() {
+      const user = getActiveUser() || {};
+      return `sdi_student_logbook_${user.matric || user.identifier || '230591215'}`;
+    }
+
+    function getStudentLogs() {
+      const user = getActiveUser() || {};
+      const matric = user.matric || user.identifier || '230591215';
+      if (typeof getStudentLogsByMatric === 'function') {
+        return getStudentLogsByMatric(matric);
+      }
+      const key = getStudentLogStoreKey();
+      try {
+        const stored = localStorage.getItem(key);
+        if (stored) return JSON.parse(stored);
+      } catch (e) {}
+      return {};
+    }
+
+    function saveStudentLogs(logsObj) {
+      const user = getActiveUser() || {};
+      const matric = user.matric || user.identifier || '230591215';
+      if (typeof saveStudentLogsByMatric === 'function') {
+        saveStudentLogsByMatric(matric, logsObj);
+        return;
+      }
+      const key = getStudentLogStoreKey();
+      localStorage.setItem(key, JSON.stringify(logsObj));
+    }
+
+    function getWeekDates(weekNum) {
+      const anchorStr = getAnchorStartDate();
+      if (!anchorStr) {
+        return {
+          mon: null,
+          tue: null,
+          wed: null,
+          thu: null,
+          fri: null,
+          sat: null,
+          startStr: '',
+          endStr: ''
+        };
+      }
+      const [year, month, day] = anchorStr.split('-').map(Number);
+      const baseDate = new Date(year, month - 1, day);
+      
+      const weekOffset = (parseInt(weekNum) - 1) * 7;
+      
+      const monDate = new Date(baseDate.getTime() + (weekOffset * 24 * 60 * 60 * 1000));
+      const tueDate = new Date(monDate.getTime() + (1 * 24 * 60 * 60 * 1000));
+      const wedDate = new Date(monDate.getTime() + (2 * 24 * 60 * 60 * 1000));
+      const thuDate = new Date(monDate.getTime() + (3 * 24 * 60 * 60 * 1000));
+      const friDate = new Date(monDate.getTime() + (4 * 24 * 60 * 60 * 1000));
+      const satDate = new Date(monDate.getTime() + (5 * 24 * 60 * 60 * 1000));
+
+      return {
+        mon: monDate,
+        tue: tueDate,
+        wed: wedDate,
+        thu: thuDate,
+        fri: friDate,
+        sat: satDate,
+        startStr: !isNaN(monDate.getTime()) ? monDate.toISOString().split('T')[0] : '',
+        endStr: !isNaN(satDate.getTime()) ? satDate.toISOString().split('T')[0] : ''
+      };
+    }
+
+    function formatShortDate(d) {
+      if (!d || !(d instanceof Date) || isNaN(d.getTime())) return 'Pending Start Date';
+      return d.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+    }
+
+    function formatLongDate(isoStr) {
+      if (!isoStr) return 'Not Set (Set in Tab 4)';
+      const parts = (isoStr || '').split('-').map(Number);
+      if (parts.length < 3 || isNaN(parts[0]) || isNaN(parts[1]) || isNaN(parts[2])) {
+        return 'Not Set (Set in Tab 4)';
+      }
+      const dt = new Date(parts[0], parts[1] - 1, parts[2]);
+      if (isNaN(dt.getTime())) return 'Not Set (Set in Tab 4)';
+      return dt.toLocaleDateString('en-US', { month: 'long', day: '2-digit', year: 'numeric' });
+    }
+
+    function onWeekDropdownChanged() {
+      loadLogForSelectedWeek();
+    }
+
+    function stepWeek(direction) {
+      const select = document.getElementById('logWeekSelect');
+      let cur = parseInt(select.value);
+      let target = cur + direction;
+      if (target >= 1 && target <= 24) {
+        select.value = target;
+        loadLogForSelectedWeek();
+      }
+    }
+
+    function jumpToWeekByDate(selectedDateStr) {
+      if (!selectedDateStr) return;
+      const anchorStr = getAnchorStartDate();
+      const [y1, m1, d1] = anchorStr.split('-').map(Number);
+      const [y2, m2, d2] = selectedDateStr.split('-').map(Number);
+      
+      const startMs = new Date(y1, m1 - 1, d1).getTime();
+      const pickMs = new Date(y2, m2 - 1, d2).getTime();
+      
+      const diffDays = Math.floor((pickMs - startMs) / (1000 * 60 * 60 * 24));
+      let calculatedWeek = Math.floor(diffDays / 7) + 1;
+      
+      if (calculatedWeek < 1) calculatedWeek = 1;
+      if (calculatedWeek > 24) calculatedWeek = 24;
+
+      const select = document.getElementById('logWeekSelect');
+      if (select) {
+        select.value = calculatedWeek;
+        loadLogForSelectedWeek();
+        showCustomToast(`Jumped to Week ${calculatedWeek} for selected date`, 'info');
+      }
+    }
+
+    function onPlacementStartDateChanged() {
+      const user = getActiveUser() || {};
+      user.placementStartDate = document.getElementById('profPlacementStartDate').value;
+      setActiveUser(user);
+      loadLogForSelectedWeek();
+      renderAllTimelineViews();
+    }
+
+            function loadLogForSelectedWeek() {
+      const week = document.getElementById('logWeekSelect').value;
+      const logs = getStudentLogs();
+      const entry = logs[week] || {};
+      const dates = getWeekDates(week);
+
+      // Update Date Tags for Mon-Sat
+      document.getElementById('dateTagMon').innerText = formatShortDate(dates.mon);
+      document.getElementById('dateTagTue').innerText = formatShortDate(dates.tue);
+      document.getElementById('dateTagWed').innerText = formatShortDate(dates.wed);
+      document.getElementById('dateTagThu').innerText = formatShortDate(dates.thu);
+      document.getElementById('dateTagFri').innerText = formatShortDate(dates.fri);
+      document.getElementById('dateTagSat').innerText = formatShortDate(dates.sat);
+
+      // Update computed top date banner
+      if (!dates.mon) {
+        document.getElementById('computedDateRangeText').innerHTML = '<span style="color: #D97706; font-weight: 600;">Commencement date not set &mdash; <a href="#" onclick="switchStudentTab(\'profile\')" style="color: #3B49DF; text-decoration: underline;">Set Start Date in Profile</a></span>';
+        if (document.getElementById('logDateJumpPicker')) document.getElementById('logDateJumpPicker').value = '';
+      } else {
+        document.getElementById('computedDateRangeText').innerText = `${formatShortDate(dates.mon)} – ${formatShortDate(dates.sat)}`;
+        if (document.getElementById('logDateJumpPicker')) document.getElementById('logDateJumpPicker').value = dates.startStr;
+      }
+
+      // Populate Inputs
+      const inputIds = ['logMon', 'logTue', 'logWed', 'logThu', 'logFri', 'logSat', 'logSummary'];
+      document.getElementById('logMon').value = entry.mon || (entry.days && entry.days.mon && (entry.days.mon.task || entry.days.mon)) || '';
+      document.getElementById('logTue').value = entry.tue || (entry.days && entry.days.tue && (entry.days.tue.task || entry.days.tue)) || '';
+      document.getElementById('logWed').value = entry.wed || (entry.days && entry.days.wed && (entry.days.wed.task || entry.days.wed)) || '';
+      document.getElementById('logThu').value = entry.thu || (entry.days && entry.days.thu && (entry.days.thu.task || entry.days.thu)) || '';
+      document.getElementById('logFri').value = entry.fri || (entry.days && entry.days.fri && (entry.days.fri.task || entry.days.fri)) || '';
+      document.getElementById('logSat').value = entry.sat || (entry.days && entry.days.sat && (entry.days.sat.task || entry.days.sat)) || '';
+      document.getElementById('logSummary').value = entry.summary || entry.weeklySummary || '';
+
+      // Check if entry is Approved by Supervisor
+      const isApproved = entry.approved === true;
+      const lockNotice = document.getElementById('logLockNotice');
+      const remarkBox = document.getElementById('logSupervisorRemarkBox');
+      const remarkText = document.getElementById('logSupervisorRemarkText');
+      const remarkSignee = document.getElementById('logSupervisorSignee');
+      const statusTag = document.getElementById('logSupervisorStatusTag');
+
+      inputIds.forEach(id => {
+        const inputEl = document.getElementById(id);
+        if (inputEl) {
+          inputEl.disabled = isApproved;
+          if (isApproved) {
+            inputEl.style.backgroundColor = '#F8FAFC';
+            inputEl.style.color = '#475569';
+            inputEl.style.cursor = 'not-allowed';
+          } else {
+            inputEl.style.backgroundColor = '#FFFFFF';
+            inputEl.style.color = '#0F172A';
+            inputEl.style.cursor = 'text';
+          }
+        }
+      });
+
+      if (lockNotice) {
+        lockNotice.style.display = isApproved ? 'flex' : 'none';
+      }
+
+      const hasRemark = (entry.supervisorRemark && entry.supervisorRemark.trim() !== '') || (entry.supervisor && entry.supervisor.trim() !== '');
+      if (remarkBox && remarkText) {
+        if (hasRemark) {
+          remarkBox.style.display = 'block';
+          remarkText.innerText = `"${entry.supervisorRemark || entry.supervisor}"`;
+          if (remarkSignee) {
+            remarkSignee.innerText = `Reviewed by: ${entry.supervisorName || 'Assigned Faculty Supervisor'}${entry.approvedAt ? ' • ' + new Date(entry.approvedAt).toLocaleDateString() : ''}`;
+          }
+          if (statusTag) {
+            if (isApproved) {
+              statusTag.style.background = '#ECFDF5';
+              statusTag.style.color = '#059669';
+              statusTag.innerHTML = '<i data-lucide="check-circle" style="width: 12px; display: inline-block; vertical-align: middle;"></i> Officially Approved';
+              remarkBox.style.borderLeftColor = '#059669';
+            } else {
+              statusTag.style.background = '#FEF3C7';
+              statusTag.style.color = '#B45309';
+              statusTag.innerHTML = '<i data-lucide="clock" style="width: 12px; display: inline-block; vertical-align: middle;"></i> Pending / Revision Requested';
+              remarkBox.style.borderLeftColor = '#D97706';
+            }
+          }
+        } else {
+          remarkBox.style.display = 'none';
+        }
+      }
+
+      updateAutosaveBadge('saved');
+      lucide.createIcons();
+    }
+
+    function generateDeterministicAuditHash(week, text) {
+      let hash = 0;
+      const str = `sdi-week-${week}-${text}`;
+      for (let i = 0; i < str.length; i++) {
+        hash = ((hash << 5) - hash) + str.charCodeAt(i);
+        hash |= 0;
+      }
+      return Math.abs(hash).toString(16).padStart(12, 'a') + '7f83b1...';
+    }
+
+    function triggerAutoSave() {
+      updateAutosaveBadge('saving');
+      clearTimeout(autoSaveTimer);
+      autoSaveTimer = setTimeout(() => {
+        performSaveCurrentWeek();
+        updateAutosaveBadge('saved');
+        renderAllTimelineViews();
+      }, 300);
+    }
+
+    function performSaveCurrentWeek() {
+      const user = getActiveUser() || {};
+      if (typeof isUserApproved === 'function' && !isUserApproved(user)) {
+        showCustomToast('🔒 Action Restricted: Super Admin clearance is required before publishing digital log entries.', 'error');
+        return;
+      }
+      const week = parseInt(document.getElementById('logWeekSelect').value);
+      const logs = getStudentLogs();
+      const existing = logs[week] || {};
+
+      logs[week] = {
+        ...existing,
+        mon: document.getElementById('logMon').value.trim(),
+        tue: document.getElementById('logTue').value.trim(),
+        wed: document.getElementById('logWed').value.trim(),
+        thu: document.getElementById('logThu').value.trim(),
+        fri: document.getElementById('logFri').value.trim(),
+        sat: document.getElementById('logSat').value.trim(),
+        summary: document.getElementById('logSummary').value.trim(),
+        approved: existing.approved !== undefined ? existing.approved : false,
+        supervisor: existing.supervisor || '',
+        supervisorRemark: existing.supervisorRemark || '',
+        supervisorName: existing.supervisorName || ''
+      };
+
+      saveStudentLogs(logs);
+
+      // Dynamically track the latest active/current week in user session
+      user.currentWorkingWeek = week;
+      setActiveUser(user);
+    }
+
+    function updateAutosaveBadge(status) {
+      const badge = document.getElementById('autosaveStatusBadge');
+      if (!badge) return;
+      if (status === 'saving') {
+        badge.className = 'autosave-badge saving';
+        badge.innerHTML = '<i data-lucide="loader-2" style="width: 14px; animation: spin 1s linear infinite;"></i> Saving automatically...';
+      } else {
+        badge.className = 'autosave-badge saved';
+        badge.innerHTML = '<i data-lucide="check-circle-2" style="width: 14px;"></i> All changes saved';
+      }
+      lucide.createIcons();
+    }
+
+                function renderAllTimelineViews() {
+      const logs = getStudentLogs();
+      const user = getActiveUser() || {};
+      const dashContainer = document.getElementById('dashTimelineRecords');
+      const logbookContainer = document.getElementById('logbookFullTimeline');
+
+      let dashHtml = '';
+      let fullHtml = '';
+
+      // Find all weeks that have actual student entries
+      const filledWeeks = [];
+      let approvedCount = 0;
+
+      for (let w = 1; w <= 24; w++) {
+        const item = logs[w];
+        if (item && (item.mon || item.tue || item.wed || item.thu || item.fri || item.sat || item.summary)) {
+          filledWeeks.push(w);
+          if (item.approved === true && item.supervisor) {
+            approvedCount++;
+          }
+        }
+      }
+
+      // 1. Update Dynamic Dashboard Metrics
+      const totalFilled = filledWeeks.length;
+      if (document.getElementById('dashMetricLoggedWeeks')) {
+        document.getElementById('dashMetricLoggedWeeks').innerText = `${totalFilled} / 24 Weeks`;
+      }
+      if (document.getElementById('dashMetricProgressPct')) {
+        const pct = ((totalFilled / 24) * 100).toFixed(1);
+        document.getElementById('dashMetricProgressPct').innerText = `${pct}% of 24-week SIWES logged`;
+      }
+      if (document.getElementById('dashMetricSignoffRate')) {
+        const rate = totalFilled > 0 ? Math.round((approvedCount / totalFilled) * 100) : 0;
+        document.getElementById('dashMetricSignoffRate').innerText = `${rate}%`;
+      }
+      if (document.getElementById('dashMetricSignoffDetail')) {
+        document.getElementById('dashMetricSignoffDetail').innerText = totalFilled > 0
+          ? `${approvedCount} of ${totalFilled} logged weeks approved`
+          : '0 of 0 logged weeks approved';
+      }
+
+      // Calculate Current Working Week (Defaults strictly to Week 0 for new accounts awaiting start date)
+      const hasStartDate = !!user.placementStartDate;
+      let currentW = 0;
+
+      if (!hasStartDate || totalFilled === 0) {
+        if (user.currentWorkingWeek && parseInt(user.currentWorkingWeek) > 0 && hasStartDate) {
+          currentW = parseInt(user.currentWorkingWeek);
+        } else {
+          currentW = 0;
+        }
+      } else if (user.currentWorkingWeek && parseInt(user.currentWorkingWeek) > 0) {
+        currentW = parseInt(user.currentWorkingWeek);
+      } else {
+        currentW = Math.max(...filledWeeks);
+      }
+
+      if (document.getElementById('dashMetricActiveWeek')) {
+        if (currentW === 0 || !hasStartDate) {
+          document.getElementById('dashMetricActiveWeek').innerText = 'Week 0 (Awaiting Start Date)';
+        } else {
+          const weekTag = currentW === 1 ? '(Commencement)' : (currentW === 24 ? '(Final Week)' : '');
+          document.getElementById('dashMetricActiveWeek').innerText = `Week ${currentW} ${weekTag}`;
+        }
+      }
+      if (document.getElementById('dashMetricCurrentDateRange')) {
+        if (currentW === 0 || !hasStartDate) {
+          document.getElementById('dashMetricCurrentDateRange').innerHTML = '<span style="color: #D97706; font-weight: 600;">Please set your commencement date in Profile</span>';
+        } else {
+          const d = getWeekDates(currentW);
+          document.getElementById('dashMetricCurrentDateRange').innerText = `${formatShortDate(d.mon)} – ${formatShortDate(d.sat)}`;
+        }
+      }
+
+      // Update Dashboard Placement Quick Overview Card
+      if (document.getElementById('dashHostOrgText')) {
+        document.getElementById('dashHostOrgText').innerText = user.hostOrg || 'Not Configured (Set in Tab 4)';
+      }
+      if (document.getElementById('dashSupervisorText')) {
+        document.getElementById('dashSupervisorText').innerText = user.supervisor || 'Not Assigned Yet';
+      }
+      if (document.getElementById('dashStartDateText')) {
+        document.getElementById('dashStartDateText').innerText = user.placementStartDate ? formatLongDate(user.placementStartDate) : 'Not Set (Set in Tab 4)';
+      }
+
+      function buildTimelineCardHtml(w, item, isDash = false) {
+        const dates = getWeekDates(w);
+        const dateRange = `${formatShortDate(dates.mon)} &ndash; ${formatShortDate(dates.sat)}`;
+        const title = item.summary || (item.mon ? `Daily Work: ${item.mon}` : `Week ${w} Practical Work Summary`);
+        
+        let dailyBadges = '';
+        const days = [
+          { key: 'mon', label: 'Mon', val: item.mon },
+          { key: 'tue', label: 'Tue', val: item.tue },
+          { key: 'wed', label: 'Wed', val: item.wed },
+          { key: 'thu', label: 'Thu', val: item.thu },
+          { key: 'fri', label: 'Fri', val: item.fri },
+          { key: 'sat', label: 'Sat', val: item.sat }
+        ];
+
+        days.forEach(d => {
+          if (d.val) {
+            dailyBadges += `<div style="font-size: 0.86rem; color: #334155; margin-bottom: 0.35rem;"><strong style="color: #0F172A;">${d.label}:</strong> ${d.val}</div>`;
+          }
+        });
+
+        const isApproved = item.approved === true && item.supervisor;
+
+        return `
+          <div class="timeline-box">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+              <div>
+                <span style="background: #EFF6FF; color: var(--primary); font-size: 0.78rem; font-weight: 700; padding: 0.25rem 0.65rem; border-radius: 6px;">Week ${w} ${w === 1 ? '(Commencement)' : (w === 24 ? '(Final Week)' : '')}</span>
+                <h4 style="font-size: 1.15rem; font-family: var(--font-heading); margin: 0.45rem 0 0.2rem 0; color: var(--text-dark);">${title}</h4>
+                <div style="font-size: 0.84rem; color: var(--text-muted);">${dateRange}</div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                ${isApproved ? `
+                  <span style="background: #ECFDF5; color: #059669; font-weight: 700; font-size: 0.78rem; padding: 0.25rem 0.65rem; border-radius: 9999px; display: inline-flex; align-items: center; gap: 0.35rem;">
+                    <i data-lucide="check-circle" style="width: 13px;"></i> Approved
+                  </span>
+                  <button class="btn btn-secondary" onclick="jumpToWeek(${w})" style="padding: 0.3rem 0.65rem; font-size: 0.78rem; opacity: 0.9;">
+                    <i data-lucide="eye" style="width: 12px;"></i> View
+                  </button>
+                ` : `
+                  <span style="background: #FEF3C7; color: #B45309; font-weight: 700; font-size: 0.78rem; padding: 0.25rem 0.65rem; border-radius: 9999px; display: inline-flex; align-items: center; gap: 0.35rem;">
+                    <i data-lucide="clock" style="width: 13px;"></i> Pending Approval
+                  </span>
+                  <button class="btn btn-secondary" onclick="jumpToWeek(${w})" style="padding: 0.3rem 0.65rem; font-size: 0.78rem;">
+                    <i data-lucide="edit-3" style="width: 12px;"></i> Edit
+                  </button>
+                `}
+              </div>
+            </div>
+            <div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 0.85rem 1rem; border-radius: 10px; margin-bottom: 0.5rem;">
+              ${dailyBadges || '<div style="color: #64748B; font-size: 0.85rem;">Daily practical work recorded.</div>'}
+            </div>
+            ${item.supervisor ? `<div style="font-size: 0.84rem; color: #059669; margin-top: 0.35rem;"><strong style="color: #065F46;">Supervisor Remarks:</strong> ${item.supervisor}</div>` : ''}
+          </div>
+        `;
+      }
+
+      // 1. Dashboard Overview: Show strictly the latest 2 filled weeks
+      if (filledWeeks.length === 0) {
+        dashHtml = `
+          <div class="timeline-box" style="text-align: center; padding: 2rem 1.5rem; background: #FFFFFF; border: 1.5px dashed #CBD5E1;">
+            <div style="font-weight: 700; color: #0F172A; font-size: 1rem; margin-bottom: 0.25rem;">No Active Weekly Logs</div>
+            <p style="color: #64748B; font-size: 0.88rem; margin: 0;">Fill in your daily tasks in the logbook tab to see timeline records here.</p>
+          </div>
+        `;
+      } else {
+        filledWeeks.slice(0, 2).forEach(w => {
+          dashHtml += buildTimelineCardHtml(w, logs[w], true);
+        });
+      }
+
+      // 2. Full Timeline Archive: Show strictly weeks that have been filled
+      if (filledWeeks.length === 0) {
+        fullHtml = `
+          <div class="timeline-box" style="text-align: center; padding: 2.5rem 1.5rem; background: #FFFFFF; border: 1.5px dashed #CBD5E1;">
+            <div style="width: 44px; height: 44px; border-radius: 12px; background: #EFF6FF; color: var(--primary); display: inline-flex; align-items: center; justify-content: center; margin-bottom: 0.75rem;">
+              <i data-lucide="book-open" style="width: 22px;"></i>
+            </div>
+            <h4 style="font-size: 1.15rem; font-family: var(--font-heading); color: #0F172A; margin: 0 0 0.35rem 0;">No Weekly Logs Recorded Yet</h4>
+            <p style="color: #64748B; font-size: 0.9rem; margin: 0;">Use the Daily Work Log editor above to record your tasks for Week 1.</p>
+          </div>
+        `;
+      } else {
+        filledWeeks.forEach(w => {
+          fullHtml += buildTimelineCardHtml(w, logs[w], false);
+        });
+      }
+
+      if (dashContainer) dashContainer.innerHTML = dashHtml;
+      if (logbookContainer) logbookContainer.innerHTML = fullHtml;
+      lucide.createIcons();
+    }
+
+    function jumpToWeek(weekNum) {
+      switchStudentTab('logbook');
+      const select = document.getElementById('logWeekSelect');
+      if (select) {
+        select.value = weekNum;
+        loadLogForSelectedWeek();
+        setTimeout(() => {
+          select.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+      }
+    }
+
+    function switchStudentTab(tabKey) {
+      document.querySelectorAll('.tab-panel-view').forEach(panel => panel.classList.remove('active-panel'));
+      document.querySelectorAll('.sidebar-menu-link').forEach(link => link.classList.remove('active'));
+
+      if (tabKey === 'dashboard') {
+        renderAllTimelineViews();
+        document.getElementById('viewDashboard').classList.add('active-panel');
+        document.getElementById('navItemDashboard').classList.add('active');
+      } else if (tabKey === 'logbook') {
+        loadLogForSelectedWeek();
+        renderAllTimelineViews();
+        document.getElementById('viewLogbook').classList.add('active-panel');
+        document.getElementById('navItemLogbook').classList.add('active');
+      } else if (tabKey === 'placement') {
+        document.getElementById('viewPlacement').classList.add('active-panel');
+        document.getElementById('navItemPlacement').classList.add('active');
+      } else if (tabKey === 'profile') {
+        populateProfileFromSession();
+        document.getElementById('viewProfile').classList.add('active-panel');
+        document.getElementById('navItemProfile').classList.add('active');
+      } else if (tabKey === 'help') {
+        document.getElementById('viewHelp').classList.add('active-panel');
+        document.getElementById('navItemHelp').classList.add('active');
+      }
+
+      lucide.createIcons();
+    }
+
+    function saveStudentFullProfile(e) {
+      e.preventDefault();
+      const sessionUser = getActiveUser() || {};
+      const allUsers = typeof getRegisteredUsersList === 'function' ? getRegisteredUsersList() : [];
+      const freshUser = allUsers.find(u => (u.matric || u.identifier || '').toLowerCase() === (sessionUser.matric || sessionUser.identifier || '').toLowerCase()) || {};
+      
+      const user = { ...sessionUser, ...freshUser };
+      
+      user.name = document.getElementById('profFullName').value.trim();
+      user.matric = document.getElementById('profMatric').value.trim();
+      user.identifier = user.matric;
+      user.phone = document.getElementById('profPhone').value.trim();
+      user.institution = document.getElementById('profInstitution').value;
+      user.dept = document.getElementById('profDept').value.trim();
+      user.placementStartDate = document.getElementById('profPlacementStartDate').value;
+      user.hostOrg = document.getElementById('profHostOrg').value.trim();
+      user.placementAddress = document.getElementById('profPlacementAddress').value.trim();
+      
+      // Industry Workplace Mentor
+      user.industrySupervisor = document.getElementById('profIndustrySupervisor').value.trim();
+      user.industrySupervisorEmail = document.getElementById('profIndustrySupervisorEmail').value.trim();
+      user.industrySupervisorPhone = document.getElementById('profIndustrySupervisorPhone').value.trim();
+      user.skills = document.getElementById('profSkills').value.trim();
+      user.needsProfileUpdate = false;
+
+      // Preserve Institutional Supervisor assigned by university
+      user.institutionalSupervisor = freshUser.institutionalSupervisor || sessionUser.institutionalSupervisor || user.supervisor || 'Dr. A. O. Institutional Coordinator';
+      user.institutionalSupervisorEmail = freshUser.institutionalSupervisorEmail || sessionUser.institutionalSupervisorEmail || user.supervisorEmail || 'coordinator@institution.edu.ng';
+      user.supervisor = user.institutionalSupervisor;
+      user.supervisorEmail = user.institutionalSupervisorEmail;
+
+      // Persist active session
+      setActiveUser(user);
+      localStorage.setItem(`sdi_profile_completed_${user.matric || 'default'}`, 'true');
+
+      // Sync central registry
+      if (typeof updateUserInDB === 'function') {
+        updateUserInDB(user.matric, user);
+      }
+
+      // Update UI components
+      populateProfileFromSession();
+      loadLogForSelectedWeek();
+      renderAllTimelineViews();
+      
+      // Permanently remove onboarding banner
+      const banner = document.getElementById('onboardingPromptBanner');
+      if (banner) banner.style.display = 'none';
+
+      showCustomToast('Placement Profile & Commencement Date saved successfully!', 'success');
+      
+      setTimeout(() => {
+        switchStudentTab('logbook');
+      }, 600);
+    }
+
+        function logoutUser(redirect = true) {
+      openCustomModal({
+        title: 'Sign Out Confirmation',
+        badge: 'Student Session',
+        icon: 'log-out',
+        iconClass: 'modal-icon-blue',
+        contentHtml: `
+          <div style="font-size: 0.95rem; color: #1E293B; line-height: 1.5;">
+            Are you sure you want to end your current student workspace session?
+            <p style="color: #64748B; font-size: 0.86rem; margin-top: 0.5rem;">
+              Your saved placement data and weekly work records remain secure in the institutional ledger.
+            </p>
+          </div>
+        `,
+        confirmText: 'Sign Out',
+        confirmClass: 'btn-primary',
+        cancelText: 'Stay Signed In',
+        onConfirm: () => {
+          localStorage.removeItem("sdi_active_user_session");
+          closeCustomModal();
+          showCustomToast("You have been securely signed out.", "info", 1500);
+          setTimeout(() => {
+            window.location.href = "index.html";
+          }, 400);
+        }
+      });
+    }
+    window.logoutActiveUser = logoutUser;
+
+    
+  </script>
+</body>
+</html>

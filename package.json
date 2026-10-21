@@ -1,0 +1,25 @@
+{
+  "name": "secure-digitalize-initiative",
+  "version": "2.0.0",
+  "description": "Millennium Fellowship Platform — Automated Student Placement & Verification System",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "nodemon backend/server.js"
+  },
+  "keywords": [
+    "millennium-fellowship",
+    "un-sdg4",
+    "civic-tech",
+    "education",
+    "verification"
+  ],
+  "author": "Opeyemi Abraham Benjamin",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "dotenv": "^16.4.5"
+  }
+}

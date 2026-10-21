@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Public Verification Registry — Secure Digitalize Initiative</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Clean Navbar -->
+  <header class="navbar no-print">
+    <div class="navbar-inner">
+      <div class="brand-group">
+        <div class="brand-icon">
+          <i data-lucide="shield-check" style="width: 20px; height: 20px;"></i>
+        </div>
+        <span class="brand-name">Secure Digitalize</span>
+        <span class="mcn-tag">Class of '26</span>
+      </div>
+
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link ">Home</a></li>
+        <li><a href="verifier.html" class="nav-link active">Public Verifier</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="student-portal.html" class="btn btn-secondary btn-sm">Sign In</a>
+        <a href="index.html" class="btn btn-primary btn-sm">
+          <i data-lucide="arrow-left" style="width: 14px;"></i> Home
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Verifier Page Content -->
+  <main class="container" style="padding-top: 3.5rem; padding-bottom: 5rem;">
+    <div class="no-print" style="text-align: center; max-width: 680px; margin: 0 auto 3rem auto;">
+    <div style="text-align: center; max-width: 680px; margin: 0 auto 3rem auto;">
+      <div class="status-badge" style="margin-bottom: 1rem;">
+        <span class="pulse-dot"></span>
+        <span>Public Auditing Terminal</span>
+      </div>
+      <h1 style="font-family: var(--font-heading); font-size: 2.6rem; font-weight: 800; color: var(--text-dark); letter-spacing: -0.03em; margin-bottom: 0.75rem;">
+        Institutional Verification Registry
+      </h1>
+      <p style="color: var(--text-muted); font-size: 1.05rem; margin: 0;">
+        Instantly validate authentic SIWES student placements, signed digital logbook certificates, and institutional clearances in real time.
+      </p>
+    </div>
+
+    </div>
+
+    <!-- Verification Card -->
+    <div class="verifier-terminal" style="margin-bottom: 3.5rem;">
+      <div class="terminal-header no-print">
+        <div class="terminal-title">
+          <i data-lucide="shield-check" style="color: #10B981; width: 22px;"></i>
+          <span>Official Document Verification</span>
+        </div>
+        <span style="background: #ECFDF5; border: 1px solid #A7F3D0; color: #059669; font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 9999px;">
+          ● Live Connected
+        </span>
+      </div>
+
+      <div class="search-box-row no-print">
+        <div class="search-input-wrapper">
+          <i data-lucide="search" class="search-input-icon"></i>
+          <input type="text" id="verifyInput" class="search-field" placeholder="Enter Matric Number (e.g., 230591***) or Slip ID (SDI-2026-99A)..." autocomplete="off" spellcheck="false">
+          <button type="button" id="inputClearX" class="input-clear-x" onclick="clearVerification()" title="Clear search" style="display: none;">
+            <i data-lucide="x" style="width: 14px; height: 14px;"></i>
+          </button>
+        </div>
+        <button class="btn btn-primary" id="btnAudit" onclick="performVerification()">
+          <i data-lucide="shield-check" style="width: 15px;"></i> Audit Record
+        </button>
+        <button class="btn btn-secondary btn-clear-action" id="btnClear" onclick="clearVerification()" title="Reset and audit another student">
+          <i data-lucide="rotate-ccw" style="width: 14px;"></i> Clear / Reset
+        </button>
+      </div>
+
+      <div class="sample-chips-row no-print">
+        <span>Sample Records:</span>
+        <button class="sample-chip-btn" onclick="quickVerify('230591***')">Fellow Lead (230591***)</button>
+        <button class="sample-chip-btn" onclick="quickVerify('SDI-2026-99A')">Code: SDI-2026-99A</button>
+        <button class="sample-chip-btn" onclick="quickVerify('LASU/2026/CS-042')">ID: LASU/2026/CS-042</button>
+      </div>
+
+      <div id="verifyResult" style="display: none; margin-top: 1.5rem; background: #F8FAFC; border: 1.5px solid #E2E8F0; padding: 1.5rem; border-radius: 12px;">
+      </div>
+    </div>
+
+    <!-- How Verification Works Section -->
+    <div class="no-print" style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 3rem; box-shadow: var(--shadow-card);">
+      <h3 style="font-family: var(--font-heading); font-size: 1.4rem; font-weight: 800; color: var(--text-dark); margin-bottom: 1.5rem;">
+        How Cryptographic Verification Works
+      </h3>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
+        <div>
+          <div style="font-weight: 700; color: var(--primary); font-size: 1.1rem; margin-bottom: 0.4rem;">1. Placement Registration</div>
+          <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6;">
+            Upon institutional approval, a unique cryptographic hash is generated and linked to the student's accredited placement profile.
+          </p>
+        </div>
+        <div>
+          <div style="font-weight: 700; color: var(--secondary); font-size: 1.1rem; margin-bottom: 0.4rem;">2. Tamper-Proof Audit</div>
+          <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6;">
+            Any query matches against the immutable PostgreSQL database record, ensuring zero forgery or fraudulent slip alteration.
+          </p>
+        </div>
+        <div>
+          <div style="font-weight: 700; color: var(--accent-green); font-size: 1.1rem; margin-bottom: 0.4rem;">3. Instant Validation</div>
+          <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6;">
+            Employers, academic coordinators, and external reviewers obtain verified confirmation in less than 50 milliseconds.
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer no-print">
+    <div class="container footer-grid">
+      <div>
+        <h4 style="color: white; font-size: 1.15rem; margin-bottom: 0.85rem; font-family: var(--font-heading);">
+          Secure Digitalize Initiative
+        </h4>
+        <p style="max-width: 420px; color: #94A3B8; line-height: 1.7; margin-bottom: 0;">
+          A student-led civic tech project under the United Nations Academic Impact (UNAI) and Millennium Campus Network (MCN) Millennium Fellowship Class of 2026.
+        </p>
+      </div>
+
+      <div>
+        <h4 style="color: white; font-size: 0.95rem; margin-bottom: 0.85rem; font-family: var(--font-heading);">
+          Fellowship Lead
+        </h4>
+        <p style="margin-bottom: 0.25rem; color: #F1F5F9; font-weight: 700;">Opeyemi Abraham Benjamin</p>
+        <p style="color: #94A3B8; margin-bottom: 0.25rem;">Department of Computer Science</p>
+        <p style="color: #94A3B8;">Lagos State University (LASU)</p>
+      </div>
+
+      <div>
+        <h4 style="color: white; font-size: 0.95rem; margin-bottom: 0.85rem; font-family: var(--font-heading);">
+          Navigation
+        </h4>
+        <p style="margin-bottom: 0.4rem;"><a href="index.html" style="color: #94A3B8;">Home</a></p>
+        <p style="margin-bottom: 0.4rem;"><a href="student-portal.html" style="color: #94A3B8;">Student Portal</a></p>
+        <p style="margin-bottom: 0;"><a href="admin-portal.html" style="color: #94A3B8;">Admin Console</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+  <script>
+    lucide.createIcons();
+
+    function quickVerify(val) {
+      document.getElementById('verifyInput').value = val;
+      performVerification();
+    }
+  </script>
+</body>
+</html>
