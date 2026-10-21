@@ -11,9 +11,8 @@
 > **Official Social Impact Initiative | Millennium Fellowship Class of 2026**  
 > **Conferred by:** [Millennium Campus Network (MCN)](https://www.mcnpartners.org/) & [United Nations Academic Impact (UNAI)](https://www.un.org/en/academicimpact)  
 > **Fellow / Lead Developer:** Opeyemi Abraham Benjamin  
-> **Millennium Fellowship ID:** `MF`  
 > **Institution:** Lagos State University of Education (LASUED) / Lagos State University (LASU)  
-> **Discipline:** Department of Computer Science (Senior / 300L)  
+> **Discipline:** Department of Computer Science (Final Year / 400L)  
 > **Primary SDGs:** Goal 9 (Industry, Innovation & Infrastructure), Goal 4 (Quality Education), Goal 8 (Decent Work & Economic Growth)
 
 ---
@@ -39,7 +38,7 @@ The initiative was launched concurrently with the kickoff of the **Millennium Fe
 ```mermaid
 flowchart TD
     A["August 2026: Fellowship Inception & Discovery<br/>• Problem identification at LASUED SIWES office<br/>• Analysis of paper Inward Books<br/>• Architectural planning & database schema design"] --> B["September 2026: Engineering & Security Prototyping<br/>• Full-stack build: Node.js, Express, REST APIs<br/>• 24-week authentic logbook engine<br/>• Cryptographic SHA-256 tamper-proof ledger"]
-    B --> C["October 2026: Institutional Pilot & Social Impact Tour Submission<br/>• Secured administrative clearance for testbed rollout<br/>• Onboarded 160 real undergraduates (21.3% of goal)<br/>• Connected 90 accredited partner organizations<br/>• Official submission of Social Impact Tour (MF263425)"]
+    B --> C["October 2026: Institutional Pilot & Social Impact Tour Submission<br/>• Secured administrative clearance for testbed rollout<br/>• Onboarded 160 real undergraduates (21.3% of goal)<br/>• Connected 90 accredited partner organizations<br/>• Official submission of Social Impact Tour"]
     C --> D["November - December 2026: Institutional Handover & Graduation<br/>• Deployment briefing for ICT Directorate<br/>• Transition to campus subdomain (siwes.lasued.edu.ng)<br/>• Millennium Fellowship final evaluation & defense"]
 ```
 
@@ -57,7 +56,7 @@ flowchart TD
 - **Institutional Clearance for Controlled Pilot:** In accordance with institutional governance, the university administration granted permission to conduct a controlled live pilot across selected departments to validate platform security, stability, and usability before campus-wide subdomain adoption.
 - **Surpassed 20% Pilot Milestone:** Successfully onboarded **160 authentic undergraduate students** across 8 academic departments within the **College of Humanities and Education (COHED)**, achieving **21.3%** of the 750-student institutional cohort goal.
 - **Industry Partner Network:** Integrated **90 accredited host organizations** spanning information technology, engineering, telecommunications, government agencies, media corporations, and schools.
-- **Social Impact Tour Submission:** Produced and formally submitted the official **Social Impact Tour submission** under Fellowship ID `MF263425`, documenting the transition from physical paper ledgers to secure digital workflows.
+- **Social Impact Tour Submission:** Produced and formally submitted the official **Social Impact Tour submission** for the Millennium Fellowship Class of 2026, documenting the transition from physical paper ledgers to secure digital workflows.
 - **Subdomain Integration Roadmap:** Initiated technical briefing preparations for the University Information & Communication Technology (ICT) Directorate to host the verified platform directly on an official university subdomain (`siwes.lasued.edu.ng` / `sdi.lasued.edu.ng`).
 
 ---
@@ -190,7 +189,7 @@ Following the successful submission of the Social Impact Tour, the project is ad
 
 ## 👤 Author & Institutional Affiliation
 
-- **Lead Fellow & Developer:** **Opeyemi Abraham Benjamin** (Millennium Fellow Class of 2026, ID: `MF263425`)
+- **Lead Fellow & Developer:** **Opeyemi Abraham Benjamin** (Millennium Fellow Class of 2026)
 - **Institution:** Lagos State University of Education (LASUED), Lagos, Nigeria
 - **Department:** Department of Computer Science, Faculty of Computing and Information Technology
 - **Program:** [Millennium Fellowship](https://www.millenniumfellows.org/) — Joint initiative by the [Millennium Campus Network (MCN)](https://www.mcnpartners.org/) and [United Nations Academic Impact (UNAI)](https://www.un.org/en/academicimpact)
