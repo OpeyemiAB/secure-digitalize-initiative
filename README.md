@@ -11,7 +11,7 @@
 > **Official Social Impact Initiative | Millennium Fellowship Class of 2026**  
 > **Conferred by:** [Millennium Campus Network (MCN)](https://www.mcnpartners.org/) & [United Nations Academic Impact (UNAI)](https://www.un.org/en/academicimpact)  
 > **Fellow / Lead Developer:** Opeyemi Abraham Benjamin  
-> **Millennium Fellowship ID:** `MF263425`  
+> **Millennium Fellowship ID:** `MF`  
 > **Institution:** Lagos State University of Education (LASUED) / Lagos State University (LASU)  
 > **Discipline:** Department of Computer Science (Senior / 300L)  
 > **Primary SDGs:** Goal 9 (Industry, Innovation & Infrastructure), Goal 4 (Quality Education), Goal 8 (Decent Work & Economic Growth)
